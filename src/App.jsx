@@ -6,6 +6,151 @@ import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './index.css';
 
 const MotionLink = motion(Link);
+
+const Preloader = () => {
+  const [progress, setProgress] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    
+    // Disable scrolling while loading
+    document.body.style.overflow = 'hidden';
+
+    // Simulate progress
+    const interval = setInterval(() => {
+      setProgress(p => {
+        if (p >= 90) return p;
+        return p + Math.floor(Math.random() * 10) + 1;
+      });
+    }, 150);
+
+    const checkLoad = async () => {
+      // Minimum loading time so it looks premium (2 seconds)
+      const minTime = new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Wait for fonts
+      if (document.fonts) {
+        await document.fonts.ready;
+      }
+      
+      // Wait for window load
+      if (document.readyState !== 'complete') {
+        await new Promise(resolve => {
+          window.addEventListener('load', resolve, { once: true });
+        });
+      }
+
+      // Preload critical images manually to be absolutely sure
+      const criticalImages = [
+        "/logo.png",
+        "/logo1.png",
+        "/logo2.png",
+        "/logo3.png",
+        "/topo.svg",
+        "/casidor.jpg.jpg",
+        "/love-chew.jpg.jpg",
+        "/Barrett Recovery.png",
+        "/Wipes A+.png",
+        "/ancient-home.jpg",
+        "/ancient-product1.jpg",
+        "/ancient-product4.jpg",
+        "/ancient-product3.jpg",
+        "/ancient-product2.jpg",
+        "/listing-1.jpg.jpg"
+      ];
+      
+      await Promise.all(criticalImages.map(src => {
+        return new Promise(resolve => {
+          const img = new Image();
+          img.onload = resolve;
+          img.onerror = resolve;
+          img.src = src;
+        });
+      }));
+
+      await minTime;
+
+      if (isMounted) {
+        clearInterval(interval);
+        setProgress(100);
+        setTimeout(() => {
+          setIsVisible(false);
+          document.body.style.overflow = '';
+        }, 500); // delay at 100% before starting exit animation
+      }
+    };
+
+    checkLoad();
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+      document.body.style.overflow = '';
+    };
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0, y: "-100%" }}
+          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'var(--color-black)',
+            zIndex: 999999,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: 'var(--color-lime)',
+          }}
+        >
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            style={{
+              fontSize: 'clamp(2rem, 5vw, 4rem)',
+              fontFamily: 'var(--font-heading)',
+              textTransform: 'uppercase',
+              marginBottom: '2rem',
+              letterSpacing: '2px',
+              color: 'var(--color-white)'
+            }}
+          >
+            Ahmad <span style={{ color: 'var(--color-lime)' }}>Malik</span>
+          </motion.div>
+          <div style={{ width: '200px', height: '2px', backgroundColor: 'rgba(255, 255, 255, 0.2)', position: 'relative', overflow: 'hidden', borderRadius: '2px' }}>
+            <motion.div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                height: '100%',
+                backgroundColor: 'var(--color-lime)',
+                width: `${progress}%`
+              }}
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.2 }}
+            />
+          </div>
+          <div style={{ marginTop: '1rem', fontSize: '1rem', fontFamily: 'var(--font-body)', color: 'var(--color-grey)', letterSpacing: '1px' }}>
+            {progress}%
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 const RevealText = ({ text, delay = 0, triggerOnce = false }) => {
   const words = text.split(" ");
   return (
@@ -1962,6 +2107,7 @@ export default function App() {
 
   return (
     <Router>
+      <Preloader />
       <ReactLenis root options={{ lerp: 0.05, duration: 1.5, smoothTouch: true }}>
         <div className="app">
           <GlobalBackground />
