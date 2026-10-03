@@ -2,8 +2,23 @@ import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, ArrowUp } from 'lucide-react';
 import { ReactLenis, useLenis } from 'lenis/react';
-import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import './index.css';
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  const lenis = useLenis();
+
+  useEffect(() => {
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, lenis]);
+
+  return null;
+};
 
 const MotionLink = motion(Link);
 
@@ -50,8 +65,8 @@ const Preloader = () => {
         "/topo.svg",
         "/casidor.jpg.jpg",
         "/love-chew.jpg.jpg",
-        "/Barrett Recovery.png",
-        "/Wipes A+.png",
+        "/barrett-recovery.png",
+        "/wipes-aplus.png",
         "/ancient-home.jpg",
         "/ancient-product1.jpg",
         "/ancient-product4.jpg",
@@ -779,13 +794,13 @@ function Home() {
       id: 3, 
       title: "Barrett Recovery CALMg", 
       desc: "Holistic Sleep Support A+ Content. High-end, calming design emphasizing night-time recovery and a premium 7-form magnesium formula.", 
-      img: "/Barrett Recovery.png" 
+      img: "/barrett-recovery.png" 
     },
     { 
       id: 4, 
       title: "TANRI Active Wipes", 
       desc: "On-the-go Freshness A+ Design. Clean, outdoorsy visuals highlighting natural ingredients and instant refresh for active lifestyles.", 
-      img: "/Wipes A+.png" 
+      img: "/wipes-aplus.png" 
     }
   ];
 
@@ -2107,6 +2122,7 @@ export default function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <Preloader />
       <ReactLenis root options={{ lerp: 0.05, duration: 1.5, smoothTouch: true }}>
         <div className="app">
