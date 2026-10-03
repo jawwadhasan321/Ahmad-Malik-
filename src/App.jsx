@@ -2119,7 +2119,7 @@ export default function App() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             style={{ position: 'absolute', top: '2.5rem', left: '50%', transform: 'translateX(-50%)', mixBlendMode: 'lighten', display: 'flex', justifyContent: 'center', zIndex: 90, pointerEvents: 'none' }}
           >
-            <img src="/logo.png" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain', transform: 'translateX(-6px)' }} />
+            <img src="/logo.png" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain', marginLeft: '-20px' }} />
           </motion.div>
 
           {/* Navigation */}

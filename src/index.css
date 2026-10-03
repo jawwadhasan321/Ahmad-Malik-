@@ -60,7 +60,7 @@ body, html, a, button, input, select, textarea, * {
 }
 
 html {
-  font-size: 14px;
+  font-size: 13px;
   background-color: var(--color-black);
 }
 
