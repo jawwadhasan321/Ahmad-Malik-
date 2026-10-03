@@ -1628,7 +1628,7 @@ function Showcase() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             style={{ marginBottom: '8rem', textAlign: 'center' }}
           >
-            <h1 style={{ color: 'var(--color-lime)', fontSize: 'clamp(3.5rem, 8vw, 6rem)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', lineHeight: 1 }}>Listing Images</h1>
+            <h1 style={{ color: 'var(--color-lime)', fontSize: 'clamp(3rem, 7vw, 5.5rem)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', lineHeight: 1 }}>Listing Images</h1>
             <p style={{ color: 'var(--color-grey)', fontSize: '1.3rem', maxWidth: '600px', margin: '1.5rem auto 0', lineHeight: 1.5 }}>
               Thumb-stopping gallery images designed to drive clicks and dominate the search results.
             </p>
@@ -1688,7 +1688,7 @@ function Showcase() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 style={{ color: 'var(--color-lime)', fontSize: 'clamp(3.5rem, 8vw, 6rem)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', lineHeight: 1 }}>A+ Content</h1>
+            <h1 style={{ color: 'var(--color-lime)', fontSize: 'clamp(3rem, 7vw, 5.5rem)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', lineHeight: 1 }}>A+ Content</h1>
             <p style={{ color: 'var(--color-grey)', fontSize: '1.3rem', maxWidth: '600px', marginTop: '1.5rem', lineHeight: 1.5 }}>
               A curated showcase of premium, high-converting Amazon A+ content designs. Scroll down to explore.
             </p>
@@ -1765,7 +1765,7 @@ function Showcase() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             style={{ marginBottom: '8rem', textAlign: 'center' }}
           >
-            <h1 style={{ color: 'var(--color-lime)', fontSize: 'clamp(3.5rem, 8vw, 6rem)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', lineHeight: 1 }}>Storefront</h1>
+            <h1 style={{ color: 'var(--color-lime)', fontSize: 'clamp(3rem, 7vw, 5.5rem)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', lineHeight: 1 }}>Storefront</h1>
             <p style={{ color: 'var(--color-grey)', fontSize: '1.3rem', maxWidth: '600px', margin: '1.5rem auto 0', lineHeight: 1.5 }}>
               Immersive, fully-branded Amazon Storefront experiences designed to captivate shoppers and drive multi-product sales.
             </p>
@@ -2026,7 +2026,7 @@ const BrandStorySection = () => {
         <motion.div 
           style={{ position: 'absolute', top: '50%', left: '8%', y: '-50%', opacity: useTransform(scrollYProgress, [0, 0.1, 0.2, 1], [1, 1, 0, 0]), scale: useTransform(scrollYProgress, [0, 0.1, 0.2, 1], [1, 1, 0.95, 0.95]), filter: useTransform(scrollYProgress, [0, 0.1, 0.2, 1], ["blur(0px)", "blur(0px)", "blur(30px)", "blur(30px)"]), zIndex: 5, maxWidth: '800px' }}
         >
-          <h2 style={{ fontSize: 'clamp(5rem, 10vw, 12rem)', color: 'var(--color-white)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', lineHeight: 0.85, textAlign: 'left', marginBottom: '2.5rem' }}>
+          <h2 style={{ fontSize: 'clamp(4.5rem, 9vw, 10.5rem)', color: 'var(--color-white)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', lineHeight: 0.85, textAlign: 'left', marginBottom: '2.5rem' }}>
             Amazon <br/><span style={{ color: 'var(--color-lime)' }}>Brand Story</span>
           </h2>
           <p style={{ fontSize: '1.6rem', color: 'var(--color-white)', lineHeight: 1.6, fontWeight: 300, textAlign: 'left', maxWidth: '600px', borderLeft: '3px solid var(--color-lime)', paddingLeft: '1.5rem' }}>
@@ -2079,7 +2079,7 @@ function About() {
   return (
     <div className="page" style={{ position: 'relative', zIndex: 1, paddingTop: '20vh', minHeight: '100vh' }}>
       <div className="container">
-        <h1 style={{ color: 'var(--color-lime)', fontSize: 'clamp(4rem, 8vw, 8rem)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase' }}>About Me</h1>
+        <h1 style={{ color: 'var(--color-lime)', fontSize: 'clamp(3.5rem, 7vw, 7rem)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase' }}>About Me</h1>
         <p style={{ color: 'var(--color-grey)', fontSize: '1.5rem', marginTop: '2rem' }}>Coming soon...</p>
       </div>
     </div>
@@ -2090,7 +2090,7 @@ function Contact() {
   return (
     <div className="page" style={{ position: 'relative', zIndex: 1, paddingTop: '20vh', minHeight: '100vh' }}>
       <div className="container">
-        <h1 style={{ color: 'var(--color-lime)', fontSize: 'clamp(4rem, 8vw, 8rem)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase' }}>Get in touch</h1>
+        <h1 style={{ color: 'var(--color-lime)', fontSize: 'clamp(3.5rem, 7vw, 7rem)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase' }}>Get in touch</h1>
         <p style={{ color: 'var(--color-grey)', fontSize: '1.5rem', marginTop: '2rem' }}>Coming soon...</p>
       </div>
       <Footer />
@@ -2119,7 +2119,7 @@ export default function App() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             style={{ position: 'absolute', top: '2.5rem', left: '50%', transform: 'translateX(-50%)', mixBlendMode: 'lighten', display: 'flex', justifyContent: 'center', zIndex: 90, pointerEvents: 'none' }}
           >
-            <img src="/logo.png" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain' }} />
+            <img src="/logo.png" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain', transform: 'translateX(-6px)' }} />
           </motion.div>
 
           {/* Navigation */}

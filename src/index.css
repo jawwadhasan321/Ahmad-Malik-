@@ -60,7 +60,7 @@ body, html, a, button, input, select, textarea, * {
 }
 
 html {
-  font-size: 16px;
+  font-size: 14px;
   background-color: var(--color-black);
 }
 
@@ -116,12 +116,12 @@ a {
 
 /* Typography Classes */
 .text-huge {
-  font-size: clamp(4rem, 15vw, 15rem);
+  font-size: clamp(3.5rem, 12vw, 12rem);
   white-space: nowrap;
 }
 
 .text-impact {
-  font-size: clamp(3rem, 8vw, 8rem);
+  font-size: clamp(2.5rem, 7vw, 7rem);
   color: var(--color-lime);
 }
 
@@ -266,7 +266,7 @@ a {
 }
 
 .hero-title-main {
-  font-size: clamp(4rem, 12vw, 12rem);
+  font-size: clamp(3.5rem, 10vw, 10rem);
   line-height: 0.9;
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
