@@ -25,14 +25,17 @@ const MotionLink = motion(Link);
 const Preloader = () => {
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     let isMounted = true;
     
-    // Disable scrolling while loading
+    // Show preloader on route change
+    setIsVisible(true);
+    setProgress(0);
     document.body.style.overflow = 'hidden';
 
-    // Simulate progress
+    // Simulate progress while loading
     const interval = setInterval(() => {
       setProgress(p => {
         if (p >= 90) return p;
@@ -41,46 +44,23 @@ const Preloader = () => {
     }, 150);
 
     const checkLoad = async () => {
-      // Minimum loading time so it looks premium (2 seconds)
-      const minTime = new Promise(resolve => setTimeout(resolve, 2000));
+      // Shorter minimum time on route transitions, longer on initial load
+      const isInitialLoad = !window.hasLoadedBefore;
+      window.hasLoadedBefore = true;
+      const minTime = new Promise(resolve => setTimeout(resolve, isInitialLoad ? 1500 : 800));
       
-      // Wait for fonts
-      if (document.fonts) {
-        await document.fonts.ready;
-      }
+      // Wait a tiny bit for React to render the new route's img tags
+      await new Promise(resolve => setTimeout(resolve, 50));
       
-      // Wait for window load
-      if (document.readyState !== 'complete') {
-        await new Promise(resolve => {
-          window.addEventListener('load', resolve, { once: true });
-        });
-      }
-
-      // Preload critical images manually to be absolutely sure
-      const criticalImages = [
-        "/logo.png",
-        "/logo1.png",
-        "/logo2.png",
-        "/logo3.png",
-        "/topo.svg",
-        "/casidor.jpg.jpg",
-        "/love-chew.jpg.jpg",
-        "/barrett-recovery.png",
-        "/wipes-aplus.png",
-        "/ancient-home.jpg",
-        "/ancient-product1.jpg",
-        "/ancient-product4.jpg",
-        "/ancient-product3.jpg",
-        "/ancient-product2.jpg",
-        "/listing-1.jpg.jpg"
-      ];
+      // Find all images currently in the DOM
+      const images = Array.from(document.images);
       
-      await Promise.all(criticalImages.map(src => {
-        return new Promise(resolve => {
-          const img = new Image();
+      // Wait for all images to complete downloading
+      await Promise.all(images.map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise((resolve) => {
           img.onload = resolve;
-          img.onerror = resolve;
-          img.src = src;
+          img.onerror = resolve; // resolve anyway to avoid hanging
         });
       }));
 
@@ -90,8 +70,10 @@ const Preloader = () => {
         clearInterval(interval);
         setProgress(100);
         setTimeout(() => {
-          setIsVisible(false);
-          document.body.style.overflow = '';
+          if (isMounted) {
+            setIsVisible(false);
+            document.body.style.overflow = '';
+          }
         }, 500); // delay at 100% before starting exit animation
       }
     };
@@ -103,7 +85,7 @@ const Preloader = () => {
       clearInterval(interval);
       document.body.style.overflow = '';
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <AnimatePresence>
@@ -1570,13 +1552,39 @@ const MainImagesSection = () => {
   );
 };
 
-function Showcase() {
-  const Highlight = ({ children }) => (
-    <span style={{ color: 'var(--color-lime)', fontFamily: 'var(--font-heading)', fontWeight: 600, letterSpacing: '0.01em' }}>
-      {children}
-    </span>
-  );
+const Highlight = ({ children }) => (
+  <span style={{ color: 'var(--color-lime)', fontFamily: 'var(--font-heading)', fontWeight: 600, letterSpacing: '0.01em' }}>
+    {children}
+  </span>
+);
 
+const AnimatedListingItem = ({ src, alt }) => (
+  <motion.div 
+    className="listing-item"
+    initial={{ opacity: 0, y: 100, scale: 0.9, filter: 'blur(15px)' }}
+    whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+    viewport={{ once: true, margin: "-10%" }}
+    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+  >
+    <img src={src} alt={alt} />
+  </motion.div>
+);
+
+const AnimatedPhraseBlock = ({ children }) => (
+  <motion.div 
+    className="listing-phrase-block"
+    initial={{ opacity: 0, scale: 0.8, filter: 'blur(20px)' }}
+    whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+    viewport={{ once: true, margin: "-10%" }}
+    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+  >
+    <h3 style={{ fontSize: '3rem', color: 'var(--color-white)', textAlign: 'center', fontStyle: 'italic', fontWeight: 300, lineHeight: 1.2 }}>
+      {children}
+    </h3>
+  </motion.div>
+);
+
+function Showcase() {
   const aplusItems = [
     { id: 1, title: 'Ancient Crown', desc: <>Ancestral wisdom for the modern woman. Featuring <Highlight>high-converting typography</Highlight> and cohesive brand colors that emphasize the product's natural origins.</>, src: '/ancient-crown-aplus.jpg' },
     { id: 2, title: 'Beef Liver Plus', desc: <>Clean, simple, <Highlight>whole-food nutrition</Highlight> layout. Leveraging rich green tones and lifestyle imagery to establish premium trust.</>, src: '/beef-liver-aplus.jpg' },
@@ -1607,32 +1615,6 @@ function Showcase() {
 
   // Maps 0-1 vertical scroll progress into 0 to -X% horizontal translation
   const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${scrollEndPercent}%`]);
-
-  const AnimatedListingItem = ({ src, alt }) => (
-    <motion.div 
-      className="listing-item"
-      initial={{ opacity: 0, y: 100, scale: 0.9, filter: 'blur(15px)' }}
-      whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-      viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <img src={src} alt={alt} />
-    </motion.div>
-  );
-
-  const AnimatedPhraseBlock = ({ children }) => (
-    <motion.div 
-      className="listing-phrase-block"
-      initial={{ opacity: 0, scale: 0.8, filter: 'blur(20px)' }}
-      whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-      viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <h3 style={{ fontSize: '3rem', color: 'var(--color-white)', textAlign: 'center', fontStyle: 'italic', fontWeight: 300, lineHeight: 1.2 }}>
-        {children}
-      </h3>
-    </motion.div>
-  );
 
   return (
     <div className="page" style={{ position: 'relative', zIndex: 1 }}>
@@ -2122,9 +2104,9 @@ export default function App() {
 
   return (
     <Router>
-      <ScrollToTop />
-      <Preloader />
       <ReactLenis root options={{ lerp: 0.05, duration: 1.5, smoothTouch: true }}>
+        <ScrollToTop />
+        <Preloader />
         <div className="app">
           <GlobalBackground />
           <CustomCursor isMenuOpen={isMenuOpen} />
