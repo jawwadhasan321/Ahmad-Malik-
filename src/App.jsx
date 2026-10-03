@@ -109,39 +109,38 @@ const Preloader = () => {
             color: 'var(--color-lime)',
           }}
         >
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            style={{
-              fontSize: 'clamp(2rem, 5vw, 4rem)',
-              fontFamily: 'var(--font-heading)',
-              textTransform: 'uppercase',
-              marginBottom: '2rem',
-              letterSpacing: '2px',
-              color: 'var(--color-white)'
-            }}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0, transition: { duration: 0.4 } }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            style={{ width: '80px', height: '80px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
           >
-            Ahmad <span style={{ color: 'var(--color-lime)' }}>Malik</span>
-          </motion.div>
-          <div style={{ width: '200px', height: '2px', backgroundColor: 'rgba(255, 255, 255, 0.2)', position: 'relative', overflow: 'hidden', borderRadius: '2px' }}>
-            <motion.div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                height: '100%',
-                backgroundColor: 'var(--color-lime)',
-                width: `${progress}%`
+            {/* The Logo */}
+            <motion.img 
+              src="/logo.png" 
+              alt="AS Logo" 
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              animate={{ 
+                opacity: [0.5, 1, 0.5],
+                scale: [1, 1.05, 1]
               }}
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             />
-          </div>
-          <div style={{ marginTop: '1rem', fontSize: '1rem', fontFamily: 'var(--font-body)', color: 'var(--color-grey)', letterSpacing: '1px' }}>
-            {progress}%
-          </div>
+          </motion.div>
+          
+          {/* Subtle minimal loading bar beneath the logo */}
+          <motion.div 
+            style={{ marginTop: '2.5rem', width: '60px', height: '1px', background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}
+            exit={{ opacity: 0, transition: { duration: 0.2 } }}
+          >
+            <motion.div 
+              style={{ height: '100%', background: 'var(--color-lime)' }}
+              initial={{ width: '0%' }}
+              animate={{ width: `${progress}%` }}
+              transition={{ ease: 'linear', duration: 0.2 }}
+            />
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
