@@ -936,7 +936,7 @@ function Home() {
                 />
                 
                 {/* Massive Portrait Container */}
-                <div style={{ position: 'relative', zIndex: 1, borderRadius: '32px', boxShadow: '0 40px 80px rgba(0,0,0,0.8), 0 0 40px rgba(210,255,0,0.2)', width: '100%', background: 'var(--color-black)' }}>
+                <div style={{ position: 'relative', zIndex: 1, borderRadius: '32px', boxShadow: '0 40px 80px rgba(0,0,0,0.8), 0 0 40px rgba(210,255,0,0.2)', width: '100%' }}>
                   
                   {/* Inner clipping wrapper to guarantee no bleed */}
                   <div style={{ position: 'relative', width: '100%', borderRadius: '32px', overflow: 'hidden', transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}>
@@ -953,7 +953,7 @@ function Home() {
                   </div>
                   
                   {/* Dedicated Border Overlay */}
-                  <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', borderRadius: '32px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: 'inset 0 0 0 2px var(--color-black), inset 0 0 0 3px rgba(255,255,255,0.05)', pointerEvents: 'none', zIndex: 4 }} />
+                  <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', borderRadius: '32px', border: '1px solid rgba(255,255,255,0.1)', pointerEvents: 'none', zIndex: 4 }} />
                 </div>
               </motion.div>
 
