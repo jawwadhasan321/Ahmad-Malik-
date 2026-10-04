@@ -747,7 +747,7 @@ function Home() {
   };
 
   const stats = [
-    { number: "1.5K+", label: "Listing Images" },
+    { number: "300+", label: "Listing Images" },
     { number: "300+", label: "Enhanced Brand Content" },
     { number: "100%", label: "Client Satisfaction" },
   ];
@@ -863,7 +863,7 @@ function Home() {
             </motion.h1>
             
             <div className="hero-subtitle">
-              <RevealText text="E-Commerce Graphic Designer" delay={0.5} triggerOnce={true} />
+              <RevealText text="E-Commerce Creative Designer" delay={0.5} triggerOnce={true} />
             </div>
 
             <motion.div
