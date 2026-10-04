@@ -852,27 +852,42 @@ function Home() {
         
         <div className="container">
           <motion.div className="hero-content" style={{ y: yTitle, opacity: opacityTitle, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '4rem', textAlign: 'left', flexDirection: 'row', width: '100%' }}>
+            
+            {/* Left Column: Text */}
             <div style={{ flex: '1 1 450px', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <motion.h1 
-                className="hero-title-main"
-                initial={{ scale: 0.9, opacity: 0, x: -30 }}
-                animate={{ scale: 1, opacity: 1, x: 0 }}
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                style={{ textAlign: 'left', margin: '0 0 1rem 0' }}
-              >
-                <span className="hero-name-mask">AHMAD</span><br/>
-                MALIK
-              </motion.h1>
+              
+              <h1 className="hero-title-main" style={{ textAlign: 'left', margin: '0 0 1rem 0' }}>
+                <div style={{ overflow: 'hidden', paddingBottom: '0.1em' }}>
+                  <motion.div
+                    initial={{ y: "110%", rotate: 2 }}
+                    animate={{ y: "0%", rotate: 0 }}
+                    transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
+                    style={{ transformOrigin: 'left bottom' }}
+                  >
+                    <span className="hero-name-mask">AHMAD</span>
+                  </motion.div>
+                </div>
+                <div style={{ overflow: 'hidden', paddingBottom: '0.1em' }}>
+                  <motion.div
+                    initial={{ y: "110%", rotate: 2 }}
+                    animate={{ y: "0%", rotate: 0 }}
+                    transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1], delay: 0.08 }}
+                    style={{ transformOrigin: 'left bottom' }}
+                  >
+                    MALIK
+                  </motion.div>
+                </div>
+              </h1>
               
               <div className="hero-subtitle" style={{ justifyContent: 'flex-start', margin: '0', textAlign: 'left' }}>
-                <RevealText text="E-Commerce Creative Designer" delay={0.5} triggerOnce={true} />
+                <RevealText text="E-Commerce Creative Designer" delay={0.3} triggerOnce={true} />
               </div>
 
               <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ delay: 0.8, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '2.5rem', mixBlendMode: 'lighten' }}
+                transition={{ delay: 0.9, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '3.5rem', mixBlendMode: 'lighten' }}
               >
                 <img src="/logo1.png" alt="Amazon Logo" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
                 <div style={{ width: '1px', height: '30px', backgroundColor: 'rgba(255, 255, 255, 0.2)' }}></div>
@@ -884,7 +899,7 @@ function Home() {
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ delay: 1.1, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 style={{ marginTop: '3.5rem' }}
               >
                 <a 
@@ -904,32 +919,59 @@ function Home() {
               </motion.div>
             </div>
 
-            <motion.div 
-              style={{ flex: '1 1 500px', display: 'flex', justifyContent: 'flex-end', position: 'relative', padding: '2rem 0' }}
-              initial={{ opacity: 0, scale: 0.9, rotate: 2, y: 50 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
-              transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-            >
-              {/* Cinematic Glow Behind Photo */}
-              <motion.div 
-                animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.6, 0.4] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', width: '130%', height: '130%', background: 'radial-gradient(circle, var(--color-lime) 0%, transparent 65%)', filter: 'blur(80px)', zIndex: 0 }}
-              />
+            {/* Right Column: Portrait and Description */}
+            <div style={{ flex: '1 1 500px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', padding: '2rem 0', transform: 'translateY(-2rem)' }}>
               
-              {/* Massive Portrait Container */}
-              <div style={{ position: 'relative', zIndex: 1, borderRadius: '32px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 40px 80px rgba(0,0,0,0.8), 0 0 40px rgba(210,255,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.2)', background: 'var(--color-black)', maxWidth: '600px', width: '100%', transform: 'translateY(-2rem)' }}>
-                {/* The actual image */}
-                <img 
-                  src="/ahmad-malik.jpg" 
-                  alt="Ahmad Malik" 
-                  style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.1) brightness(0.95) saturate(1.05)' }} 
+              <motion.div 
+                initial={{ opacity: 0, clipPath: 'inset(100% 0 0 0)', y: 50 }}
+                animate={{ opacity: 1, clipPath: 'inset(0% 0 0 0)', y: 0 }}
+                transition={{ duration: 1.6, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
+                style={{ position: 'relative', width: '100%', maxWidth: '600px', display: 'flex', justifyContent: 'center' }}
+              >
+                {/* Cinematic Glow Behind Photo */}
+                <motion.div 
+                  animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.6, 0.4] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', width: '130%', height: '130%', background: 'radial-gradient(circle, var(--color-lime) 0%, transparent 65%)', filter: 'blur(80px)', zIndex: 0 }}
                 />
-                {/* High-end cinematic overlay gradients */}
-                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(45deg, rgba(210,255,0,0.05) 0%, transparent 100%)', pointerEvents: 'none' }} />
-              </div>
-            </motion.div>
+                
+                {/* Massive Portrait Container */}
+                <div style={{ position: 'relative', zIndex: 1, borderRadius: '32px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 40px 80px rgba(0,0,0,0.8), 0 0 40px rgba(210,255,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.2)', background: 'var(--color-black)', width: '100%' }}>
+                  {/* The actual image with scale-down reveal effect */}
+                  <motion.img 
+                    src="/ahmad-malik.jpg" 
+                    alt="Ahmad Malik" 
+                    initial={{ scale: 1.2 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                    style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.1) brightness(0.95) saturate(1.05)' }} 
+                  />
+                  {/* High-end cinematic overlay gradients */}
+                  <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)', pointerEvents: 'none' }} />
+                  <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(45deg, rgba(210,255,0,0.05) 0%, transparent 100%)', pointerEvents: 'none' }} />
+                </div>
+              </motion.div>
+
+              {/* Classy High-Budget Description */}
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
+                style={{ 
+                  marginTop: '3rem', 
+                  maxWidth: '500px', 
+                  borderLeft: '2px solid var(--color-lime)', 
+                  paddingLeft: '1.5rem',
+                  alignSelf: 'center',
+                  position: 'relative',
+                  zIndex: 2
+                }}
+              >
+                <p style={{ fontSize: '1.25rem', color: 'var(--color-grey)', lineHeight: 1.6, margin: 0, fontWeight: 300, fontFamily: '"Bricolage Grotesque", sans-serif' }}>
+                  Specializing in premium visual strategy. I transform standard product pages into <span style={{ color: 'var(--color-white)', fontWeight: 500 }}>immersive, high-converting</span> shopping experiences that dominate the search results.
+                </p>
+              </motion.div>
+            </div>
           </motion.div>
         </div>
       </section>
