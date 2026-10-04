@@ -861,7 +861,7 @@ function Home() {
                   <motion.div
                     initial={{ y: "110%", rotate: 2 }}
                     animate={{ y: "0%", rotate: 0 }}
-                    transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
+                    transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1], delay: 2.2 }}
                     style={{ transformOrigin: 'left bottom' }}
                   >
                     <span className="hero-name-mask">AHMAD</span>
@@ -871,7 +871,7 @@ function Home() {
                   <motion.div
                     initial={{ y: "110%", rotate: 2 }}
                     animate={{ y: "0%", rotate: 0 }}
-                    transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1], delay: 0.08 }}
+                    transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1], delay: 2.28 }}
                     style={{ transformOrigin: 'left bottom' }}
                   >
                     MALIK
@@ -880,13 +880,13 @@ function Home() {
               </h1>
               
               <div className="hero-subtitle" style={{ justifyContent: 'flex-start', margin: '0', textAlign: 'left' }}>
-                <RevealText text="E-Commerce Creative Designer" delay={0.3} triggerOnce={true} />
+                <RevealText text="E-Commerce Creative Designer" delay={2.5} triggerOnce={true} />
               </div>
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ delay: 0.9, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ delay: 3.1, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '3.5rem', mixBlendMode: 'lighten' }}
               >
                 <img src="/logo1.png" alt="Amazon Logo" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
@@ -899,7 +899,7 @@ function Home() {
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.1, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ delay: 3.3, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 style={{ marginTop: '3.5rem' }}
               >
                 <a 
@@ -925,7 +925,7 @@ function Home() {
               <motion.div 
                 initial={{ opacity: 0, clipPath: 'inset(100% 0 0 0)', y: 50 }}
                 animate={{ opacity: 1, clipPath: 'inset(0% 0 0 0)', y: 0 }}
-                transition={{ duration: 1.6, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
+                transition={{ duration: 1.6, ease: [0.76, 0, 0.24, 1], delay: 2.4 }}
                 style={{ position: 'relative', width: '100%', maxWidth: '600px', display: 'flex', justifyContent: 'center' }}
               >
                 {/* Cinematic Glow Behind Photo */}
@@ -943,7 +943,7 @@ function Home() {
                     alt="Ahmad Malik" 
                     initial={{ scale: 1.2 }}
                     animate={{ scale: 1 }}
-                    transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                    transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 2.5 }}
                     style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.1) brightness(0.95) saturate(1.05)' }} 
                   />
                   {/* High-end cinematic overlay gradients */}
@@ -956,7 +956,7 @@ function Home() {
               <motion.div 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.2, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 1.2, delay: 3.6, ease: [0.16, 1, 0.3, 1] }}
                 style={{ 
                   marginTop: '3rem', 
                   maxWidth: '500px', 
