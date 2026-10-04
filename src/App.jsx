@@ -1158,25 +1158,32 @@ function Home() {
               gap: '2rem',
               padding: '1.5rem 5rem',
               borderRadius: '100px',
-              backgroundColor: 'var(--color-lime)',
-              color: 'var(--color-black)',
+              backgroundColor: 'rgba(20, 20, 20, 0.4)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: 'var(--color-white)',
               textDecoration: 'none',
               fontSize: 'clamp(1.5rem, 2.5vw, 2.2rem)',
-              fontWeight: 600,
+              fontWeight: 300,
               fontFamily: '"Bricolage Grotesque", sans-serif',
-              boxShadow: '0 10px 30px rgba(210,255,0,0.15)',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05)',
               transformOrigin: 'center',
-              transition: 'all 0.3s ease'
+              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.03)';
-              e.currentTarget.style.backgroundColor = '#d9ff33';
-              e.currentTarget.style.boxShadow = '0 20px 40px rgba(210, 255, 0, 0.4), 0 0 80px rgba(210, 255, 0, 0.2)';
+              e.currentTarget.style.transform = 'scale(1.02) translateY(-2px)';
+              e.currentTarget.style.backgroundColor = 'rgba(210, 255, 0, 0.05)';
+              e.currentTarget.style.border = '1px solid rgba(210, 255, 0, 0.3)';
+              e.currentTarget.style.boxShadow = '0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(210, 255, 0, 0.1), inset 0 0 20px rgba(210, 255, 0, 0.05)';
+              e.currentTarget.style.color = 'var(--color-lime)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.backgroundColor = 'var(--color-lime)';
-              e.currentTarget.style.boxShadow = '0 10px 30px rgba(210,255,0,0.15)';
+              e.currentTarget.style.transform = 'scale(1) translateY(0)';
+              e.currentTarget.style.backgroundColor = 'rgba(20, 20, 20, 0.4)';
+              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+              e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05)';
+              e.currentTarget.style.color = 'var(--color-white)';
             }}
             onClick={() => {
               window.scrollTo({ top: 0, behavior: 'instant' });
