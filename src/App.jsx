@@ -1461,7 +1461,7 @@ const MainImagesSection = () => {
               key={i}
               style={{ 
                 position: 'sticky', 
-                top: `${15 + i * 2}vh`, 
+                top: '15vh', 
                 height: '75vh', 
                 marginBottom: i === cards.length - 1 ? '0vh' : '120vh', 
                 display: 'flex',
