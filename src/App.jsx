@@ -748,7 +748,7 @@ function Home() {
 
   const stats = [
     { number: "300+", label: "Listing Images" },
-    { number: "300+", label: "Enhanced Brand Content" },
+    { number: "200+", label: "Enhanced Brand Content" },
     { number: "100%", label: "Client Satisfaction" },
   ];
 
