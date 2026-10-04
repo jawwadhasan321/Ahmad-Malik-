@@ -939,7 +939,7 @@ function Home() {
                 <div style={{ position: 'relative', zIndex: 1, borderRadius: '32px', boxShadow: '0 40px 80px rgba(0,0,0,0.8), 0 0 40px rgba(210,255,0,0.2)', width: '100%', background: 'var(--color-black)' }}>
                   
                   {/* Inner clipping wrapper to guarantee no bleed */}
-                  <div style={{ position: 'relative', width: '100%', borderRadius: '32px', overflow: 'hidden', clipPath: 'inset(0px round 32px)', WebkitClipPath: 'inset(0px round 32px)' }}>
+                  <div style={{ position: 'relative', width: '100%', borderRadius: '32px', overflow: 'hidden', transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}>
                     <motion.img 
                       src="/ahmad-malik.jpg" 
                       alt="Ahmad Malik" 
@@ -948,12 +948,12 @@ function Home() {
                       transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 2.5 }}
                       style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.1) brightness(0.95) saturate(1.05)' }} 
                     />
-                    <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)', pointerEvents: 'none', zIndex: 2, borderRadius: '0 0 32px 32px' }} />
-                    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(45deg, rgba(210,255,0,0.05) 0%, transparent 100%)', pointerEvents: 'none', zIndex: 3, borderRadius: '32px' }} />
+                    <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)', pointerEvents: 'none', zIndex: 2 }} />
+                    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(45deg, rgba(210,255,0,0.05) 0%, transparent 100%)', pointerEvents: 'none', zIndex: 3 }} />
                   </div>
                   
                   {/* Dedicated Border Overlay */}
-                  <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', borderRadius: '32px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.05)', pointerEvents: 'none', zIndex: 4 }} />
+                  <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', borderRadius: '32px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: 'inset 0 0 0 2px var(--color-black), inset 0 0 0 3px rgba(255,255,255,0.05)', pointerEvents: 'none', zIndex: 4 }} />
                 </div>
               </motion.div>
 
