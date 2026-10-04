@@ -1144,41 +1144,53 @@ function Home() {
 
       {/* View More Work Transition Section */}
       <section style={{ padding: '2rem 0 4rem 0', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', position: 'relative', zIndex: 10 }}>
-        <MotionLink 
-          to="/showcase"
-          initial={{ opacity: 0, y: 50, clipPath: 'inset(100% 0 0 0)' }}
-          whileInView={{ opacity: 1, y: 0, clipPath: 'inset(0% 0 0 0)' }}
-          viewport={{ once: false, amount: 0.3 }}
-          transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1] }}
-          whileHover={{ scale: 1.03, backgroundColor: '#d9ff33', boxShadow: '0 20px 40px rgba(210, 255, 0, 0.4), 0 0 80px rgba(210, 255, 0, 0.2)' }}
-          whileTap={{ scale: 0.97 }}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '2rem',
-            padding: '1.5rem 5rem',
-            borderRadius: '100px',
-            backgroundColor: 'var(--color-lime)',
-            color: 'var(--color-black)',
-            textDecoration: 'none',
-            fontSize: 'clamp(1.5rem, 2.5vw, 2.2rem)',
-            fontWeight: 600,
-            fontFamily: '"Bricolage Grotesque", sans-serif',
-            boxShadow: '0 10px 30px rgba(210,255,0,0.15)',
-            transformOrigin: 'center'
-          }}
-          onClick={() => {
-            window.scrollTo({ top: 0, behavior: 'instant' });
-          }}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <span>View more of my work</span>
-          <motion.div 
-            animate={{ x: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+          <Link 
+            to="/showcase"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '2rem',
+              padding: '1.5rem 5rem',
+              borderRadius: '100px',
+              backgroundColor: 'var(--color-lime)',
+              color: 'var(--color-black)',
+              textDecoration: 'none',
+              fontSize: 'clamp(1.5rem, 2.5vw, 2.2rem)',
+              fontWeight: 600,
+              fontFamily: '"Bricolage Grotesque", sans-serif',
+              boxShadow: '0 10px 30px rgba(210,255,0,0.15)',
+              transformOrigin: 'center',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.03)';
+              e.currentTarget.style.backgroundColor = '#d9ff33';
+              e.currentTarget.style.boxShadow = '0 20px 40px rgba(210, 255, 0, 0.4), 0 0 80px rgba(210, 255, 0, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.backgroundColor = 'var(--color-lime)';
+              e.currentTarget.style.boxShadow = '0 10px 30px rgba(210,255,0,0.15)';
+            }}
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'instant' });
+            }}
           >
-            <ArrowRight size={36} strokeWidth={2.5} />
-          </motion.div>
-        </MotionLink>
+            <span>View more of my work</span>
+            <motion.div 
+              animate={{ x: [0, 10, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+            >
+              <ArrowRight size={36} strokeWidth={2.5} />
+            </motion.div>
+          </Link>
+        </motion.div>
       </section>
 
       {/* Client Feedback Section */}
