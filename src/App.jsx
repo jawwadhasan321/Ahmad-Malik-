@@ -572,9 +572,9 @@ const FullscreenMenu = ({ isOpen, setIsOpen }) => {
                 <p>Elevating E-Commerce.</p>
               </div>
               <div className="menu-footer-right">
-                <a href="#">Insta</a>
-                <a href="#">LinkedIn</a>
-                <a href="#">Twitter</a>
+                <a href="https://www.instagram.com/ahmadscales.co?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">Instagram</a>
+                <a href="https://www.linkedin.com/in/ahmadmalikcreative/?isSelfProfile=false" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://wa.me/923278545547" target="_blank" rel="noopener noreferrer">WhatsApp</a>
               </div>
             </motion.div>
           </div>
