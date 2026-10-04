@@ -851,54 +851,83 @@ function Home() {
         </motion.div>
         
         <div className="container">
-          <motion.div className="hero-content" style={{ y: yTitle, opacity: opacityTitle }}>
-            <motion.h1 
-              className="hero-title-main"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <span className="hero-name-mask">AHMAD</span><br/>
-              MALIK
-            </motion.h1>
-            
-            <div className="hero-subtitle">
-              <RevealText text="E-Commerce Creative Designer" delay={0.5} triggerOnce={true} />
+          <motion.div className="hero-content" style={{ y: yTitle, opacity: opacityTitle, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '4rem', textAlign: 'left', flexDirection: 'row', width: '100%' }}>
+            <div style={{ flex: '1 1 450px', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <motion.h1 
+                className="hero-title-main"
+                initial={{ scale: 0.9, opacity: 0, x: -30 }}
+                animate={{ scale: 1, opacity: 1, x: 0 }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                style={{ textAlign: 'left', margin: '0 0 1rem 0' }}
+              >
+                <span className="hero-name-mask">AHMAD</span><br/>
+                MALIK
+              </motion.h1>
+              
+              <div className="hero-subtitle" style={{ justifyContent: 'flex-start', margin: '0', textAlign: 'left' }}>
+                <RevealText text="E-Commerce Creative Designer" delay={0.5} triggerOnce={true} />
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '2.5rem', mixBlendMode: 'lighten' }}
+              >
+                <img src="/logo1.png" alt="Amazon Logo" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
+                <div style={{ width: '1px', height: '30px', backgroundColor: 'rgba(255, 255, 255, 0.2)' }}></div>
+                <img src="/logo2.png" alt="Shopify Logo" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
+                <div style={{ width: '1px', height: '30px', backgroundColor: 'rgba(255, 255, 255, 0.2)' }}></div>
+                <img src="/logo3.png" alt="TikTok Logo" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                style={{ marginTop: '3.5rem' }}
+              >
+                <a 
+                  href="#portfolio" 
+                  className="btn-primary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (lenis) {
+                      lenis.scrollTo('#portfolio', { offset: 0, duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+                    } else {
+                      document.querySelector('#portfolio').scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  View Projects <ArrowRight />
+                </a>
+              </motion.div>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '2.5rem', mixBlendMode: 'lighten' }}
+            <motion.div 
+              style={{ flex: '1 1 350px', display: 'flex', justifyContent: 'center', position: 'relative', padding: '2rem 0' }}
+              initial={{ opacity: 0, scale: 0.8, rotate: 3 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
             >
-              <img src="/logo1.png" alt="Amazon Logo" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
-              <div style={{ width: '1px', height: '30px', backgroundColor: 'rgba(255, 255, 255, 0.2)' }}></div>
-              <img src="/logo2.png" alt="Shopify Logo" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
-              <div style={{ width: '1px', height: '30px', backgroundColor: 'rgba(255, 255, 255, 0.2)' }}></div>
-              <img src="/logo3.png" alt="TikTok Logo" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              style={{ marginTop: '2.5rem' }}
-            >
-              <a 
-                href="#portfolio" 
-                className="btn-primary"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (lenis) {
-                    lenis.scrollTo('#portfolio', { offset: 0, duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-                  } else {
-                    document.querySelector('#portfolio').scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-              >
-                View Projects <ArrowRight />
-              </a>
+              {/* Premium Glow Behind Photo */}
+              <motion.div 
+                animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%', height: '100%', background: 'radial-gradient(circle, var(--color-lime) 0%, transparent 70%)', filter: 'blur(50px)', zIndex: 0 }}
+              />
+              
+              {/* Portrait Container */}
+              <div style={{ position: 'relative', zIndex: 1, borderRadius: '24px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 30px 60px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.15)', background: 'var(--color-black)', maxWidth: '420px', width: '100%' }}>
+                {/* The actual image */}
+                <img 
+                  src="/ahmad-malik.jpg" 
+                  alt="Ahmad Malik" 
+                  style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.05) brightness(0.95)' }} 
+                />
+                {/* High-end overlay gradient to blend bottom */}
+                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '40%', background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)', pointerEvents: 'none' }} />
+              </div>
             </motion.div>
           </motion.div>
         </div>
