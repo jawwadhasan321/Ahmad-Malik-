@@ -1155,46 +1155,50 @@ function Home() {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '2rem',
-              padding: '1.5rem 5rem',
+              justifyContent: 'center',
+              gap: '1.2rem',
+              padding: '1.2rem 4rem',
               borderRadius: '100px',
-              backgroundColor: 'rgba(20, 20, 20, 0.4)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              backgroundColor: 'rgba(255, 255, 255, 0.03)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
               color: 'var(--color-white)',
               textDecoration: 'none',
-              fontSize: 'clamp(1.5rem, 2.5vw, 2.2rem)',
-              fontWeight: 300,
+              fontSize: 'clamp(1.2rem, 2vw, 1.6rem)',
+              fontWeight: 500,
               fontFamily: '"Bricolage Grotesque", sans-serif',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
               transformOrigin: 'center',
               transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'scale(1.02) translateY(-2px)';
-              e.currentTarget.style.backgroundColor = 'rgba(210, 255, 0, 0.05)';
-              e.currentTarget.style.border = '1px solid rgba(210, 255, 0, 0.3)';
-              e.currentTarget.style.boxShadow = '0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(210, 255, 0, 0.1), inset 0 0 20px rgba(210, 255, 0, 0.05)';
+              e.currentTarget.style.backgroundColor = 'rgba(210, 255, 0, 0.1)';
+              e.currentTarget.style.border = '1px solid rgba(210, 255, 0, 0.4)';
+              e.currentTarget.style.boxShadow = '0 30px 60px rgba(0,0,0,0.5), 0 0 30px rgba(210, 255, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.2)';
               e.currentTarget.style.color = 'var(--color-lime)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'scale(1) translateY(0)';
-              e.currentTarget.style.backgroundColor = 'rgba(20, 20, 20, 0.4)';
-              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-              e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05)';
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
+              e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.08)';
+              e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)';
               e.currentTarget.style.color = 'var(--color-white)';
             }}
             onClick={() => {
               window.scrollTo({ top: 0, behavior: 'instant' });
             }}
           >
-            <span>View more of my work</span>
+            <span style={{ lineHeight: 1, paddingTop: '2px' }}>View more of my work</span>
             <motion.div 
-              animate={{ x: [0, 10, 0] }}
+              animate={{ x: [0, 8, 0] }}
               transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-              <ArrowRight size={36} strokeWidth={2.5} />
+              <ArrowRight size={24} strokeWidth={2} />
             </motion.div>
           </Link>
         </motion.div>
