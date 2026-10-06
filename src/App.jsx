@@ -2245,24 +2245,35 @@ function About() {
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            width: '100%',
-            maxWidth: '600px',
-            borderRadius: '24px',
-            overflow: 'hidden',
-            boxShadow: '0 30px 60px rgba(0,0,0,0.6)',
-            marginBottom: '4rem',
-            border: '1px solid rgba(255,255,255,0.05)'
-          }}
+          initial={{ opacity: 0, clipPath: 'inset(100% -50% -50% -50%)', y: 50 }}
+          animate={{ opacity: 1, clipPath: 'inset(-50% -50% -50% -50%)', y: 0 }}
+          transition={{ duration: 1.6, ease: [0.76, 0, 0.24, 1], delay: 0.4 }}
+          style={{ position: 'relative', width: '100%', maxWidth: '450px', display: 'flex', justifyContent: 'center', marginBottom: '5rem' }}
         >
-          <img 
-            src="/about-me.jpg" 
-            alt="Ahmad - Creative Designer" 
-            style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }}
+          {/* Cinematic Glow Tailored to Photo's Red Lighting */}
+          <motion.div 
+            animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.4, 0.2] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', width: '130%', height: '130%', background: 'radial-gradient(circle, rgba(255,50,50,0.5) 0%, transparent 65%)', filter: 'blur(70px)', zIndex: 0 }}
           />
+          
+          {/* Premium Portrait Wrapper */}
+          <div style={{ position: 'relative', zIndex: 1, borderRadius: '24px', boxShadow: '0 40px 80px rgba(0,0,0,0.8), 0 0 50px rgba(255,50,50,0.15)', width: '100%', backgroundColor: '#000' }}>
+            <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '24px', overflow: 'hidden', clipPath: 'inset(0 round 24px)', WebkitClipPath: 'inset(0 round 24px)' }}>
+              <motion.img 
+                src="/about-me.jpg" 
+                alt="Ahmad - Creative Designer" 
+                initial={{ scale: 1.15 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 2.5, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+                style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.05) brightness(0.95)', borderRadius: '24px' }} 
+              />
+              {/* Cinematic Vignette & Color Grade Overlays */}
+              <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%)', pointerEvents: 'none', zIndex: 2, borderRadius: '0 0 24px 24px' }} />
+              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(45deg, rgba(255,50,50,0.05) 0%, transparent 100%)', pointerEvents: 'none', zIndex: 3, borderRadius: '24px' }} />
+              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '24px', pointerEvents: 'none', zIndex: 4 }} />
+            </div>
+          </div>
         </motion.div>
 
         <motion.div
