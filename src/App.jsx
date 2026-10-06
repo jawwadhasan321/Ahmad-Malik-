@@ -2209,11 +2209,87 @@ const BrandStorySection = () => {
 
 function About() {
   return (
-    <div className="page" style={{ position: 'relative', zIndex: 1, paddingTop: '20vh', minHeight: '100vh' }}>
-      <div className="container">
-        <h1 style={{ color: 'var(--color-lime)', fontSize: 'clamp(3.5rem, 7vw, 7rem)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase' }}>About Me</h1>
-        <p style={{ color: 'var(--color-grey)', fontSize: '1.5rem', marginTop: '2rem' }}>Coming soon...</p>
+    <div className="page" style={{ position: 'relative', zIndex: 1, paddingTop: '15vh', minHeight: '100vh', paddingBottom: '10vh' }}>
+      <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+        
+        <motion.h1 
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          style={{ 
+            color: 'var(--color-white)', 
+            fontSize: 'clamp(4rem, 10vw, 8rem)', 
+            fontFamily: 'var(--font-heading)', 
+            textTransform: 'uppercase',
+            margin: '0 0 1rem 0',
+            lineHeight: 1
+          }}
+        >
+          I'M AHMAD
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            color: 'var(--color-lime)',
+            fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            marginBottom: '4rem'
+          }}
+        >
+          A Creative Designer For E Commerce Brands
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            width: '100%',
+            maxWidth: '600px',
+            borderRadius: '24px',
+            overflow: 'hidden',
+            boxShadow: '0 30px 60px rgba(0,0,0,0.6)',
+            marginBottom: '4rem',
+            border: '1px solid rgba(255,255,255,0.05)'
+          }}
+        >
+          <img 
+            src="/about-me.jpg" 
+            alt="Ahmad - Creative Designer" 
+            style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }}
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            maxWidth: '800px',
+            textAlign: 'left',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '2rem',
+            padding: '0 1rem',
+            marginBottom: '4rem'
+          }}
+        >
+          <p style={{ color: 'var(--color-white)', fontSize: '1.4rem', lineHeight: 1.8, fontWeight: 300, fontFamily: 'var(--font-body)' }}>
+            With 4+ years of experience working with brands and agencies, I’ve helped brands grow through Amazon listing images, A+ Content, Brand Stories, Storefronts, TikTok Shop graphics, product creatives, and advertising visuals.
+          </p>
+          <p style={{ color: 'var(--color-grey)', fontSize: '1.4rem', lineHeight: 1.8, fontWeight: 300, fontFamily: 'var(--font-body)' }}>
+            Having worked both directly with brands and as an outsourced creative partner for agencies, I focus on understanding the brand and turning its products into visuals that communicate, connect, and convert.
+          </p>
+        </motion.div>
+
       </div>
+      <Footer />
+      <BackToTopButton />
     </div>
   );
 }
