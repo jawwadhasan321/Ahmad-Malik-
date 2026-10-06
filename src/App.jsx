@@ -923,8 +923,8 @@ function Home() {
             <div style={{ flex: '1 1 500px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', padding: '2rem 0', transform: 'translateY(-2rem)' }}>
               
               <motion.div 
-                initial={{ opacity: 0, clipPath: 'inset(100% 0 0 0)', y: 50 }}
-                animate={{ opacity: 1, clipPath: 'inset(0% 0 0 0)', y: 0 }}
+                initial={{ opacity: 0, clipPath: 'inset(100% -50% -50% -50%)', y: 50 }}
+                animate={{ opacity: 1, clipPath: 'inset(-50% -50% -50% -50%)', y: 0 }}
                 transition={{ duration: 1.6, ease: [0.76, 0, 0.24, 1], delay: 2.4 }}
                 style={{ position: 'relative', width: '100%', maxWidth: '600px', display: 'flex', justifyContent: 'center' }}
               >
