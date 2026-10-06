@@ -937,17 +937,17 @@ function Home() {
                 
                 {/* Massive Portrait Container */}
                 <div style={{ position: 'relative', zIndex: 1, borderRadius: '32px', boxShadow: '0 40px 80px rgba(0,0,0,0.8), 0 0 40px rgba(210,255,0,0.2)', width: '100%', backgroundColor: '#000' }}>
-                  <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '32px', overflow: 'hidden', transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)', WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}>
+                  <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '32px', overflow: 'hidden', clipPath: 'inset(0 round 32px)', WebkitClipPath: 'inset(0 round 32px)' }}>
                     <motion.img 
                       src="/ahmad-malik.jpg" 
                       alt="Ahmad Malik" 
                       initial={{ scale: 1.2 }}
                       animate={{ scale: 1 }}
                       transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 2.5 }}
-                      style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.1) brightness(0.95) saturate(1.05)' }} 
+                      style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.1) brightness(0.95) saturate(1.05)', borderRadius: '32px' }} 
                     />
-                    <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)', pointerEvents: 'none', zIndex: 2 }} />
-                    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(45deg, rgba(210,255,0,0.05) 0%, transparent 100%)', pointerEvents: 'none', zIndex: 3 }} />
+                    <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)', pointerEvents: 'none', zIndex: 2, borderRadius: '0 0 32px 32px' }} />
+                    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(45deg, rgba(210,255,0,0.05) 0%, transparent 100%)', pointerEvents: 'none', zIndex: 3, borderRadius: '32px' }} />
                   </div>
                 </div>
               </motion.div>
