@@ -2218,31 +2218,34 @@ function About() {
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           style={{ 
             color: 'var(--color-white)', 
-            fontSize: 'clamp(4rem, 10vw, 8rem)', 
+            fontSize: 'clamp(5rem, 12vw, 10rem)', 
             fontFamily: 'var(--font-heading)', 
             textTransform: 'uppercase',
-            margin: '0 0 1rem 0',
-            lineHeight: 1
+            margin: '0 0 0.5rem 0',
+            lineHeight: 0.85,
+            letterSpacing: '-0.03em'
           }}
         >
-          I'M AHMAD
+          AHMAD
         </motion.h1>
 
-        <motion.p
+        <motion.h2
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           style={{
             color: 'var(--color-lime)',
-            fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
-            fontWeight: 600,
+            fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+            fontFamily: 'var(--font-heading)',
+            fontWeight: 700,
             textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-            marginBottom: '4rem'
+            letterSpacing: '-0.02em',
+            marginBottom: '4rem',
+            lineHeight: 1
           }}
         >
-          A Creative Designer For E Commerce Brands
-        </motion.p>
+          CREATIVE DESIGNER
+        </motion.h2>
 
         <motion.div
           initial={{ opacity: 0, clipPath: 'inset(100% -50% -50% -50%)', y: 50 }}
@@ -2254,14 +2257,14 @@ function About() {
           <motion.div 
             animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.4, 0.2] }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', width: '130%', height: '130%', background: 'radial-gradient(circle, rgba(255,50,50,0.5) 0%, transparent 65%)', filter: 'blur(70px)', zIndex: 0 }}
+            style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', width: '130%', height: '130%', background: 'radial-gradient(circle, rgba(180,255,50,0.5) 0%, transparent 65%)', filter: 'blur(70px)', zIndex: 0 }}
           />
           
           {/* Premium Portrait Wrapper */}
           <div style={{ position: 'relative', zIndex: 1, borderRadius: '24px', boxShadow: '0 40px 80px rgba(0,0,0,0.8), 0 0 50px rgba(255,50,50,0.15)', width: '100%', backgroundColor: '#000' }}>
             <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '24px', overflow: 'hidden', clipPath: 'inset(0 round 24px)', WebkitClipPath: 'inset(0 round 24px)' }}>
               <motion.img 
-                src="/about-me.jpg" 
+                src="/new-about-me.jpg" 
                 alt="Ahmad - Creative Designer" 
                 initial={{ scale: 1.15 }}
                 animate={{ scale: 1 }}
@@ -2270,7 +2273,7 @@ function About() {
               />
               {/* Cinematic Vignette & Color Grade Overlays */}
               <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%)', pointerEvents: 'none', zIndex: 2, borderRadius: '0 0 24px 24px' }} />
-              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(45deg, rgba(255,50,50,0.05) 0%, transparent 100%)', pointerEvents: 'none', zIndex: 3, borderRadius: '24px' }} />
+              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(45deg, rgba(180,255,50,0.05) 0%, transparent 100%)', pointerEvents: 'none', zIndex: 3, borderRadius: '24px' }} />
               <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '24px', pointerEvents: 'none', zIndex: 4 }} />
             </div>
           </div>
@@ -2281,20 +2284,20 @@ function About() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            maxWidth: '800px',
-            textAlign: 'left',
+            maxWidth: '1000px',
+            textAlign: 'center',
             display: 'flex',
             flexDirection: 'column',
-            gap: '2rem',
+            gap: '2.5rem',
             padding: '0 1rem',
             marginBottom: '4rem'
           }}
         >
-          <p style={{ color: 'var(--color-white)', fontSize: '1.4rem', lineHeight: 1.8, fontWeight: 300, fontFamily: 'var(--font-body)' }}>
-            With 4+ years of experience working with brands and agencies, I’ve helped brands grow through Amazon listing images, A+ Content, Brand Stories, Storefronts, TikTok Shop graphics, product creatives, and advertising visuals.
+          <p style={{ color: 'var(--color-white)', fontSize: 'clamp(1.5rem, 3.5vw, 2.5rem)', lineHeight: 1.2, fontWeight: 700, fontFamily: 'var(--font-heading)', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
+            OVER 4 YEARS OF EXPERIENCE ELEVATING <span style={{ color: 'var(--color-lime)' }}>E-COMMERCE BRANDS</span>. I SPECIALIZE IN CRAFTING HIGH-CONVERTING VISUALS FOR AMAZON, TIKTOK, AND BEYOND.
           </p>
-          <p style={{ color: 'var(--color-grey)', fontSize: '1.4rem', lineHeight: 1.8, fontWeight: 300, fontFamily: 'var(--font-body)' }}>
-            Having worked both directly with brands and as an outsourced creative partner for agencies, I focus on understanding the brand and turning its products into visuals that communicate, connect, and convert.
+          <p style={{ color: 'var(--color-grey)', fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', lineHeight: 1.3, fontWeight: 500, fontFamily: 'var(--font-heading)', textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
+            MY FOCUS IS SIMPLE: UNDERSTAND YOUR BRAND'S DNA AND ENGINEER CREATIVES THAT <span style={{ color: 'var(--color-white)' }}>COMMUNICATE</span>, <span style={{ color: 'var(--color-white)' }}>CONNECT</span>, AND <span style={{ color: 'var(--color-white)' }}>CONVERT</span>.
           </p>
         </motion.div>
 
