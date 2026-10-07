@@ -2208,98 +2208,172 @@ const BrandStorySection = () => {
 };
 
 function About() {
+  const textVariants = {
+    hidden: { y: "120%", rotate: 5, opacity: 0 },
+    visible: (i) => ({
+      y: 0,
+      rotate: 0,
+      opacity: 1,
+      transition: {
+        duration: 1.2,
+        ease: [0.76, 0, 0.24, 1],
+        delay: 0.1 + i * 0.04
+      }
+    })
+  };
+
+  const titleText = "I'M AHMAD";
+  const subtitleText = "CREATIVE DESIGNER";
+
   return (
-    <div className="page" style={{ position: 'relative', zIndex: 1, paddingTop: '15vh', minHeight: '100vh', paddingBottom: '10vh' }}>
-      <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+    <div className="page" style={{ position: 'relative', zIndex: 1, paddingTop: '25vh', minHeight: '100vh', paddingBottom: '15vh', overflow: 'hidden' }}>
+      {/* Background Ambience */}
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}>
+        <motion.div 
+          animate={{ opacity: [0.05, 0.1, 0.05] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ position: 'absolute', top: '10%', right: '10%', width: '40vw', height: '40vw', background: 'radial-gradient(circle, rgba(210, 255, 0, 0.1) 0%, transparent 60%)', filter: 'blur(80px)', borderRadius: '50%' }}
+        />
+        <motion.div 
+          animate={{ opacity: [0.03, 0.06, 0.03] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          style={{ position: 'absolute', bottom: '10%', left: '10%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 60%)', filter: 'blur(100px)', borderRadius: '50%' }}
+        />
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)', backgroundSize: '80px 80px', opacity: 0.5 }} />
+      </div>
+
+      <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', position: 'relative', zIndex: 1 }}>
         
-        <motion.h1 
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          style={{ 
-            color: 'var(--color-white)', 
-            fontSize: 'clamp(5rem, 12vw, 10rem)', 
-            fontFamily: 'var(--font-heading)', 
-            textTransform: 'uppercase',
-            margin: '0 0 0.5rem 0',
-            lineHeight: 0.85,
-            letterSpacing: '-0.03em'
-          }}
-        >
-          AHMAD
-        </motion.h1>
+        {/* Massive Title */}
+        <h1 style={{ 
+          color: 'var(--color-white)', 
+          fontSize: 'clamp(4rem, 12vw, 12rem)', 
+          fontFamily: 'var(--font-heading)', 
+          textTransform: 'uppercase',
+          margin: '0 0 1rem 0',
+          lineHeight: 0.85,
+          letterSpacing: '-0.04em',
+          display: 'flex',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          gap: '2vw'
+        }}>
+          {titleText.split(" ").map((word, wordIndex) => (
+            <div key={wordIndex} style={{ display: 'flex', overflow: 'hidden', paddingBottom: '0.1em', paddingTop: '0.1em' }}>
+              {word.split("").map((char, charIndex) => {
+                const globalIndex = wordIndex * 10 + charIndex;
+                return (
+                  <motion.span
+                    key={charIndex}
+                    custom={globalIndex}
+                    initial="hidden"
+                    animate="visible"
+                    variants={textVariants}
+                    style={{ display: 'inline-block', transformOrigin: 'left bottom', textShadow: '0 20px 40px rgba(0,0,0,0.5)' }}
+                  >
+                    {char === "'" ? "'" : char}
+                  </motion.span>
+                );
+              })}
+            </div>
+          ))}
+        </h1>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            color: 'var(--color-lime)',
-            fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-            fontFamily: 'var(--font-heading)',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '-0.02em',
-            marginBottom: '4rem',
-            lineHeight: 1
-          }}
-        >
-          CREATIVE DESIGNER
-        </motion.h2>
+        <div style={{ overflow: 'hidden', paddingBottom: '0.2em', marginBottom: '6rem' }}>
+          <motion.h2
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.4, delay: 0.8, ease: [0.76, 0, 0.24, 1] }}
+            style={{
+              color: 'var(--color-lime)',
+              fontSize: 'clamp(1.2rem, 3vw, 2rem)',
+              fontFamily: '"Inter", sans-serif',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              letterSpacing: '0.4em',
+              margin: 0
+            }}
+          >
+            {subtitleText}
+          </motion.h2>
+        </div>
 
+        {/* Premium Image Presentation */}
         <motion.div
-          initial={{ opacity: 0, clipPath: 'inset(100% -50% -50% -50%)', y: 50 }}
-          animate={{ opacity: 1, clipPath: 'inset(-50% -50% -50% -50%)', y: 0 }}
-          transition={{ duration: 1.6, ease: [0.76, 0, 0.24, 1], delay: 0.4 }}
-          style={{ position: 'relative', width: '100%', maxWidth: '450px', display: 'flex', justifyContent: 'center', marginBottom: '5rem' }}
+          initial={{ opacity: 0, y: 100, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 1 }}
+          style={{ position: 'relative', width: '100%', maxWidth: '650px', display: 'flex', justifyContent: 'center', marginBottom: '7rem' }}
         >
-          {/* Cinematic Glow Tailored to Photo's Red Lighting */}
-          <motion.div 
-            animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.4, 0.2] }}
-            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', width: '130%', height: '130%', background: 'radial-gradient(circle, rgba(180,255,50,0.5) 0%, transparent 65%)', filter: 'blur(70px)', zIndex: 0 }}
-          />
-          
-          {/* Premium Portrait Wrapper */}
-          <div style={{ position: 'relative', zIndex: 1, borderRadius: '24px', boxShadow: '0 40px 80px rgba(0,0,0,0.8), 0 0 50px rgba(255,50,50,0.15)', width: '100%', backgroundColor: '#000' }}>
-            <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '24px', overflow: 'hidden', clipPath: 'inset(0 round 24px)', WebkitClipPath: 'inset(0 round 24px)' }}>
+          {/* Subtle Outer Frame */}
+          <div style={{ position: 'relative', zIndex: 1, width: '100%', backgroundColor: 'var(--color-black)', padding: '0.5rem', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '2px' }}>
+            <div style={{ position: 'relative', width: '100%', overflow: 'hidden', backgroundColor: '#111' }}>
               <motion.img 
                 src="/new-about-me.jpg" 
                 alt="Ahmad - Creative Designer" 
-                initial={{ scale: 1.15 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 2.5, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
-                style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.05) brightness(0.95)', borderRadius: '24px' }} 
+                initial={{ scale: 1.2, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                transition={{ duration: 3, ease: [0.16, 1, 0.3, 1], delay: 1.2 }}
+                style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.05) brightness(0.9) saturate(1.1)' }} 
               />
-              {/* Cinematic Vignette & Color Grade Overlays */}
-              <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%)', pointerEvents: 'none', zIndex: 2, borderRadius: '0 0 24px 24px' }} />
-              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(45deg, rgba(180,255,50,0.05) 0%, transparent 100%)', pointerEvents: 'none', zIndex: 3, borderRadius: '24px' }} />
-              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '24px', pointerEvents: 'none', zIndex: 4 }} />
+              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.6) 100%)', pointerEvents: 'none' }} />
             </div>
           </div>
+
+          {/* Minimalist Corner Accents */}
+          <motion.div 
+            style={{ position: 'absolute', top: '-15px', left: '-15px', width: '30px', height: '30px', borderTop: '1.5px solid var(--color-lime)', borderLeft: '1.5px solid var(--color-lime)' }} 
+            initial={{ opacity: 0, x: 20, y: 20 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ delay: 2, duration: 1.5, ease: "easeOut" }}
+          />
+          <motion.div 
+            style={{ position: 'absolute', bottom: '-15px', right: '-15px', width: '30px', height: '30px', borderBottom: '1.5px solid var(--color-lime)', borderRight: '1.5px solid var(--color-lime)' }} 
+            initial={{ opacity: 0, x: -20, y: -20 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ delay: 2, duration: 1.5, ease: "easeOut" }}
+          />
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            maxWidth: '1000px',
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '2.5rem',
-            padding: '0 1rem',
-            marginBottom: '4rem'
-          }}
-        >
-          <p style={{ color: 'var(--color-white)', fontSize: 'clamp(1.5rem, 3.5vw, 2.5rem)', lineHeight: 1.2, fontWeight: 700, fontFamily: 'var(--font-heading)', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
-            OVER 4 YEARS OF EXPERIENCE ELEVATING <span style={{ color: 'var(--color-lime)' }}>E-COMMERCE BRANDS</span>. I SPECIALIZE IN CRAFTING HIGH-CONVERTING VISUALS FOR AMAZON, TIKTOK, AND BEYOND.
-          </p>
-          <p style={{ color: 'var(--color-grey)', fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', lineHeight: 1.3, fontWeight: 500, fontFamily: 'var(--font-heading)', textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
-            MY FOCUS IS SIMPLE: UNDERSTAND YOUR BRAND'S DNA AND ENGINEER CREATIVES THAT <span style={{ color: 'var(--color-white)' }}>COMMUNICATE</span>, <span style={{ color: 'var(--color-white)' }}>CONNECT</span>, AND <span style={{ color: 'var(--color-white)' }}>CONVERT</span>.
-          </p>
-        </motion.div>
+        {/* Elegant Copy section */}
+        <div style={{ maxWidth: '850px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '3.5rem' }}>
+          <div style={{ overflow: 'hidden', paddingBottom: '0.1em' }}>
+            <motion.p 
+              initial={{ y: "100%", opacity: 0, rotate: 2 }}
+              whileInView={{ y: 0, opacity: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              style={{ 
+                color: 'var(--color-white)', 
+                fontSize: 'clamp(2rem, 3.5vw, 3rem)', 
+                lineHeight: 1.3, 
+                fontWeight: 300, 
+                fontFamily: '"Bricolage Grotesque", sans-serif',
+                textAlign: 'center',
+                margin: 0,
+                letterSpacing: '-0.02em',
+                transformOrigin: 'left bottom'
+              }}
+            >
+              Over 4 years of experience elevating <span style={{ color: 'var(--color-lime)', fontStyle: 'italic', fontWeight: 400 }}>E-Commerce Brands</span>.
+            </motion.p>
+          </div>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            style={{ 
+              color: 'var(--color-grey)', 
+              fontSize: 'clamp(1.2rem, 2vw, 1.5rem)', 
+              lineHeight: 1.7, 
+              fontWeight: 300, 
+              fontFamily: '"Bricolage Grotesque", sans-serif',
+              textAlign: 'center',
+              maxWidth: '650px',
+              margin: '0 auto'
+            }}
+          >
+            I specialize in crafting high-converting visuals for Amazon, TikTok, and beyond. My focus is simple: understand your brand's DNA and engineer creatives that <span style={{ color: 'var(--color-white)', fontWeight: 500 }}>communicate</span>, <span style={{ color: 'var(--color-white)', fontWeight: 500 }}>connect</span>, and <span style={{ color: 'var(--color-white)', fontWeight: 500 }}>convert</span>.
+          </motion.p>
+        </div>
 
       </div>
       <Footer />
