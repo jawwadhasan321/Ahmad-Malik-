@@ -2207,26 +2207,26 @@ const BrandStorySection = () => {
   );
 };
 
-const ScrollHighlightText = ({ text, color = 'var(--color-white)', delay = 1.5 }) => {
+const ScrollHighlightText = ({ text, color = 'var(--color-white)', delay = 0 }) => {
   const words = text.split(" ");
   
   const containerVariants = {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: 0.04,
+        staggerChildren: 0.02,
         delayChildren: delay,
       }
     }
   };
 
   const wordVariants = {
-    hidden: { y: "120%", rotate: 5, opacity: 0 },
+    hidden: { y: "130%", rotate: 4, opacity: 0 },
     visible: { 
       y: "0%", 
       rotate: 0,
       opacity: 1,
-      transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } 
+      transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } 
     }
   };
 
@@ -2238,18 +2238,20 @@ const ScrollHighlightText = ({ text, color = 'var(--color-white)', delay = 1.5 }
       viewport={{ once: true, margin: "-50px" }}
       style={{
         margin: 0,
-        fontFamily: '"Outfit", sans-serif',
-        fontSize: 'clamp(1.8rem, 3.5vw, 3rem)',
-        fontWeight: 400,
-        lineHeight: 1.3,
+        fontFamily: 'var(--font-heading)',
+        fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+        fontWeight: 500,
+        lineHeight: 1.15,
+        letterSpacing: '-0.03em',
         display: 'flex',
         flexWrap: 'wrap',
         gap: '0.25em',
-        color: color
+        color: color,
+        justifyContent: 'center'
       }}
     >
       {words.map((word, i) => (
-        <span key={i} style={{ display: 'inline-flex', overflow: 'hidden', paddingBottom: '0.1em', paddingTop: '0.1em', margin: '-0.1em 0' }}>
+        <span key={i} style={{ display: 'inline-flex', overflow: 'hidden', paddingBottom: '0.15em', paddingTop: '0.15em', margin: '-0.15em 0' }}>
           <motion.span variants={wordVariants} style={{ transformOrigin: 'left bottom', display: 'inline-block' }}>
             {word}
           </motion.span>
@@ -2274,8 +2276,8 @@ function About() {
     })
   };
 
-  const titleText = "I'M AHMAD";
-  const subtitleText = "CREATIVE DESIGNER";
+  const titleText = "I'M AHMAD MALIK";
+  const subtitleText = "Creative designer for E commerce brands";
 
   return (
     <div className="page" style={{ position: 'relative', zIndex: 1, paddingTop: '25vh', minHeight: '100vh', paddingBottom: '15vh', overflow: 'hidden' }}>
@@ -2337,12 +2339,12 @@ function About() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1.4, delay: 1.8, ease: [0.76, 0, 0.24, 1] }}
             style={{
-              color: 'var(--color-lime)',
-              fontSize: 'clamp(1.2rem, 3vw, 2rem)',
-              fontFamily: '"Outfit", sans-serif',
-              fontWeight: 500,
-              textTransform: 'uppercase',
-              letterSpacing: '0.4em',
+              color: 'var(--color-grey)',
+              fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
+              fontFamily: 'var(--font-heading)',
+              fontWeight: 300,
+              textTransform: 'none',
+              letterSpacing: '0.02em',
               margin: 0
             }}
           >
@@ -2350,58 +2352,39 @@ function About() {
           </motion.h2>
         </div>
 
-        {/* Professional Layout: Image & Description side by side */}
-        <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '5rem',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          maxWidth: '1300px',
-          margin: '0 auto',
-          textAlign: 'left'
-        }}>
-          {/* Premium Image Presentation */}
-          <motion.div
-            initial={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
-            whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            style={{ position: 'relative', flex: '1 1 400px', maxWidth: '500px', display: 'flex', justifyContent: 'center' }}
-          >
-            {/* Subtle Outer Frame */}
-            <div style={{ position: 'relative', zIndex: 1, width: '100%', backgroundColor: 'var(--color-black)', padding: '0.5rem', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '2px' }}>
-              <div style={{ position: 'relative', width: '100%', overflow: 'hidden', backgroundColor: '#111' }}>
-                <motion.img 
-                  src="/new-about-me.jpg" 
-                  alt="Ahmad - Creative Designer" 
-                  initial={{ scale: 1.2 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 2, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                  style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.05) brightness(0.9) saturate(1.1)' }} 
-                />
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.6) 100%)', pointerEvents: 'none' }} />
-              </div>
-            </div>
+        {/* Cinematic Massive Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 50 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.6, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          style={{ 
+            width: '100%', 
+            maxWidth: '1400px', 
+            height: '70vh', 
+            borderRadius: '24px', 
+            overflow: 'hidden', 
+            position: 'relative', 
+            marginBottom: '8rem', 
+            marginTop: '2rem' 
+          }}
+        >
+          <motion.img 
+            src="/new-about-me.jpg" 
+            alt="Ahmad Malik - Creative Designer" 
+            initial={{ scale: 1.15 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 2.5, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
+          />
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.4) 100%)', pointerEvents: 'none' }} />
+        </motion.div>
 
-            {/* Minimalist Corner Accents */}
-            <motion.div 
-              style={{ position: 'absolute', top: '-15px', left: '-15px', width: '30px', height: '30px', borderTop: '1.5px solid var(--color-lime)', borderLeft: '1.5px solid var(--color-lime)' }} 
-              initial={{ opacity: 0, x: 20, y: 20 }} whileInView={{ opacity: 1, x: 0, y: 0 }} viewport={{ once: true }} transition={{ delay: 1.8, duration: 1, ease: "easeOut" }}
-            />
-            <motion.div 
-              style={{ position: 'absolute', bottom: '-15px', right: '-15px', width: '30px', height: '30px', borderBottom: '1.5px solid var(--color-lime)', borderRight: '1.5px solid var(--color-lime)' }} 
-              initial={{ opacity: 0, x: -20, y: -20 }} whileInView={{ opacity: 1, x: 0, y: 0 }} viewport={{ once: true }} transition={{ delay: 1.8, duration: 1, ease: "easeOut" }}
-            />
-          </motion.div>
-
-          {/* Elegant Copy section with Scroll Highlight */}
-          <div style={{ flex: '1 1 500px', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-            <ScrollHighlightText delay={1.8} text="Over 4 years of experience elevating E-Commerce Brands." />
-            <ScrollHighlightText delay={2.1} text="I specialize in crafting high-converting visuals for Amazon, TikTok, and beyond. My focus is simple: understand your brand's DNA and engineer creatives that communicate, connect, and convert." />
-          </div>
+        {/* Elegant Copy section with Scroll Highlight */}
+        <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '3rem', padding: '0 2rem' }}>
+          <ScrollHighlightText delay={0.1} text="Over 4 years of experience elevating E-Commerce Brands." />
+          <ScrollHighlightText delay={0.2} color="var(--color-grey)" text="I specialize in crafting high-converting visuals for Amazon, TikTok, and beyond. My focus is simple: understand your brand's DNA and engineer creatives that communicate, connect, and convert." />
         </div>
 
       </div>
