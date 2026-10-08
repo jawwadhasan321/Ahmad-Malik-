@@ -2207,6 +2207,51 @@ const BrandStorySection = () => {
   );
 };
 
+const ScrollWord = ({ children, progress, range }) => {
+  const color = useTransform(progress, range, ["rgba(255, 255, 255, 0.15)", "var(--color-lime)"]);
+  return (
+    <motion.span style={{ color, display: 'inline-block' }}>
+      {children}
+    </motion.span>
+  );
+};
+
+const ScrollHighlightText = ({ text }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 85%", "end 50%"]
+  });
+
+  const words = text.split(" ");
+
+  return (
+    <p
+      ref={ref}
+      style={{
+        margin: 0,
+        fontFamily: '"Outfit", sans-serif',
+        fontSize: 'clamp(1.8rem, 3.5vw, 3rem)',
+        fontWeight: 500,
+        lineHeight: 1.4,
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '0.25em'
+      }}
+    >
+      {words.map((word, i) => {
+        const start = i / words.length;
+        const end = start + (1 / words.length);
+        return (
+          <ScrollWord key={i} progress={scrollYProgress} range={[start, end]}>
+            {word}
+          </ScrollWord>
+        );
+      })}
+    </p>
+  );
+};
+
 function About() {
   const textVariants = {
     hidden: { y: "120%", rotate: 5, opacity: 0 },
@@ -2287,7 +2332,7 @@ function About() {
             style={{
               color: 'var(--color-lime)',
               fontSize: 'clamp(1.2rem, 3vw, 2rem)',
-              fontFamily: '"Inter", sans-serif',
+              fontFamily: '"Outfit", sans-serif',
               fontWeight: 500,
               textTransform: 'uppercase',
               letterSpacing: '0.4em',
@@ -2298,81 +2343,58 @@ function About() {
           </motion.h2>
         </div>
 
-        {/* Premium Image Presentation */}
-        <motion.div
-          initial={{ opacity: 0, y: 100, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 1 }}
-          style={{ position: 'relative', width: '100%', maxWidth: '650px', display: 'flex', justifyContent: 'center', marginBottom: '7rem' }}
-        >
-          {/* Subtle Outer Frame */}
-          <div style={{ position: 'relative', zIndex: 1, width: '100%', backgroundColor: 'var(--color-black)', padding: '0.5rem', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '2px' }}>
-            <div style={{ position: 'relative', width: '100%', overflow: 'hidden', backgroundColor: '#111' }}>
-              <motion.img 
-                src="/new-about-me.jpg" 
-                alt="Ahmad - Creative Designer" 
-                initial={{ scale: 1.2, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                transition={{ duration: 3, ease: [0.16, 1, 0.3, 1], delay: 1.2 }}
-                style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.05) brightness(0.9) saturate(1.1)' }} 
-              />
-              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.6) 100%)', pointerEvents: 'none' }} />
-            </div>
-          </div>
-
-          {/* Minimalist Corner Accents */}
-          <motion.div 
-            style={{ position: 'absolute', top: '-15px', left: '-15px', width: '30px', height: '30px', borderTop: '1.5px solid var(--color-lime)', borderLeft: '1.5px solid var(--color-lime)' }} 
-            initial={{ opacity: 0, x: 20, y: 20 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ delay: 2, duration: 1.5, ease: "easeOut" }}
-          />
-          <motion.div 
-            style={{ position: 'absolute', bottom: '-15px', right: '-15px', width: '30px', height: '30px', borderBottom: '1.5px solid var(--color-lime)', borderRight: '1.5px solid var(--color-lime)' }} 
-            initial={{ opacity: 0, x: -20, y: -20 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ delay: 2, duration: 1.5, ease: "easeOut" }}
-          />
-        </motion.div>
-
-        {/* Elegant Copy section */}
-        <div style={{ maxWidth: '850px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '3.5rem' }}>
-          <div style={{ overflow: 'hidden', paddingBottom: '0.1em' }}>
-            <motion.p 
-              initial={{ y: "100%", opacity: 0, rotate: 2 }}
-              whileInView={{ y: 0, opacity: 1, rotate: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              style={{ 
-                color: 'var(--color-white)', 
-                fontSize: 'clamp(2rem, 3.5vw, 3rem)', 
-                lineHeight: 1.3, 
-                fontWeight: 300, 
-                fontFamily: '"Bricolage Grotesque", sans-serif',
-                textAlign: 'center',
-                margin: 0,
-                letterSpacing: '-0.02em',
-                transformOrigin: 'left bottom'
-              }}
-            >
-              Over 4 years of experience elevating <span style={{ color: 'var(--color-lime)', fontStyle: 'italic', fontWeight: 400 }}>E-Commerce Brands</span>.
-            </motion.p>
-          </div>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            style={{ 
-              color: 'var(--color-grey)', 
-              fontSize: 'clamp(1.2rem, 2vw, 1.5rem)', 
-              lineHeight: 1.7, 
-              fontWeight: 300, 
-              fontFamily: '"Bricolage Grotesque", sans-serif',
-              textAlign: 'center',
-              maxWidth: '650px',
-              margin: '0 auto'
-            }}
+        {/* Professional Layout: Image & Description side by side */}
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '5rem',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          maxWidth: '1300px',
+          margin: '0 auto',
+          textAlign: 'left'
+        }}>
+          {/* Premium Image Presentation */}
+          <motion.div
+            initial={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
+            whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            style={{ position: 'relative', flex: '1 1 400px', maxWidth: '500px', display: 'flex', justifyContent: 'center' }}
           >
-            I specialize in crafting high-converting visuals for Amazon, TikTok, and beyond. My focus is simple: understand your brand's DNA and engineer creatives that <span style={{ color: 'var(--color-white)', fontWeight: 500 }}>communicate</span>, <span style={{ color: 'var(--color-white)', fontWeight: 500 }}>connect</span>, and <span style={{ color: 'var(--color-white)', fontWeight: 500 }}>convert</span>.
-          </motion.p>
+            {/* Subtle Outer Frame */}
+            <div style={{ position: 'relative', zIndex: 1, width: '100%', backgroundColor: 'var(--color-black)', padding: '0.5rem', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '2px' }}>
+              <div style={{ position: 'relative', width: '100%', overflow: 'hidden', backgroundColor: '#111' }}>
+                <motion.img 
+                  src="/new-about-me.jpg" 
+                  alt="Ahmad - Creative Designer" 
+                  initial={{ scale: 1.2 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.05) brightness(0.9) saturate(1.1)' }} 
+                />
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.6) 100%)', pointerEvents: 'none' }} />
+              </div>
+            </div>
+
+            {/* Minimalist Corner Accents */}
+            <motion.div 
+              style={{ position: 'absolute', top: '-15px', left: '-15px', width: '30px', height: '30px', borderTop: '1.5px solid var(--color-lime)', borderLeft: '1.5px solid var(--color-lime)' }} 
+              initial={{ opacity: 0, x: 20, y: 20 }} whileInView={{ opacity: 1, x: 0, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
+            />
+            <motion.div 
+              style={{ position: 'absolute', bottom: '-15px', right: '-15px', width: '30px', height: '30px', borderBottom: '1.5px solid var(--color-lime)', borderRight: '1.5px solid var(--color-lime)' }} 
+              initial={{ opacity: 0, x: -20, y: -20 }} whileInView={{ opacity: 1, x: 0, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
+            />
+          </motion.div>
+
+          {/* Elegant Copy section with Scroll Highlight */}
+          <div style={{ flex: '1 1 500px', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+            <ScrollHighlightText text="Over 4 years of experience elevating E-Commerce Brands." />
+            <ScrollHighlightText text="I specialize in crafting high-converting visuals for Amazon, TikTok, and beyond. My focus is simple: understand your brand's DNA and engineer creatives that communicate, connect, and convert." />
+          </div>
         </div>
 
       </div>
@@ -2381,6 +2403,7 @@ function About() {
     </div>
   );
 }
+
 
 function Contact() {
   return (
