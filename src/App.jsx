@@ -2207,48 +2207,54 @@ const BrandStorySection = () => {
   );
 };
 
-const ScrollWord = ({ children, progress, range }) => {
-  const color = useTransform(progress, range, ["rgba(255, 255, 255, 0.15)", "var(--color-lime)"]);
-  return (
-    <motion.span style={{ color, display: 'inline-block' }}>
-      {children}
-    </motion.span>
-  );
-};
-
-const ScrollHighlightText = ({ text }) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 85%", "end 50%"]
-  });
-
+const ScrollHighlightText = ({ text, color = 'var(--color-white)' }) => {
   const words = text.split(" ");
+  
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.04,
+      }
+    }
+  };
+
+  const wordVariants = {
+    hidden: { y: "120%", rotate: 5, opacity: 0 },
+    visible: { 
+      y: "0%", 
+      rotate: 0,
+      opacity: 1,
+      transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } 
+    }
+  };
 
   return (
-    <p
-      ref={ref}
+    <motion.p
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-50px" }}
       style={{
         margin: 0,
         fontFamily: '"Outfit", sans-serif',
         fontSize: 'clamp(1.8rem, 3.5vw, 3rem)',
-        fontWeight: 500,
-        lineHeight: 1.4,
+        fontWeight: 400,
+        lineHeight: 1.3,
         display: 'flex',
         flexWrap: 'wrap',
-        gap: '0.25em'
+        gap: '0.25em',
+        color: color
       }}
     >
-      {words.map((word, i) => {
-        const start = i / words.length;
-        const end = start + (1 / words.length);
-        return (
-          <ScrollWord key={i} progress={scrollYProgress} range={[start, end]}>
+      {words.map((word, i) => (
+        <span key={i} style={{ display: 'inline-flex', overflow: 'hidden', paddingBottom: '0.1em', paddingTop: '0.1em', margin: '-0.1em 0' }}>
+          <motion.span variants={wordVariants} style={{ transformOrigin: 'left bottom', display: 'inline-block' }}>
             {word}
-          </ScrollWord>
-        );
-      })}
-    </p>
+          </motion.span>
+        </span>
+      ))}
+    </motion.p>
   );
 };
 
