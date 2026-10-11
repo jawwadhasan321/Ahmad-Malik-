@@ -2207,6 +2207,37 @@ const BrandStorySection = () => {
   );
 };
 
+const CornerReticle = ({ position = 'tl', color = 'var(--color-lime)', size = 12 }) => {
+  const classNames = {
+    tl: 'corner-reticle reticle-tl',
+    tr: 'corner-reticle reticle-tr',
+    bl: 'corner-reticle reticle-bl',
+    br: 'corner-reticle reticle-br'
+  };
+  return (
+    <div className={classNames[position] || 'corner-reticle'} style={{ width: size, height: size }}>
+      <svg width={size} height={size} viewBox="0 0 12 12" fill="none">
+        <path d="M6 0V12M0 6H12" stroke={color} strokeWidth="1.2" strokeLinecap="square" />
+      </svg>
+    </div>
+  );
+};
+
+const ReticleCard = ({ children, style = {}, className = '', hover = true, ...props }) => (
+  <div 
+    className={`${hover ? 'luxury-card-hover' : ''} ${className}`} 
+    style={{ position: 'relative', ...style }} 
+    {...props}
+  >
+    <CornerReticle position="tl" />
+    <CornerReticle position="tr" />
+    <CornerReticle position="bl" />
+    <CornerReticle position="br" />
+    <div className="laser-edge-sweep" />
+    {children}
+  </div>
+);
+
 const ScrollHighlightText = ({ 
   text, 
   color = '#ffffff', 
@@ -2222,7 +2253,7 @@ const ScrollHighlightText = ({
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: 0.02,
+        staggerChildren: 0.018,
         delayChildren: delay,
       }
     }
@@ -2234,7 +2265,7 @@ const ScrollHighlightText = ({
       y: "0%", 
       rotate: 0, 
       opacity: 1, 
-      transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } 
+      transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] } 
     }
   };
 
@@ -2257,7 +2288,7 @@ const ScrollHighlightText = ({
         margin: 0,
         fontFamily: 'var(--font-heading)',
         fontSize: fontSize,
-        fontWeight: 500,
+        fontWeight: 450,
         lineHeight: lineHeight,
         letterSpacing: '-0.02em',
         display: 'flex',
@@ -2280,7 +2311,7 @@ const ScrollHighlightText = ({
                 color: highlighted ? highlightColor : '#ffffff',
                 fontWeight: highlighted ? 650 : 450,
                 textShadow: highlighted 
-                  ? '0 0 25px rgba(210, 255, 0, 0.4)' 
+                  ? '0 0 25px rgba(210, 255, 0, 0.45)' 
                   : '0 10px 30px rgba(0, 0, 0, 0.5)',
                 transition: 'color 0.3s ease'
               }}
@@ -2295,6 +2326,32 @@ const ScrollHighlightText = ({
 };
 
 function About() {
+  const containerRef = useRef(null);
+  const portraitSectionRef = useRef(null);
+
+  // Parallax tracking inspired by landonorris.com camera depth
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const { scrollYProgress: portraitScrollProgress } = useScroll({
+    target: portraitSectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const smoothPortraitProgress = useSpring(portraitScrollProgress, {
+    stiffness: 100,
+    damping: 28,
+    restDelta: 0.001
+  });
+
+  // Camera parallax transformations
+  const portraitScale = useTransform(smoothPortraitProgress, [0, 0.5, 1], [1.14, 1.05, 0.98]);
+  const portraitY = useTransform(smoothPortraitProgress, [0, 1], [-35, 35]);
+  const bgCoordsY1 = useTransform(scrollYProgress, [0, 1], [0, -180]);
+  const bgCoordsY2 = useTransform(scrollYProgress, [0, 1], [0, 220]);
+
   const textVariants = {
     hidden: { y: "120%", rotate: 5, opacity: 0 },
     visible: (i) => ({
@@ -2312,25 +2369,151 @@ function About() {
   const titleText = "I'M AHMAD MALIK";
   const subtitleText = "Creative designer for E commerce brands";
 
+  const stats = [
+    {
+      id: "STAT // 01",
+      number: "04+",
+      label: "YEARS OF CRAFT",
+      detail: "E-Commerce Strategy & Visual Elevation"
+    },
+    {
+      id: "STAT // 02",
+      number: "100+",
+      label: "CONVERTING ASSETS",
+      detail: "Amazon EBC & TikTok Shop Creatives"
+    },
+    {
+      id: "STAT // 03",
+      number: "8-FIG",
+      label: "CLIENT REVENUE",
+      detail: "Direct & Agency Brand Scale"
+    },
+    {
+      id: "STAT // 04",
+      number: "100%",
+      label: "BESPOKE ASSETS",
+      detail: "Zero Templates • 100% Tailored DNA"
+    }
+  ];
+
   return (
-    <div className="page" style={{ position: 'relative', zIndex: 1, paddingTop: '25vh', minHeight: '100vh', paddingBottom: '15vh', overflow: 'hidden' }}>
-      {/* Background Ambience */}
+    <div 
+      ref={containerRef}
+      className="page" 
+      style={{ 
+        position: 'relative', 
+        zIndex: 1, 
+        paddingTop: '25vh', 
+        minHeight: '100vh', 
+        paddingBottom: '15vh', 
+        overflow: 'hidden' 
+      }}
+    >
+      {/* Background Ambience & Floating Telemetry Grids (Lando Norris Aesthetic) */}
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}>
         <motion.div 
-          animate={{ opacity: [0.05, 0.1, 0.05] }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ position: 'absolute', top: '10%', right: '10%', width: '40vw', height: '40vw', background: 'radial-gradient(circle, rgba(210, 255, 0, 0.1) 0%, transparent 60%)', filter: 'blur(80px)', borderRadius: '50%' }}
+          animate={{ opacity: [0.06, 0.12, 0.06] }}
+          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ 
+            position: 'absolute', 
+            top: '8%', 
+            right: '12%', 
+            width: '45vw', 
+            height: '45vw', 
+            background: 'radial-gradient(circle, rgba(210, 255, 0, 0.14) 0%, transparent 65%)', 
+            filter: 'blur(90px)', 
+            borderRadius: '50%' 
+          }}
         />
         <motion.div 
-          animate={{ opacity: [0.03, 0.06, 0.03] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-          style={{ position: 'absolute', bottom: '10%', left: '10%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 60%)', filter: 'blur(100px)', borderRadius: '50%' }}
+          animate={{ opacity: [0.03, 0.08, 0.03] }}
+          transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          style={{ 
+            position: 'absolute', 
+            bottom: '12%', 
+            left: '8%', 
+            width: '55vw', 
+            height: '55vw', 
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 65%)', 
+            filter: 'blur(110px)', 
+            borderRadius: '50%' 
+          }}
         />
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)', backgroundSize: '80px 80px', opacity: 0.5 }} />
+
+        {/* Parallax Floating Telemetry Coordinates */}
+        <motion.div 
+          style={{ 
+            position: 'absolute', 
+            top: '15%', 
+            left: '4%', 
+            fontFamily: 'monospace', 
+            fontSize: '0.68rem', 
+            letterSpacing: '0.18em', 
+            color: 'rgba(210, 255, 0, 0.25)', 
+            y: bgCoordsY1 
+          }}
+        >
+          // LAT 31.5204° N • LON 74.3587° E<br/>
+          // SYS 01: READY
+        </motion.div>
+
+        <motion.div 
+          style={{ 
+            position: 'absolute', 
+            top: '55%', 
+            right: '4%', 
+            fontFamily: 'monospace', 
+            fontSize: '0.68rem', 
+            letterSpacing: '0.18em', 
+            color: 'rgba(255, 255, 255, 0.2)', 
+            textAlign: 'right', 
+            y: bgCoordsY2 
+          }}
+        >
+          [ TELEMETRY // ACTIVE ]<br/>
+          REF // AM-2026-ARCHIVE
+        </motion.div>
+
+        {/* Subtle Luxury Technical Blueprint Grid */}
+        <div style={{ 
+          position: 'absolute', 
+          top: 0, 
+          left: 0, 
+          width: '100%', 
+          height: '100%', 
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)', 
+          backgroundSize: '90px 90px', 
+          opacity: 0.6 
+        }} />
       </div>
 
       <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', position: 'relative', zIndex: 1 }}>
         
+        {/* Top Eyebrow Telemetry Dossier Tag */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
+          style={{ marginBottom: '1.75rem' }}
+        >
+          <div className="luxury-telemetry-pill">
+            <motion.span 
+              animate={{ opacity: [1, 0.35, 1], scale: [1, 1.2, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--color-lime)',
+                boxShadow: '0 0 10px var(--color-lime)'
+              }}
+            />
+            <span style={{ fontSize: '0.72rem', color: 'var(--color-lime)', fontWeight: 600 }}>
+              DOSSIER // 001 • LEAD ART DIRECTION & VISUAL SYSTEMS
+            </span>
+          </div>
+        </motion.div>
+
         {/* Massive Title */}
         <h1 style={{ 
           color: 'var(--color-white)', 
@@ -2385,17 +2568,18 @@ function About() {
           </motion.h2>
         </div>
 
-        {/* Cinematic High-Budget Portrait Showcase */}
+        {/* Cinematic High-Budget Portrait Showcase with Parallax Spring Physics */}
         <motion.div
+          ref={portraitSectionRef}
           initial={{ opacity: 0, scale: 0.96, y: 40 }}
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
           style={{ 
             width: '100%', 
-            maxWidth: '1020px', 
+            maxWidth: '1040px', 
             position: 'relative', 
-            marginBottom: '7rem', 
+            marginBottom: '4.5rem', 
             marginTop: '1rem',
             padding: '12px'
           }}
@@ -2403,7 +2587,7 @@ function About() {
           {/* Ambient Lime Studio Glow Aura */}
           <motion.div 
             animate={{ 
-              opacity: [0.25, 0.45, 0.25], 
+              opacity: [0.28, 0.48, 0.28], 
               scale: [1, 1.04, 1] 
             }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
@@ -2412,31 +2596,34 @@ function About() {
               top: '50%', 
               left: '50%', 
               transform: 'translate(-50%, -50%)', 
-              width: '110%', 
-              height: '110%', 
-              background: 'radial-gradient(ellipse at center, rgba(210, 255, 0, 0.22) 0%, rgba(210, 255, 0, 0.06) 45%, transparent 70%)', 
-              filter: 'blur(70px)', 
+              width: '112%', 
+              height: '112%', 
+              background: 'radial-gradient(ellipse at center, rgba(210, 255, 0, 0.24) 0%, rgba(210, 255, 0, 0.06) 45%, transparent 72%)', 
+              filter: 'blur(75px)', 
               borderRadius: '36px',
               zIndex: 0,
               pointerEvents: 'none'
             }}
           />
 
-          {/* Premium Card Frame */}
-          <div style={{
-            position: 'relative',
-            zIndex: 1,
-            borderRadius: '26px',
-            overflow: 'hidden',
-            border: '1px solid rgba(210, 255, 0, 0.28)',
-            backgroundColor: '#0c0f07',
-            boxShadow: '0 30px 100px -20px rgba(0, 0, 0, 0.9), 0 0 50px -10px rgba(210, 255, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
-            aspectRatio: '4 / 3',
-            maxHeight: '75vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
+          {/* Premium Card Frame with Corner Reticles */}
+          <ReticleCard 
+            hover={false}
+            style={{
+              position: 'relative',
+              zIndex: 1,
+              borderRadius: '26px',
+              overflow: 'hidden',
+              border: '1px solid rgba(210, 255, 0, 0.32)',
+              backgroundColor: '#0c0f07',
+              boxShadow: '0 30px 100px -20px rgba(0, 0, 0, 0.95), 0 0 50px -10px rgba(210, 255, 0, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
+              aspectRatio: '4 / 3',
+              maxHeight: '75vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
             {/* Top Glassmorphic Badges */}
             <div style={{
               position: 'absolute',
@@ -2445,15 +2632,24 @@ function About() {
               display: 'flex',
               alignItems: 'center',
               gap: '0.6rem',
-              padding: '0.45rem 1.1rem',
-              background: 'rgba(5, 5, 5, 0.65)',
+              padding: '0.45rem 1.15rem',
+              background: 'rgba(5, 5, 5, 0.72)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
-              border: '1px solid rgba(255, 255, 255, 0.14)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
               borderRadius: '999px',
               zIndex: 10,
               pointerEvents: 'none'
             }}>
+              <span style={{
+                fontFamily: 'monospace',
+                fontSize: '0.7rem',
+                letterSpacing: '0.08em',
+                color: 'var(--color-lime)',
+                fontWeight: 600
+              }}>
+                [ 01 // IDENTITY ]
+              </span>
               <span style={{
                 fontFamily: 'var(--font-heading)',
                 fontSize: '0.72rem',
@@ -2473,17 +2669,17 @@ function About() {
               display: 'flex',
               alignItems: 'center',
               gap: '0.55rem',
-              padding: '0.45rem 1.1rem',
-              background: 'rgba(5, 5, 5, 0.65)',
+              padding: '0.45rem 1.15rem',
+              background: 'rgba(5, 5, 5, 0.72)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
-              border: '1px solid rgba(210, 255, 0, 0.35)',
+              border: '1px solid rgba(210, 255, 0, 0.4)',
               borderRadius: '999px',
               zIndex: 10,
               pointerEvents: 'none'
             }}>
               <motion.span 
-                animate={{ opacity: [1, 0.4, 1], scale: [1, 1.15, 1] }}
+                animate={{ opacity: [1, 0.4, 1], scale: [1, 1.25, 1] }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                 style={{
                   width: '7px',
@@ -2506,21 +2702,19 @@ function About() {
               </span>
             </div>
 
-            {/* High Quality Portrait Image */}
+            {/* High Quality Portrait Image with Parallax Depth Scale */}
             <motion.img 
               src="/ahmad-malik-about.jpg" 
               alt="Ahmad Malik - Creative Designer" 
-              initial={{ scale: 1.05 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
               style={{ 
                 width: '100%', 
                 height: '100%', 
                 objectFit: 'cover', 
                 objectPosition: 'center 20%',
                 display: 'block',
-                filter: 'contrast(1.04) brightness(1.01) saturate(1.02)'
+                scale: portraitScale,
+                y: portraitY,
+                filter: 'contrast(1.05) brightness(1.02) saturate(1.02)'
               }} 
             />
 
@@ -2530,8 +2724,8 @@ function About() {
               bottom: 0, 
               left: 0, 
               width: '100%', 
-              height: '35%', 
-              background: 'linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.15) 60%, transparent 100%)', 
+              height: '38%', 
+              background: 'linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 100%)', 
               pointerEvents: 'none', 
               zIndex: 5 
             }} />
@@ -2566,14 +2760,119 @@ function About() {
                 color: 'var(--color-lime)',
                 textShadow: '0 0 10px rgba(210, 255, 0, 0.6)'
               }}>
-                [ HIGH IMPACT VISUALS ]
+                [ SPEC // 4K HIGH DYNAMIC RANGE ]
               </span>
             </div>
+          </ReticleCard>
+        </motion.div>
+
+        {/* =========================================================================
+            High Budget Performance Metrics Dashboard (Inspired by landonorris.com)
+            ========================================================================= */}
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            width: '100%',
+            maxWidth: '1040px',
+            marginBottom: '7rem',
+            padding: '0 12px'
+          }}
+        >
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: '1.25rem',
+            alignItems: 'stretch'
+          }}>
+            {stats.map((stat, i) => (
+              <ReticleCard
+                key={i}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.025)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(210, 255, 0, 0.18)',
+                  borderRadius: '18px',
+                  padding: '1.75rem 1.4rem',
+                  textAlign: 'left',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  gap: '1rem',
+                  overflow: 'hidden'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{
+                    fontFamily: 'monospace',
+                    fontSize: '0.72rem',
+                    letterSpacing: '0.12em',
+                    color: 'var(--color-lime)',
+                    fontWeight: 600
+                  }}>
+                    {stat.id}
+                  </span>
+                  <span style={{
+                    width: '5px',
+                    height: '5px',
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(210, 255, 0, 0.4)'
+                  }} />
+                </div>
+
+                <div>
+                  <div style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: 'clamp(2.5rem, 4.2vw, 3.6rem)',
+                    fontWeight: 700,
+                    lineHeight: 1,
+                    letterSpacing: '-0.03em',
+                    color: '#ffffff',
+                    textShadow: '0 0 25px rgba(210, 255, 0, 0.3)',
+                    marginBottom: '0.4rem'
+                  }}>
+                    {stat.number}
+                  </div>
+                  <div style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: '#ffffff',
+                    marginBottom: '0.35rem'
+                  }}>
+                    {stat.label}
+                  </div>
+                  <div style={{
+                    fontSize: '0.78rem',
+                    color: 'rgba(255, 255, 255, 0.65)',
+                    lineHeight: 1.4
+                  }}>
+                    {stat.detail}
+                  </div>
+                </div>
+              </ReticleCard>
+            ))}
           </div>
         </motion.div>
 
         {/* Elegant Copy section with Pure White & Lime Green Highlights */}
         <div style={{ maxWidth: '980px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2.5rem', padding: '0 2rem' }}>
+          
+          {/* Eyebrow Pill */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}>
+            <div style={{ width: '40px', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(210, 255, 0, 0.6))' }} />
+            <span className="luxury-telemetry-pill" style={{ color: 'var(--color-lime)', fontSize: '0.74rem' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--color-lime)', boxShadow: '0 0 8px var(--color-lime)' }} />
+              // 01. STRATEGIC ART DIRECTION
+            </span>
+            <div style={{ width: '40px', height: '1px', background: 'linear-gradient(90deg, rgba(210, 255, 0, 0.6), transparent)' }} />
+          </div>
+
           <ScrollHighlightText 
             delay={0.1} 
             color="#ffffff"
@@ -2601,7 +2900,7 @@ function About() {
         </div>
 
         {/* Trusted by Top Brands Section */}
-        <div style={{ marginTop: '7rem', width: '100%', overflow: 'hidden' }}>
+        <div style={{ marginTop: '8rem', width: '100%', overflow: 'hidden' }}>
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -2609,23 +2908,17 @@ function About() {
             transition={{ duration: 0.8 }}
             style={{ textAlign: 'center', marginBottom: '3.5rem', padding: '0 1rem' }}
           >
-            <span style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: '0.8rem',
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              color: 'var(--color-lime)',
-              fontWeight: 600,
-              display: 'inline-block',
-              marginBottom: '0.75rem',
-              textShadow: '0 0 16px rgba(210, 255, 0, 0.4)'
-            }}>
-              CLIENT & BRAND ROSTER
-            </span>
+            <div style={{ display: 'inline-flex', marginBottom: '1rem' }}>
+              <span className="luxury-telemetry-pill" style={{ color: 'var(--color-lime)', fontSize: '0.74rem' }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--color-lime)', boxShadow: '0 0 8px var(--color-lime)' }} />
+                // 02. PROVEN CLIENT ROSTER
+              </span>
+            </div>
+
             <h2 style={{ 
               fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)', 
               color: 'var(--color-white)', 
-              fontFamily: 'var(--font-heading)',
+              fontFamily: 'var(--font-heading)', 
               textTransform: 'uppercase',
               letterSpacing: '-0.02em',
               lineHeight: 1,
@@ -2636,13 +2929,35 @@ function About() {
             </h2>
           </motion.div>
           
+          {/* Telemetry Hairline Divider (Top) */}
+          <div style={{ 
+            position: 'relative', 
+            width: '90%', 
+            maxWidth: '1200px', 
+            margin: '0 auto', 
+            height: '1px', 
+            background: 'linear-gradient(90deg, transparent, rgba(210, 255, 0, 0.4) 50%, transparent)' 
+          }}>
+            <div style={{ 
+              position: 'absolute', 
+              top: '50%', 
+              left: '50%', 
+              transform: 'translate(-50%, -50%)', 
+              width: '8px', 
+              height: '8px', 
+              backgroundColor: 'var(--color-lime)', 
+              borderRadius: '50%', 
+              boxShadow: '0 0 10px var(--color-lime)' 
+            }} />
+          </div>
+
           {/* Infinite Marquee of Brand Logos (No dark overlay boxes; pure transparent fade via CSS mask) */}
           <div style={{ 
             position: 'relative', 
             width: '100%', 
             overflow: 'hidden', 
             display: 'flex', 
-            padding: '1rem 0 3rem 0',
+            padding: '2.5rem 0 3.5rem 0',
             maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
             WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)'
           }}>
@@ -2677,10 +2992,19 @@ function About() {
               ))}
             </motion.div>
           </div>
+
+          {/* Telemetry Hairline Divider (Bottom) */}
+          <div style={{ 
+            width: '90%', 
+            maxWidth: '1200px', 
+            margin: '0 auto', 
+            height: '1px', 
+            background: 'linear-gradient(90deg, transparent, rgba(210, 255, 0, 0.25) 50%, transparent)' 
+          }} />
         </div>
 
         {/* Agencies Section on About Me */}
-        <div style={{ marginTop: '7rem', width: '100%', maxWidth: '1240px', padding: '0 1.5rem' }}>
+        <div style={{ marginTop: '8rem', width: '100%', maxWidth: '1240px', padding: '0 1.5rem' }}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -2688,19 +3012,13 @@ function About() {
             transition={{ duration: 0.8 }}
             style={{ textAlign: 'center', marginBottom: '3.5rem' }}
           >
-            <span style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: '0.8rem',
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              color: 'var(--color-lime)',
-              fontWeight: 600,
-              display: 'inline-block',
-              marginBottom: '0.75rem',
-              textShadow: '0 0 16px rgba(210, 255, 0, 0.4)'
-            }}>
-              OUTSOURCED CREATIVE PARTNER
-            </span>
+            <div style={{ display: 'inline-flex', marginBottom: '1rem' }}>
+              <span className="luxury-telemetry-pill" style={{ color: 'var(--color-lime)', fontSize: '0.74rem' }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--color-lime)', boxShadow: '0 0 8px var(--color-lime)' }} />
+                // 03. OUTSOURCED CREATIVE PARTNER
+              </span>
+            </div>
+
             <h3 style={{
               fontSize: 'clamp(2rem, 3.8vw, 3rem)',
               color: 'var(--color-white)',
@@ -2720,38 +3038,75 @@ function About() {
             alignItems: 'stretch'
           }}>
             {[
-              { name: "Advance Amazon Agency", role: "Amazon Creative Designer", img: "/agency-1.png.jpg" },
-              { name: "Konsort Social", role: "TikTok Shop Creative Designer", img: "/agency-2.png.jpg" },
-              { name: "Selliqa", role: "Senior Graphics Designer", img: "/agency-3.png.jpg" },
-              { name: "creatiWOW", role: "Senior Graphics Designer", img: "/agency-4.png.jpg" },
-              { name: "Sellonics", role: "Amazon & Tiktok Creative Designer", img: "/sellonics.jpg" }
+              { id: "01", name: "Advance Amazon Agency", role: "Amazon Creative Designer", img: "/agency-1.png.jpg" },
+              { id: "02", name: "Konsort Social", role: "TikTok Shop Creative Designer", img: "/agency-2.png.jpg" },
+              { id: "03", name: "Selliqa", role: "Senior Graphics Designer", img: "/agency-3.png.jpg" },
+              { id: "04", name: "creatiWOW", role: "Senior Graphics Designer", img: "/agency-4.png.jpg" },
+              { id: "05", name: "Sellonics", role: "Amazon & Tiktok Creative Designer", img: "/sellonics.jpg" }
             ].map((agency, index) => (
-              <motion.div 
+              <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: index * 0.08 }}
-                whileHover={{ y: -6, borderColor: 'rgba(210, 255, 0, 0.4)', boxShadow: '0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(210, 255, 0, 0.15)' }}
-                style={{ 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  alignItems: 'center', 
-                  textAlign: 'center', 
-                  padding: '2.2rem 1.5rem',
-                  background: 'rgba(255,255,255,0.025)',
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
-                  borderRadius: '20px',
-                  border: '1px solid rgba(255,255,255,0.07)',
-                  transition: 'border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
-                }}
               >
-                <div style={{ height: '75px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem', overflow: 'hidden' }}>
-                  <img src={agency.img} alt={agency.name} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
-                </div>
-                <h4 style={{ fontSize: '1.2rem', color: 'var(--color-lime)', marginBottom: '0.4rem', fontFamily: '"Bricolage Grotesque", sans-serif', fontWeight: 600 }}>{agency.name}</h4>
-                <p style={{ fontSize: '0.88rem', color: 'rgba(255, 255, 255, 0.7)', lineHeight: '1.4', margin: 0 }}>{agency.role}</p>
+                <ReticleCard 
+                  style={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    textAlign: 'center', 
+                    padding: '2.4rem 1.5rem',
+                    background: 'rgba(255,255,255,0.025)',
+                    backdropFilter: 'blur(14px)',
+                    WebkitBackdropFilter: 'blur(14px)',
+                    borderRadius: '20px',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    height: '100%',
+                    justifyContent: 'space-between',
+                    overflow: 'hidden'
+                  }}
+                >
+                  {/* Top Index & Status Pill */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center', marginBottom: '1.25rem' }}>
+                    <span style={{
+                      fontFamily: 'monospace',
+                      fontSize: '0.72rem',
+                      letterSpacing: '0.12em',
+                      color: 'var(--color-lime)',
+                      fontWeight: 600
+                    }}>
+                      [ {agency.id} ]
+                    </span>
+                    <span style={{
+                      fontFamily: 'monospace',
+                      fontSize: '0.66rem',
+                      letterSpacing: '0.08em',
+                      color: 'rgba(255, 255, 255, 0.4)'
+                    }}>
+                      PARTNER
+                    </span>
+                  </div>
+
+                  <div style={{ height: '75px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem', overflow: 'hidden' }}>
+                    <img 
+                      src={agency.img} 
+                      alt={agency.name} 
+                      style={{ 
+                        maxHeight: '100%', 
+                        maxWidth: '100%', 
+                        objectFit: 'contain',
+                        transition: 'transform 0.4s ease'
+                      }} 
+                    />
+                  </div>
+
+                  <div>
+                    <h4 style={{ fontSize: '1.2rem', color: 'var(--color-lime)', marginBottom: '0.4rem', fontFamily: '"Bricolage Grotesque", sans-serif', fontWeight: 600 }}>{agency.name}</h4>
+                    <p style={{ fontSize: '0.88rem', color: 'rgba(255, 255, 255, 0.72)', lineHeight: '1.4', margin: 0 }}>{agency.role}</p>
+                  </div>
+                </ReticleCard>
               </motion.div>
             ))}
           </div>
@@ -2767,7 +3122,7 @@ function About() {
             position: 'relative',
             width: '100%',
             maxWidth: '1140px',
-            marginTop: '8rem',
+            marginTop: '9rem',
             marginBottom: '4rem',
             padding: '12px'
           }}
@@ -2775,7 +3130,7 @@ function About() {
           {/* Ambient Neon Lime Aura */}
           <motion.div 
             animate={{ 
-              opacity: [0.2, 0.38, 0.2], 
+              opacity: [0.22, 0.4, 0.22], 
               scale: [1, 1.03, 1] 
             }}
             transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
@@ -2786,31 +3141,35 @@ function About() {
               transform: 'translate(-50%, -50%)', 
               width: '108%', 
               height: '110%', 
-              background: 'radial-gradient(ellipse at center, rgba(210, 255, 0, 0.18) 0%, rgba(210, 255, 0, 0.04) 50%, transparent 70%)', 
-              filter: 'blur(75px)', 
+              background: 'radial-gradient(ellipse at center, rgba(210, 255, 0, 0.2) 0%, rgba(210, 255, 0, 0.05) 50%, transparent 70%)', 
+              filter: 'blur(80px)', 
               borderRadius: '36px',
               zIndex: 0,
               pointerEvents: 'none'
             }}
           />
 
-          {/* High Budget Glassmorphic Card Frame */}
-          <div style={{
-            position: 'relative',
-            zIndex: 1,
-            borderRadius: '28px',
-            border: '1px solid rgba(210, 255, 0, 0.22)',
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.035) 0%, rgba(255, 255, 255, 0.01) 100%)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            boxShadow: '0 30px 90px -20px rgba(0, 0, 0, 0.9), 0 0 50px -15px rgba(210, 255, 0, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.08)',
-            padding: 'clamp(2.5rem, 5vw, 4.5rem) clamp(2rem, 4.5vw, 3.8rem)',
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '2.5rem'
-          }}>
+          {/* High Budget Glassmorphic Cockpit Frame with Corner Reticles */}
+          <ReticleCard 
+            hover={false}
+            style={{
+              position: 'relative',
+              zIndex: 1,
+              borderRadius: '28px',
+              border: '1px solid rgba(210, 255, 0, 0.25)',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.035) 0%, rgba(255, 255, 255, 0.01) 100%)',
+              backdropFilter: 'blur(22px)',
+              WebkitBackdropFilter: 'blur(22px)',
+              boxShadow: '0 30px 90px -20px rgba(0, 0, 0, 0.9), 0 0 50px -15px rgba(210, 255, 0, 0.18), inset 0 0 0 1px rgba(255, 255, 255, 0.08)',
+              padding: 'clamp(2.5rem, 5vw, 4.5rem) clamp(2rem, 4.5vw, 3.8rem)',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '2.5rem',
+              overflow: 'hidden'
+            }}
+          >
             {/* Top HUD Badges */}
             <div style={{
               display: 'flex',
@@ -2819,25 +3178,29 @@ function About() {
               width: '100%',
               flexWrap: 'wrap',
               gap: '1rem',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.07)',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
               paddingBottom: '1.75rem'
             }}>
               <div style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.6rem',
-                padding: '0.4rem 1rem',
-                background: 'rgba(0, 0, 0, 0.5)',
-                border: '1px solid rgba(210, 255, 0, 0.3)',
+                padding: '0.4rem 1.1rem',
+                background: 'rgba(0, 0, 0, 0.55)',
+                border: '1px solid rgba(210, 255, 0, 0.35)',
                 borderRadius: '999px'
               }}>
-                <span style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--color-lime)',
-                  boxShadow: '0 0 8px var(--color-lime)'
-                }} />
+                <motion.span 
+                  animate={{ opacity: [1, 0.35, 1], scale: [1, 1.25, 1] }}
+                  transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--color-lime)',
+                    boxShadow: '0 0 8px var(--color-lime)'
+                  }} 
+                />
                 <span style={{
                   fontFamily: 'var(--font-heading)',
                   fontSize: '0.75rem',
@@ -2846,7 +3209,7 @@ function About() {
                   color: 'var(--color-lime)',
                   fontWeight: 600
                 }}>
-                  Core Design Philosophy
+                  // 04. CORE DESIGN PHILOSOPHY
                 </span>
               </div>
 
@@ -2855,7 +3218,7 @@ function About() {
                 fontSize: '0.75rem',
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: 'rgba(255, 255, 255, 0.6)'
+                color: 'rgba(255, 255, 255, 0.65)'
               }}>
                 [ COMMUNICATE // CONNECT // CONVERT ]
               </span>
@@ -2881,7 +3244,7 @@ function About() {
               width: '100%',
               flexWrap: 'wrap',
               gap: '1.5rem',
-              borderTop: '1px solid rgba(255, 255, 255, 0.07)',
+              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
               paddingTop: '2rem',
               marginTop: '1rem'
             }}>
@@ -2898,12 +3261,12 @@ function About() {
                   Ahmad Malik
                 </span>
                 <span style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: '0.8rem',
-                  letterSpacing: '0.04em',
+                  fontFamily: 'monospace',
+                  fontSize: '0.78rem',
+                  letterSpacing: '0.06em',
                   color: 'rgba(255, 255, 255, 0.6)'
                 }}>
-                  Creative Director // E-Commerce Specialist
+                  CREATIVE DIRECTOR // E-COM SPECIALIST • [ LATENCY: 0MS ]
                 </span>
               </div>
 
@@ -2915,7 +3278,7 @@ function About() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.75rem',
-                  padding: '0.85rem 1.75rem',
+                  padding: '0.85rem 1.85rem',
                   borderRadius: '999px',
                   backgroundColor: 'var(--color-lime)',
                   color: 'var(--color-black)',
@@ -2944,7 +3307,7 @@ function About() {
                 </svg>
               </a>
             </div>
-          </div>
+          </ReticleCard>
         </motion.div>
 
       </div>
@@ -2953,6 +3316,8 @@ function About() {
     </div>
   );
 }
+
+
 
 
 
