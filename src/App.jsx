@@ -2349,7 +2349,6 @@ function About() {
   // Camera parallax transformations
   const portraitScale = useTransform(smoothPortraitProgress, [0, 0.5, 1], [1.14, 1.05, 0.98]);
   const portraitY = useTransform(smoothPortraitProgress, [0, 1], [-35, 35]);
-  const bgCoordsY1 = useTransform(scrollYProgress, [0, 1], [0, -180]);
   const bgCoordsY2 = useTransform(scrollYProgress, [0, 1], [0, 220]);
 
   const textVariants = {
@@ -2440,22 +2439,6 @@ function About() {
           }}
         />
 
-        {/* Parallax Floating Telemetry Coordinates */}
-        <motion.div 
-          style={{ 
-            position: 'absolute', 
-            top: '15%', 
-            left: '4%', 
-            fontFamily: 'monospace', 
-            fontSize: '0.68rem', 
-            letterSpacing: '0.18em', 
-            color: 'rgba(210, 255, 0, 0.25)', 
-            y: bgCoordsY1 
-          }}
-        >
-          // LAT 31.5204° N • LON 74.3587° E<br/>
-          // SYS 01: READY
-        </motion.div>
 
         <motion.div 
           style={{ 
@@ -2752,15 +2735,6 @@ function About() {
                 textShadow: '0 2px 10px rgba(0,0,0,0.8)'
               }}>
                 AHMAD MALIK // STUDIO ARCHIVE
-              </span>
-              <span style={{
-                fontFamily: 'monospace',
-                fontSize: '0.75rem',
-                letterSpacing: '0.1em',
-                color: 'var(--color-lime)',
-                textShadow: '0 0 10px rgba(210, 255, 0, 0.6)'
-              }}>
-                [ SPEC // 4K HIGH DYNAMIC RANGE ]
               </span>
             </div>
           </ReticleCard>
