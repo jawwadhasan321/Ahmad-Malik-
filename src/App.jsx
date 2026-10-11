@@ -2590,6 +2590,166 @@ function About() {
             fontSize="clamp(1.6rem, 2.8vw, 2.5rem)"
             lineHeight={1.3}
           />
+          <ScrollHighlightText 
+            delay={0.25} 
+            color="#ffffff"
+            text="I’ve worked directly with brands and alongside agencies as an outsourced creative partner, creating everything from Amazon listing images, Enhanced Brand Content, Brand Stories, and Storefronts to TikTok Shop listing graphics, product creatives, and advertising visuals." 
+            highlights={["brands", "agencies", "outsourced", "creative", "partner", "Amazon", "Enhanced", "Brand", "Content", "Stories", "Storefronts", "TikTok", "Shop", "creatives", "advertising", "visuals"]}
+            fontSize="clamp(1.45rem, 2.4vw, 2.1rem)"
+            lineHeight={1.4}
+          />
+        </div>
+
+        {/* Agencies Section on About Me */}
+        <div style={{ marginTop: '7rem', width: '100%', maxWidth: '1240px', padding: '0 1.5rem' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8 }}
+            style={{ textAlign: 'center', marginBottom: '3.5rem' }}
+          >
+            <span style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: '0.8rem',
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'var(--color-lime)',
+              fontWeight: 600,
+              display: 'inline-block',
+              marginBottom: '0.75rem',
+              textShadow: '0 0 16px rgba(210, 255, 0, 0.4)'
+            }}>
+              OUTSOURCED CREATIVE PARTNER
+            </span>
+            <h3 style={{
+              fontSize: 'clamp(2rem, 3.8vw, 3rem)',
+              color: 'var(--color-white)',
+              fontFamily: 'var(--font-heading)',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.02em',
+              margin: 0
+            }}>
+              Agencies I Have Worked With
+            </h3>
+          </motion.div>
+
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', 
+            gap: '1.75rem',
+            alignItems: 'stretch'
+          }}>
+            {[
+              { name: "Advance Amazon Agency", role: "Amazon Creative Designer", img: "/agency-1.png.jpg" },
+              { name: "Konsort Social", role: "TikTok Shop Creative Designer", img: "/agency-2.png.jpg" },
+              { name: "Selliqa", role: "Senior Graphics Designer", img: "/agency-3.png.jpg" },
+              { name: "creatiWOW", role: "Senior Graphics Designer", img: "/agency-4.png.jpg" },
+              { name: "Sellonics", role: "Amazon & Tiktok Creative Designer", img: "/sellonics.jpg" }
+            ].map((agency, index) => (
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                whileHover={{ y: -6, borderColor: 'rgba(210, 255, 0, 0.4)', boxShadow: '0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(210, 255, 0, 0.15)' }}
+                style={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  alignItems: 'center', 
+                  textAlign: 'center', 
+                  padding: '2.2rem 1.5rem',
+                  background: 'rgba(255,255,255,0.025)',
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                  borderRadius: '20px',
+                  border: '1px solid rgba(255,255,255,0.07)',
+                  transition: 'border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
+                }}
+              >
+                <div style={{ height: '75px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem', overflow: 'hidden' }}>
+                  <img src={agency.img} alt={agency.name} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
+                </div>
+                <h4 style={{ fontSize: '1.2rem', color: 'var(--color-lime)', marginBottom: '0.4rem', fontFamily: '"Bricolage Grotesque", sans-serif', fontWeight: 600 }}>{agency.name}</h4>
+                <p style={{ fontSize: '0.88rem', color: 'rgba(255, 255, 255, 0.7)', lineHeight: '1.4', margin: 0 }}>{agency.role}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Trusted by Top Brands Section */}
+        <div style={{ marginTop: '8rem', width: '100%', overflow: 'hidden' }}>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8 }}
+            style={{ textAlign: 'center', marginBottom: '3.5rem', padding: '0 1rem' }}
+          >
+            <span style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: '0.8rem',
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'var(--color-lime)',
+              fontWeight: 600,
+              display: 'inline-block',
+              marginBottom: '0.75rem',
+              textShadow: '0 0 16px rgba(210, 255, 0, 0.4)'
+            }}>
+              CLIENT & BRAND ROSTER
+            </span>
+            <h2 style={{ 
+              fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)', 
+              color: 'var(--color-white)', 
+              fontFamily: 'var(--font-heading)',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.02em',
+              lineHeight: 1,
+              margin: '0 0 1rem 0',
+              textShadow: '0 10px 40px rgba(0,0,0,0.8)'
+            }}>
+              TRUSTED BY TOP BRANDS
+            </h2>
+          </motion.div>
+          
+          {/* Infinite Marquee of Brand Logos */}
+          <div style={{ position: 'relative', width: '100%', overflow: 'hidden', display: 'flex', padding: '1rem 0 3rem 0' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '150px', height: '100%', background: 'linear-gradient(to right, #000000, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', top: 0, right: 0, width: '150px', height: '100%', background: 'linear-gradient(to left, #000000, transparent)', zIndex: 2, pointerEvents: 'none' }} />
+            
+            <motion.div 
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ repeat: Infinity, ease: "linear", duration: 32 }}
+              style={{ display: 'flex', gap: '7rem', width: 'max-content', padding: '0 3rem', alignItems: 'center' }}
+            >
+              {[
+                "/ox.png.png", "/taxzap.png.png", "/boom-beauty.png.png", "/strands-of-faith.png.png",
+                "/true-classic.png.png.png", "/natpat.png.png.png", "/tanri.png.png.png", "/seedsheet.png.png.png", "/celzo.png.png.png",
+                "/ox.png.png", "/taxzap.png.png", "/boom-beauty.png.png", "/strands-of-faith.png.png",
+                "/true-classic.png.png.png", "/natpat.png.png.png", "/tanri.png.png.png", "/seedsheet.png.png.png", "/celzo.png.png.png"
+              ].map((img, i) => (
+                <div 
+                  key={i} 
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    minWidth: '150px',
+                    height: '110px'
+                  }}
+                >
+                  <img 
+                    src={img} 
+                    alt="Brand Logo" 
+                    className="brand-logo-img"
+                    style={{ maxHeight: '90px' }}
+                  />
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </div>
 
       </div>
