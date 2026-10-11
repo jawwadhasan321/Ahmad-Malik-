@@ -2207,7 +2207,15 @@ const BrandStorySection = () => {
   );
 };
 
-const ScrollHighlightText = ({ text, color = 'var(--color-white)', delay = 0 }) => {
+const ScrollHighlightText = ({ 
+  text, 
+  color = '#ffffff', 
+  highlights = [], 
+  highlightColor = 'var(--color-lime)', 
+  delay = 0,
+  fontSize = 'clamp(2.5rem, 5vw, 4.5rem)',
+  lineHeight = 1.2
+}) => {
   const words = text.split(" ");
   
   const containerVariants = {
@@ -2224,10 +2232,19 @@ const ScrollHighlightText = ({ text, color = 'var(--color-white)', delay = 0 }) 
     hidden: { y: "130%", rotate: 4, opacity: 0 },
     visible: { 
       y: "0%", 
-      rotate: 0,
-      opacity: 1,
+      rotate: 0, 
+      opacity: 1, 
       transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } 
     }
+  };
+
+  const isHighlighted = (word) => {
+    if (!highlights || highlights.length === 0) return false;
+    const cleanWord = word.toLowerCase().replace(/[^a-z0-9-]/g, '');
+    return highlights.some(h => {
+      const cleanH = h.toLowerCase().replace(/[^a-z0-9-]/g, '');
+      return cleanH === cleanWord || word.toLowerCase().includes(h.toLowerCase());
+    });
   };
 
   return (
@@ -2239,24 +2256,40 @@ const ScrollHighlightText = ({ text, color = 'var(--color-white)', delay = 0 }) 
       style={{
         margin: 0,
         fontFamily: 'var(--font-heading)',
-        fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+        fontSize: fontSize,
         fontWeight: 500,
-        lineHeight: 1.15,
-        letterSpacing: '-0.03em',
+        lineHeight: lineHeight,
+        letterSpacing: '-0.02em',
         display: 'flex',
         flexWrap: 'wrap',
-        gap: '0.25em',
+        gap: '0.28em',
         color: color,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        textAlign: 'center'
       }}
     >
-      {words.map((word, i) => (
-        <span key={i} style={{ display: 'inline-flex', overflow: 'hidden', paddingBottom: '0.15em', paddingTop: '0.15em', margin: '-0.15em 0' }}>
-          <motion.span variants={wordVariants} style={{ transformOrigin: 'left bottom', display: 'inline-block' }}>
-            {word}
-          </motion.span>
-        </span>
-      ))}
+      {words.map((word, i) => {
+        const highlighted = isHighlighted(word);
+        return (
+          <span key={i} style={{ display: 'inline-flex', overflow: 'hidden', paddingBottom: '0.15em', paddingTop: '0.15em', margin: '-0.15em 0' }}>
+            <motion.span 
+              variants={wordVariants} 
+              style={{ 
+                transformOrigin: 'left bottom', 
+                display: 'inline-block',
+                color: highlighted ? highlightColor : '#ffffff',
+                fontWeight: highlighted ? 650 : 450,
+                textShadow: highlighted 
+                  ? '0 0 25px rgba(210, 255, 0, 0.4)' 
+                  : '0 10px 30px rgba(0, 0, 0, 0.5)',
+                transition: 'color 0.3s ease'
+              }}
+            >
+              {word}
+            </motion.span>
+          </span>
+        );
+      })}
     </motion.p>
   );
 };
@@ -2333,18 +2366,18 @@ function About() {
           ))}
         </h1>
 
-        <div style={{ overflow: 'hidden', paddingBottom: '0.2em', marginBottom: '6rem' }}>
+        <div style={{ overflow: 'hidden', paddingBottom: '0.2em', marginBottom: '5rem' }}>
           <motion.h2
             initial={{ y: "100%", opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1.4, delay: 1.8, ease: [0.76, 0, 0.24, 1] }}
             style={{
-              color: 'var(--color-grey)',
-              fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
+              color: 'rgba(255, 255, 255, 0.9)',
+              fontSize: 'clamp(1.35rem, 2.5vw, 2.2rem)',
               fontFamily: 'var(--font-heading)',
-              fontWeight: 300,
+              fontWeight: 400,
               textTransform: 'none',
-              letterSpacing: '0.02em',
+              letterSpacing: '0.01em',
               margin: 0
             }}
           >
@@ -2352,39 +2385,211 @@ function About() {
           </motion.h2>
         </div>
 
-        {/* Cinematic Massive Image */}
+        {/* Cinematic High-Budget Portrait Showcase */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 50 }}
+          initial={{ opacity: 0, scale: 0.96, y: 40 }}
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.6, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           style={{ 
             width: '100%', 
-            maxWidth: '1400px', 
-            height: '70vh', 
-            borderRadius: '24px', 
-            overflow: 'hidden', 
+            maxWidth: '1020px', 
             position: 'relative', 
-            marginBottom: '8rem', 
-            marginTop: '2rem' 
+            marginBottom: '7rem', 
+            marginTop: '1rem',
+            padding: '12px'
           }}
         >
-          <motion.img 
-            src="/new-about-me.jpg" 
-            alt="Ahmad Malik - Creative Designer" 
-            initial={{ scale: 1.15 }}
-            whileInView={{ scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 2.5, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
+          {/* Ambient Lime Studio Glow Aura */}
+          <motion.div 
+            animate={{ 
+              opacity: [0.25, 0.45, 0.25], 
+              scale: [1, 1.04, 1] 
+            }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ 
+              position: 'absolute', 
+              top: '50%', 
+              left: '50%', 
+              transform: 'translate(-50%, -50%)', 
+              width: '110%', 
+              height: '110%', 
+              background: 'radial-gradient(ellipse at center, rgba(210, 255, 0, 0.22) 0%, rgba(210, 255, 0, 0.06) 45%, transparent 70%)', 
+              filter: 'blur(70px)', 
+              borderRadius: '36px',
+              zIndex: 0,
+              pointerEvents: 'none'
+            }}
           />
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.4) 100%)', pointerEvents: 'none' }} />
+
+          {/* Premium Card Frame */}
+          <div style={{
+            position: 'relative',
+            zIndex: 1,
+            borderRadius: '26px',
+            overflow: 'hidden',
+            border: '1px solid rgba(210, 255, 0, 0.28)',
+            backgroundColor: '#0c0f07',
+            boxShadow: '0 30px 100px -20px rgba(0, 0, 0, 0.9), 0 0 50px -10px rgba(210, 255, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
+            aspectRatio: '4 / 3',
+            maxHeight: '75vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            {/* Top Glassmorphic Badges */}
+            <div style={{
+              position: 'absolute',
+              top: '1.25rem',
+              left: '1.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.6rem',
+              padding: '0.45rem 1.1rem',
+              background: 'rgba(5, 5, 5, 0.65)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
+              borderRadius: '999px',
+              zIndex: 10,
+              pointerEvents: 'none'
+            }}>
+              <span style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '0.72rem',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: '#ffffff',
+                fontWeight: 600
+              }}>
+                Creative Director & Founder
+              </span>
+            </div>
+
+            <div style={{
+              position: 'absolute',
+              top: '1.25rem',
+              right: '1.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.55rem',
+              padding: '0.45rem 1.1rem',
+              background: 'rgba(5, 5, 5, 0.65)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(210, 255, 0, 0.35)',
+              borderRadius: '999px',
+              zIndex: 10,
+              pointerEvents: 'none'
+            }}>
+              <motion.span 
+                animate={{ opacity: [1, 0.4, 1], scale: [1, 1.15, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  width: '7px',
+                  height: '7px',
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--color-lime)',
+                  boxShadow: '0 0 10px var(--color-lime)',
+                  display: 'inline-block'
+                }} 
+              />
+              <span style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '0.72rem',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: 'var(--color-lime)',
+                fontWeight: 600
+              }}>
+                Available Worldwide
+              </span>
+            </div>
+
+            {/* High Quality Portrait Image */}
+            <motion.img 
+              src="/ahmad-malik-about.jpg" 
+              alt="Ahmad Malik - Creative Designer" 
+              initial={{ scale: 1.05 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover', 
+                objectPosition: 'center 20%',
+                display: 'block',
+                filter: 'contrast(1.04) brightness(1.01) saturate(1.02)'
+              }} 
+            />
+
+            {/* Bottom Cinematic Gradient Overlay */}
+            <div style={{ 
+              position: 'absolute', 
+              bottom: 0, 
+              left: 0, 
+              width: '100%', 
+              height: '35%', 
+              background: 'linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.15) 60%, transparent 100%)', 
+              pointerEvents: 'none', 
+              zIndex: 5 
+            }} />
+
+            {/* Bottom Metadata Bar */}
+            <div style={{
+              position: 'absolute',
+              bottom: '1.25rem',
+              left: '1.75rem',
+              right: '1.75rem',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              zIndex: 10,
+              pointerEvents: 'none'
+            }}>
+              <span style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '0.78rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: 'rgba(255, 255, 255, 0.95)',
+                fontWeight: 600,
+                textShadow: '0 2px 10px rgba(0,0,0,0.8)'
+              }}>
+                AHMAD MALIK // STUDIO ARCHIVE
+              </span>
+              <span style={{
+                fontFamily: 'monospace',
+                fontSize: '0.75rem',
+                letterSpacing: '0.1em',
+                color: 'var(--color-lime)',
+                textShadow: '0 0 10px rgba(210, 255, 0, 0.6)'
+              }}>
+                [ HIGH IMPACT VISUALS ]
+              </span>
+            </div>
+          </div>
         </motion.div>
 
-        {/* Elegant Copy section with Scroll Highlight */}
-        <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '3rem', padding: '0 2rem' }}>
-          <ScrollHighlightText delay={0.1} text="Over 4 years of experience elevating E-Commerce Brands." />
-          <ScrollHighlightText delay={0.2} color="var(--color-grey)" text="I specialize in crafting high-converting visuals for Amazon, TikTok, and beyond. My focus is simple: understand your brand's DNA and engineer creatives that communicate, connect, and convert." />
+        {/* Elegant Copy section with Pure White & Lime Green Highlights */}
+        <div style={{ maxWidth: '980px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2.5rem', padding: '0 2rem' }}>
+          <ScrollHighlightText 
+            delay={0.1} 
+            color="#ffffff"
+            text="Over 4 years of experience elevating E-Commerce Brands." 
+            highlights={["E-Commerce", "Brands"]}
+            fontSize="clamp(2.4rem, 4.6vw, 4rem)"
+            lineHeight={1.15}
+          />
+          <ScrollHighlightText 
+            delay={0.2} 
+            color="#ffffff"
+            text="I specialize in crafting high-converting visuals for Amazon, TikTok, and beyond. My focus is simple: understand your brand's DNA and engineer creatives that communicate, connect, and convert." 
+            highlights={["high-converting", "visuals", "Amazon", "TikTok", "DNA", "communicate", "connect", "convert"]}
+            fontSize="clamp(1.6rem, 2.8vw, 2.5rem)"
+            lineHeight={1.3}
+          />
         </div>
 
       </div>
@@ -2393,6 +2598,7 @@ function About() {
     </div>
   );
 }
+
 
 
 function Contact() {
