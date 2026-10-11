@@ -2757,6 +2757,196 @@ function About() {
           </div>
         </div>
 
+        {/* Executive Creative Manifesto Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            position: 'relative',
+            width: '100%',
+            maxWidth: '1140px',
+            marginTop: '8rem',
+            marginBottom: '4rem',
+            padding: '12px'
+          }}
+        >
+          {/* Ambient Neon Lime Aura */}
+          <motion.div 
+            animate={{ 
+              opacity: [0.2, 0.38, 0.2], 
+              scale: [1, 1.03, 1] 
+            }}
+            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ 
+              position: 'absolute', 
+              top: '50%', 
+              left: '50%', 
+              transform: 'translate(-50%, -50%)', 
+              width: '108%', 
+              height: '110%', 
+              background: 'radial-gradient(ellipse at center, rgba(210, 255, 0, 0.18) 0%, rgba(210, 255, 0, 0.04) 50%, transparent 70%)', 
+              filter: 'blur(75px)', 
+              borderRadius: '36px',
+              zIndex: 0,
+              pointerEvents: 'none'
+            }}
+          />
+
+          {/* High Budget Glassmorphic Card Frame */}
+          <div style={{
+            position: 'relative',
+            zIndex: 1,
+            borderRadius: '28px',
+            border: '1px solid rgba(210, 255, 0, 0.22)',
+            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.035) 0%, rgba(255, 255, 255, 0.01) 100%)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            boxShadow: '0 30px 90px -20px rgba(0, 0, 0, 0.9), 0 0 50px -15px rgba(210, 255, 0, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.08)',
+            padding: 'clamp(2.5rem, 5vw, 4.5rem) clamp(2rem, 4.5vw, 3.8rem)',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '2.5rem'
+          }}>
+            {/* Top HUD Badges */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+              flexWrap: 'wrap',
+              gap: '1rem',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.07)',
+              paddingBottom: '1.75rem'
+            }}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.6rem',
+                padding: '0.4rem 1rem',
+                background: 'rgba(0, 0, 0, 0.5)',
+                border: '1px solid rgba(210, 255, 0, 0.3)',
+                borderRadius: '999px'
+              }}>
+                <span style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--color-lime)',
+                  boxShadow: '0 0 8px var(--color-lime)'
+                }} />
+                <span style={{
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: '0.75rem',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: 'var(--color-lime)',
+                  fontWeight: 600
+                }}>
+                  Core Design Philosophy
+                </span>
+              </div>
+
+              <span style={{
+                fontFamily: 'monospace',
+                fontSize: '0.75rem',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: 'rgba(255, 255, 255, 0.6)'
+              }}>
+                [ COMMUNICATE // CONNECT // CONVERT ]
+              </span>
+            </div>
+
+            {/* The Text with Pure White & Lime Green Highlights */}
+            <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+              <ScrollHighlightText 
+                delay={0.1}
+                color="#ffffff"
+                text="Having worked both directly with brands and as an outsourced creative partner for agencies, I focus on understanding the brand and turning its products into visuals that communicate, connect, and convert."
+                highlights={["brands", "outsourced", "creative", "partner", "agencies", "understanding", "visuals", "communicate", "connect", "convert"]}
+                fontSize="clamp(1.7rem, 3.2vw, 2.75rem)"
+                lineHeight={1.38}
+              />
+            </div>
+
+            {/* Bottom Executive Footer / CTA Strip */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+              flexWrap: 'wrap',
+              gap: '1.5rem',
+              borderTop: '1px solid rgba(255, 255, 255, 0.07)',
+              paddingTop: '2rem',
+              marginTop: '1rem'
+            }}>
+              <div style={{ textAlign: 'left' }}>
+                <span style={{
+                  display: 'block',
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: '0.95rem',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: '#ffffff',
+                  fontWeight: 600
+                }}>
+                  Ahmad Malik
+                </span>
+                <span style={{
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: '0.8rem',
+                  letterSpacing: '0.04em',
+                  color: 'rgba(255, 255, 255, 0.6)'
+                }}>
+                  Creative Director // E-Commerce Specialist
+                </span>
+              </div>
+
+              <a
+                href="https://calendly.com/ahmadmalik1/creative-visuals-discussion"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  padding: '0.85rem 1.75rem',
+                  borderRadius: '999px',
+                  backgroundColor: 'var(--color-lime)',
+                  color: 'var(--color-black)',
+                  textDecoration: 'none',
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: '0.88rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  boxShadow: '0 0 25px rgba(210, 255, 0, 0.35)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px) scale(1.03)';
+                  e.currentTarget.style.boxShadow = '0 0 35px rgba(210, 255, 0, 0.6)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  e.currentTarget.style.boxShadow = '0 0 25px rgba(210, 255, 0, 0.35)';
+                }}
+              >
+                <span>Book A Discussion</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </motion.div>
+
       </div>
       <Footer />
       <BackToTopButton />
