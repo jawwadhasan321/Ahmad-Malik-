@@ -525,6 +525,7 @@ a {
   position: relative;
   overflow: hidden;
   border-radius: 40px 40px 0 0;
+  z-index: 10;
 }
 
 .footer-huge-text {

@@ -2404,7 +2404,6 @@ function About() {
         zIndex: 1, 
         paddingTop: '25vh', 
         minHeight: '100vh', 
-        paddingBottom: '15vh', 
         overflow: 'hidden' 
       }}
     >
