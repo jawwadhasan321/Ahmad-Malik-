@@ -3239,7 +3239,7 @@ function About() {
                   letterSpacing: '0.06em',
                   color: 'rgba(255, 255, 255, 0.6)'
                 }}>
-                  CREATIVE DIRECTOR // E-COM SPECIALIST • [ LATENCY: 0MS ]
+                  CREATIVE DIRECTOR // E-COM SPECIALIST
                 </span>
               </div>
 
