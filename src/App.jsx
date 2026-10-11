@@ -2600,6 +2600,85 @@ function About() {
           />
         </div>
 
+        {/* Trusted by Top Brands Section */}
+        <div style={{ marginTop: '7rem', width: '100%', overflow: 'hidden' }}>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8 }}
+            style={{ textAlign: 'center', marginBottom: '3.5rem', padding: '0 1rem' }}
+          >
+            <span style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: '0.8rem',
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'var(--color-lime)',
+              fontWeight: 600,
+              display: 'inline-block',
+              marginBottom: '0.75rem',
+              textShadow: '0 0 16px rgba(210, 255, 0, 0.4)'
+            }}>
+              CLIENT & BRAND ROSTER
+            </span>
+            <h2 style={{ 
+              fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)', 
+              color: 'var(--color-white)', 
+              fontFamily: 'var(--font-heading)',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.02em',
+              lineHeight: 1,
+              margin: '0 0 1rem 0',
+              textShadow: '0 10px 40px rgba(0,0,0,0.8)'
+            }}>
+              TRUSTED BY TOP BRANDS
+            </h2>
+          </motion.div>
+          
+          {/* Infinite Marquee of Brand Logos (No dark overlay boxes; pure transparent fade via CSS mask) */}
+          <div style={{ 
+            position: 'relative', 
+            width: '100%', 
+            overflow: 'hidden', 
+            display: 'flex', 
+            padding: '1rem 0 3rem 0',
+            maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)'
+          }}>
+            <motion.div 
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ repeat: Infinity, ease: "linear", duration: 32 }}
+              style={{ display: 'flex', gap: '7rem', width: 'max-content', padding: '0 3rem', alignItems: 'center' }}
+            >
+              {[
+                "/ox.png.png", "/taxzap.png.png", "/boom-beauty.png.png", "/strands-of-faith.png.png",
+                "/true-classic.png.png.png", "/natpat.png.png.png", "/tanri.png.png.png", "/seedsheet.png.png.png", "/celzo.png.png.png",
+                "/ox.png.png", "/taxzap.png.png", "/boom-beauty.png.png", "/strands-of-faith.png.png",
+                "/true-classic.png.png.png", "/natpat.png.png.png", "/tanri.png.png.png", "/seedsheet.png.png.png", "/celzo.png.png.png"
+              ].map((img, i) => (
+                <div 
+                  key={i} 
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    minWidth: '150px',
+                    height: '110px'
+                  }}
+                >
+                  <img 
+                    src={img} 
+                    alt="Brand Logo" 
+                    className="brand-logo-img"
+                    style={{ maxHeight: '90px' }}
+                  />
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+
         {/* Agencies Section on About Me */}
         <div style={{ marginTop: '7rem', width: '100%', maxWidth: '1240px', padding: '0 1.5rem' }}>
           <motion.div
@@ -2675,80 +2754,6 @@ function About() {
                 <p style={{ fontSize: '0.88rem', color: 'rgba(255, 255, 255, 0.7)', lineHeight: '1.4', margin: 0 }}>{agency.role}</p>
               </motion.div>
             ))}
-          </div>
-        </div>
-
-        {/* Trusted by Top Brands Section */}
-        <div style={{ marginTop: '8rem', width: '100%', overflow: 'hidden' }}>
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.8 }}
-            style={{ textAlign: 'center', marginBottom: '3.5rem', padding: '0 1rem' }}
-          >
-            <span style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: '0.8rem',
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              color: 'var(--color-lime)',
-              fontWeight: 600,
-              display: 'inline-block',
-              marginBottom: '0.75rem',
-              textShadow: '0 0 16px rgba(210, 255, 0, 0.4)'
-            }}>
-              CLIENT & BRAND ROSTER
-            </span>
-            <h2 style={{ 
-              fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)', 
-              color: 'var(--color-white)', 
-              fontFamily: 'var(--font-heading)',
-              textTransform: 'uppercase',
-              letterSpacing: '-0.02em',
-              lineHeight: 1,
-              margin: '0 0 1rem 0',
-              textShadow: '0 10px 40px rgba(0,0,0,0.8)'
-            }}>
-              TRUSTED BY TOP BRANDS
-            </h2>
-          </motion.div>
-          
-          {/* Infinite Marquee of Brand Logos */}
-          <div style={{ position: 'relative', width: '100%', overflow: 'hidden', display: 'flex', padding: '1rem 0 3rem 0' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, width: '150px', height: '100%', background: 'linear-gradient(to right, #000000, transparent)', zIndex: 2, pointerEvents: 'none' }} />
-            <div style={{ position: 'absolute', top: 0, right: 0, width: '150px', height: '100%', background: 'linear-gradient(to left, #000000, transparent)', zIndex: 2, pointerEvents: 'none' }} />
-            
-            <motion.div 
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{ repeat: Infinity, ease: "linear", duration: 32 }}
-              style={{ display: 'flex', gap: '7rem', width: 'max-content', padding: '0 3rem', alignItems: 'center' }}
-            >
-              {[
-                "/ox.png.png", "/taxzap.png.png", "/boom-beauty.png.png", "/strands-of-faith.png.png",
-                "/true-classic.png.png.png", "/natpat.png.png.png", "/tanri.png.png.png", "/seedsheet.png.png.png", "/celzo.png.png.png",
-                "/ox.png.png", "/taxzap.png.png", "/boom-beauty.png.png", "/strands-of-faith.png.png",
-                "/true-classic.png.png.png", "/natpat.png.png.png", "/tanri.png.png.png", "/seedsheet.png.png.png", "/celzo.png.png.png"
-              ].map((img, i) => (
-                <div 
-                  key={i} 
-                  style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
-                    minWidth: '150px',
-                    height: '110px'
-                  }}
-                >
-                  <img 
-                    src={img} 
-                    alt="Brand Logo" 
-                    className="brand-logo-img"
-                    style={{ maxHeight: '90px' }}
-                  />
-                </div>
-              ))}
-            </motion.div>
           </div>
         </div>
 
