@@ -321,7 +321,7 @@ const CustomCursor = ({ isMenuOpen }) => {
     };
 
     const updateHoverState = (e) => {
-      if (e.target.closest('a, button, input, textarea, select, .screenshot-item, .play-button, .nav-brand')) {
+      if (e.target.closest('a, button, input, textarea, select, label, [role="button"], .screenshot-item, .play-button, .nav-brand')) {
         setIsHovering(true);
       } else {
         setIsHovering(false);
@@ -342,12 +342,12 @@ const CustomCursor = ({ isMenuOpen }) => {
       {/* Trailing Hollow Circle */}
       <motion.div
         animate={{
-          x: mousePosition.x - (isHovering ? 25 : 15),
-          y: mousePosition.y - (isHovering ? 25 : 15),
-          width: isHovering ? 50 : 30,
-          height: isHovering ? 50 : 30,
+          x: mousePosition.x - (isHovering ? 9 : 21),
+          y: mousePosition.y - (isHovering ? 9 : 21),
+          width: isHovering ? 18 : 42,
+          height: isHovering ? 18 : 42,
         }}
-        transition={{ type: 'spring', stiffness: 150, damping: 15, mass: 0.5 }}
+        transition={{ type: 'spring', stiffness: 180, damping: 18, mass: 0.5 }}
         style={{
           position: 'fixed',
           top: 0,
