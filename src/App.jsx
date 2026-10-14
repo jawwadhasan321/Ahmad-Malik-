@@ -22,7 +22,7 @@ const ScrollToTop = () => {
 
 const MotionLink = motion(Link);
 
-const Preloader = () => {
+const Preloader = ({ transitionKey }) => {
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const { pathname } = useLocation();
@@ -35,46 +35,48 @@ const Preloader = () => {
     setProgress(0);
     document.body.style.overflow = 'hidden';
 
-    // Simulate progress while loading
+    // F1-grade dynamic pacing:
+    // Initial website entrance: ~1100ms
+    // Route-to-route transitions: ~650ms for snappy, ultra-responsive motorsport feel
+    const isInitialLoad = !window.hasLoadedBefore;
+    window.hasLoadedBefore = true;
+    const loadDuration = isInitialLoad ? 1100 : 650;
+    const startTime = Date.now();
+
     const interval = setInterval(() => {
-      setProgress(p => {
-        if (p >= 90) return p;
-        return p + Math.floor(Math.random() * 10) + 1;
-      });
-    }, 150);
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min(95, Math.floor((elapsed / loadDuration) * 95));
+      setProgress(pct);
+    }, 25);
 
     const checkLoad = async () => {
-      // Shorter minimum time on route transitions, longer on initial load
-      const isInitialLoad = !window.hasLoadedBefore;
-      window.hasLoadedBefore = true;
-      const minTime = new Promise(resolve => setTimeout(resolve, isInitialLoad ? 1500 : 800));
-      
-      // Wait a tiny bit for React to render the new route's img tags
+      // Tiny pause for DOM update
       await new Promise(resolve => setTimeout(resolve, 50));
       
-      // Find all images currently in the DOM
       const images = Array.from(document.images);
-      
-      // Wait for all images to complete downloading
       await Promise.all(images.map(img => {
         if (img.complete) return Promise.resolve();
         return new Promise((resolve) => {
           img.onload = resolve;
-          img.onerror = resolve; // resolve anyway to avoid hanging
+          img.onerror = resolve;
         });
       }));
 
-      await minTime;
+      const elapsed = Date.now() - startTime;
+      if (elapsed < loadDuration) {
+        await new Promise(resolve => setTimeout(resolve, loadDuration - elapsed));
+      }
 
       if (isMounted) {
         clearInterval(interval);
         setProgress(100);
+        // Brief 180ms hold at 100% to lock-on telemetry before the explosive AS logo expansion
         setTimeout(() => {
           if (isMounted) {
             setIsVisible(false);
             document.body.style.overflow = '';
           }
-        }, 500); // delay at 100% before starting exit animation
+        }, 180);
       }
     };
 
@@ -85,65 +87,331 @@ const Preloader = () => {
       clearInterval(interval);
       document.body.style.overflow = '';
     };
-  }, [pathname]);
+  }, [pathname, transitionKey]);
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isVisible && (
         <motion.div
+          key="preloader-curtain"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, y: "-100%" }}
-          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          animate={{ opacity: 1 }}
+          exit={{
+            opacity: 0,
+            transition: {
+              duration: 0.95,
+              delay: 0.35, // Let the AS logo expansion blast off first
+              ease: [0.76, 0, 0.24, 1]
+            }
+          }}
           style={{
             position: 'fixed',
             top: 0,
             left: 0,
             width: '100vw',
             height: '100vh',
-            backgroundColor: 'var(--color-black)',
-            zIndex: 999999,
+            backgroundColor: '#050604',
+            zIndex: 9999999,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            color: 'var(--color-lime)',
+            overflow: 'hidden',
+            pointerEvents: 'auto'
           }}
         >
+          {/* Subtle Ambient Radial Lighting */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'radial-gradient(circle at 50% 50%, rgba(210, 255, 0, 0.08) 0%, rgba(5, 6, 4, 0.98) 75%)',
+            pointerEvents: 'none'
+          }} />
+
+          {/* Precision Telemetry HUD (Fades out quickly upon reveal) */}
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0, transition: { duration: 0.4 } }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            style={{ width: '80px', height: '80px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.22, ease: 'easeOut' } }}
+            style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
           >
-            {/* The Logo */}
-            <motion.img 
-              src="/logo.png" 
-              alt="AS Logo" 
-              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-              animate={{ 
-                opacity: [0.5, 1, 0.5],
-                scale: [1, 1.05, 1]
-              }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            />
+            {/* Corner Crosshairs */}
+            <div style={{ position: 'absolute', top: '2rem', left: '2rem', color: 'var(--color-lime)', opacity: 0.5, fontFamily: 'monospace', fontSize: '1.1rem' }}>+</div>
+            <div style={{ position: 'absolute', top: '2rem', right: '2rem', color: 'var(--color-lime)', opacity: 0.5, fontFamily: 'monospace', fontSize: '1.1rem' }}>+</div>
+            <div style={{ position: 'absolute', bottom: '2rem', left: '2rem', color: 'var(--color-lime)', opacity: 0.5, fontFamily: 'monospace', fontSize: '1.1rem' }}>+</div>
+            <div style={{ position: 'absolute', bottom: '2rem', right: '2rem', color: 'var(--color-lime)', opacity: 0.5, fontFamily: 'monospace', fontSize: '1.1rem' }}>+</div>
+
+            {/* Top-Left Telemetry */}
+            <div style={{
+              position: 'absolute',
+              top: '2.5rem',
+              left: '3.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontFamily: 'monospace',
+              fontSize: '0.72rem',
+              color: 'var(--color-lime)',
+              letterSpacing: '0.14em'
+            }}>
+              <span style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--color-lime)',
+                boxShadow: '0 0 8px var(--color-lime)'
+              }} />
+              <span>SYS // TELEMETRY SYNC [001]</span>
+            </div>
+
+            {/* Top-Right Telemetry */}
+            <div style={{
+              position: 'absolute',
+              top: '2.5rem',
+              right: '3.5rem',
+              fontFamily: 'monospace',
+              fontSize: '0.72rem',
+              color: 'rgba(255, 255, 255, 0.45)',
+              letterSpacing: '0.14em'
+            }}>
+              <span>ARCHIVE // SECTOR.04 • 60 FPS</span>
+            </div>
+
+            {/* Bottom-Left Telemetry */}
+            <div style={{
+              position: 'absolute',
+              bottom: '2.5rem',
+              left: '3.5rem',
+              fontFamily: 'monospace',
+              fontSize: '0.72rem',
+              color: 'rgba(255, 255, 255, 0.4)',
+              letterSpacing: '0.14em'
+            }}>
+              <span>AHMAD MALIK // BESPOKE VISUAL DNA</span>
+            </div>
+
+            {/* Bottom-Right Telemetry */}
+            <div style={{
+              position: 'absolute',
+              bottom: '2.5rem',
+              right: '3.5rem',
+              fontFamily: 'monospace',
+              fontSize: '0.72rem',
+              color: 'var(--color-lime)',
+              letterSpacing: '0.14em',
+              fontWeight: 600
+            }}>
+              <span>STATUS // {progress === 100 ? 'READY TO LAUNCH' : 'CALIBRATING'}</span>
+            </div>
           </motion.div>
-          
-          {/* Subtle minimal loading bar beneath the logo */}
-          <motion.div 
-            style={{ marginTop: '2.5rem', width: '60px', height: '1px', background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}
-            exit={{ opacity: 0, transition: { duration: 0.2 } }}
-          >
-            <motion.div 
-              style={{ height: '100%', background: 'var(--color-lime)' }}
-              initial={{ width: '0%' }}
-              animate={{ width: `${progress}%` }}
-              transition={{ ease: 'linear', duration: 0.2 }}
+
+          {/* Central Stage: Telemetry Shockwave Rings & Animated AS Logo */}
+          <div style={{
+            position: 'relative',
+            width: '260px',
+            height: '260px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            {/* Rotating Subtle Dashed Telemetry Ring */}
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
+              exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+              style={{
+                position: 'absolute',
+                width: '180px',
+                height: '180px',
+                borderRadius: '50%',
+                border: '1px dashed rgba(210, 255, 0, 0.22)',
+                pointerEvents: 'none'
+              }}
             />
+
+            {/* Pulsing Sonic Shockwave Ring */}
+            <motion.div
+              animate={{
+                scale: [0.85, 1.6, 2.2],
+                opacity: [0.65, 0.25, 0]
+              }}
+              transition={{
+                duration: 2.2,
+                repeat: Infinity,
+                ease: [0.215, 0.61, 0.355, 1]
+              }}
+              exit={{ opacity: 0, transition: { duration: 0.2 } }}
+              style={{
+                position: 'absolute',
+                width: '110px',
+                height: '110px',
+                borderRadius: '50%',
+                border: '1px solid rgba(210, 255, 0, 0.35)',
+                pointerEvents: 'none'
+              }}
+            />
+
+            {/* Orbiting Telemetry Dot */}
+            <motion.div
+              animate={{ rotate: -360 }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: 'linear' }}
+              exit={{ opacity: 0, transition: { duration: 0.2 } }}
+              style={{
+                position: 'absolute',
+                width: '145px',
+                height: '145px',
+                borderRadius: '50%',
+                pointerEvents: 'none'
+              }}
+            >
+              <span style={{
+                position: 'absolute',
+                top: '-3px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--color-lime)',
+                boxShadow: '0 0 10px var(--color-lime)'
+              }} />
+            </motion.div>
+
+            {/* Explosive Optical Flash Flare (Triggers on Exit Reveal) */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              exit={{
+                opacity: [0, 0.8, 0],
+                scale: [0.5, 4, 15],
+                transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] }
+              }}
+              style={{
+                position: 'absolute',
+                width: '260px',
+                height: '260px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(210, 255, 0, 0.85) 0%, rgba(210, 255, 0, 0.2) 40%, transparent 70%)',
+                pointerEvents: 'none',
+                zIndex: 15
+              }}
+            />
+
+            {/* THE AS LOGO: Animated while loading, and EXPANDS to reveal the page */}
+            <motion.div
+              style={{
+                position: 'relative',
+                width: '95px',
+                height: '95px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                transformOrigin: 'center center',
+                zIndex: 20
+              }}
+              initial={{ scale: 0.88, opacity: 0 }}
+              animate={{
+                scale: [0.96, 1.05, 0.96],
+                opacity: 1
+              }}
+              transition={{
+                scale: {
+                  duration: 1.6,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                },
+                opacity: { duration: 0.35 }
+              }}
+              exit={{
+                scale: 45,
+                opacity: [1, 1, 0.7, 0],
+                filter: [
+                  'drop-shadow(0 0 20px rgba(210, 255, 0, 0.6))',
+                  'drop-shadow(0 0 60px rgba(210, 255, 0, 0.9))',
+                  'drop-shadow(0 0 120px rgba(210, 255, 0, 1)) blur(4px)'
+                ],
+                transition: {
+                  duration: 1.05,
+                  ease: [0.76, 0, 0.24, 1]
+                }
+              }}
+            >
+              <img 
+                src="/logo.png" 
+                alt="AS Logo" 
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 0 20px rgba(210, 255, 0, 0.45))'
+                }}
+              />
+            </motion.div>
+          </div>
+
+          {/* Telemetry Progress Bar & Digital Readout Beneath AS Logo */}
+          <motion.div
+            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+            style={{
+              marginTop: '2.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.8rem',
+              zIndex: 10
+            }}
+          >
+            {/* Precision Laser Line */}
+            <div style={{
+              width: '120px',
+              height: '2px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              borderRadius: '2px',
+              overflow: 'hidden',
+              position: 'relative'
+            }}>
+              <motion.div
+                style={{
+                  height: '100%',
+                  background: 'var(--color-lime)',
+                  boxShadow: '0 0 12px var(--color-lime)',
+                  borderRadius: '2px'
+                }}
+                initial={{ width: '0%' }}
+                animate={{ width: `${progress}%` }}
+                transition={{ ease: 'linear', duration: 0.15 }}
+              />
+            </div>
+
+            {/* Digital Percentage Counter */}
+            <div style={{
+              fontFamily: 'monospace',
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              letterSpacing: '0.18em',
+              color: 'var(--color-lime)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span>{progress.toString().padStart(3, '0')}%</span>
+            </div>
           </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
+  );
+};
+
+const PageContentWrapper = ({ children }) => {
+  const { pathname } = useLocation();
+  return (
+    <motion.div
+      key={pathname}
+      initial={{ scale: 1.03, opacity: 0.9 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.95, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+      style={{ width: '100%', minHeight: '100vh', transformOrigin: 'center center' }}
+    >
+      {children}
+    </motion.div>
   );
 };
 
@@ -473,7 +741,8 @@ const WavyLinesBackground = () => {
   );
 };
 
-const FullscreenMenu = ({ isOpen, setIsOpen }) => {
+const FullscreenMenu = ({ isOpen, setIsOpen, triggerTransition }) => {
+  const location = useLocation();
   const menuVariants = {
     closed: {
       y: "-100%",
@@ -542,7 +811,13 @@ const FullscreenMenu = ({ isOpen, setIsOpen }) => {
                     initial="closed"
                     animate="open"
                     exit="exit"
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => {
+                      if (location.pathname === link.href) {
+                        if (triggerTransition) triggerTransition();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                      setIsOpen(false);
+                    }}
                   >
                     <span className="menu-link-text">
                       {link.name.split('').map((char, index) => (
@@ -3812,16 +4087,25 @@ function Contact() {
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [transitionKey, setTransitionKey] = useState(0);
+
+  const triggerTransition = () => {
+    setTransitionKey(k => k + 1);
+  };
 
   return (
     <Router>
       <ReactLenis root options={{ lerp: 0.05, duration: 1.5, smoothTouch: true }}>
         <ScrollToTop />
-        <Preloader />
+        <Preloader transitionKey={transitionKey} />
         <div className="app">
           <GlobalBackground />
           <CustomCursor isMenuOpen={isMenuOpen} />
-          <FullscreenMenu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
+          <FullscreenMenu 
+            isOpen={isMenuOpen} 
+            setIsOpen={setIsMenuOpen} 
+            triggerTransition={triggerTransition}
+          />
           
           {/* Document Top Logo */}
           <motion.div
@@ -3847,6 +4131,9 @@ export default function App() {
               to="/"
               className="nav-brand" 
               onClick={() => {
+                if (window.location.hash === '#/' || window.location.hash === '') {
+                  triggerTransition();
+                }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 setIsMenuOpen(false); // Close menu if open
               }}
@@ -3871,12 +4158,14 @@ export default function App() {
             </button>
           </motion.nav>
 
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/showcase" element={<Showcase />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
+          <PageContentWrapper>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/showcase" element={<Showcase />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+            </Routes>
+          </PageContentWrapper>
         </div>
       </ReactLenis>
     </Router>
