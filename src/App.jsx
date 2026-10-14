@@ -2468,7 +2468,7 @@ function About() {
     },
     {
       id: "STAT // 03",
-      number: "8-FIG",
+      number: "6-FIG",
       label: "CLIENT REVENUE",
       detail: "Direct & Agency Brand Scale"
     },
