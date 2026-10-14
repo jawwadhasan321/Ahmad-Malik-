@@ -23,7 +23,6 @@ const ScrollToTop = () => {
 const MotionLink = motion(Link);
 
 const Preloader = ({ transitionKey }) => {
-  const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const { pathname } = useLocation();
 
@@ -32,26 +31,19 @@ const Preloader = ({ transitionKey }) => {
     
     // Show preloader on route change
     setIsVisible(true);
-    setProgress(0);
     document.body.style.overflow = 'hidden';
 
-    // F1-grade dynamic pacing:
-    // Initial website entrance: ~1100ms
-    // Route-to-route transitions: ~650ms for snappy, ultra-responsive motorsport feel
+    // High-budget luxury pacing:
+    // Initial entrance: ~850ms
+    // Route-to-route transitions: ~450ms for razor-sharp, instantaneous motorsport feel
     const isInitialLoad = !window.hasLoadedBefore;
     window.hasLoadedBefore = true;
-    const loadDuration = isInitialLoad ? 1100 : 650;
+    const minLoadTime = isInitialLoad ? 850 : 450;
     const startTime = Date.now();
 
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const pct = Math.min(95, Math.floor((elapsed / loadDuration) * 95));
-      setProgress(pct);
-    }, 25);
-
     const checkLoad = async () => {
-      // Tiny pause for DOM update
-      await new Promise(resolve => setTimeout(resolve, 50));
+      // Tiny pause for React route component to mount
+      await new Promise(resolve => setTimeout(resolve, 40));
       
       const images = Array.from(document.images);
       await Promise.all(images.map(img => {
@@ -63,20 +55,13 @@ const Preloader = ({ transitionKey }) => {
       }));
 
       const elapsed = Date.now() - startTime;
-      if (elapsed < loadDuration) {
-        await new Promise(resolve => setTimeout(resolve, loadDuration - elapsed));
+      if (elapsed < minLoadTime) {
+        await new Promise(resolve => setTimeout(resolve, minLoadTime - elapsed));
       }
 
       if (isMounted) {
-        clearInterval(interval);
-        setProgress(100);
-        // Brief 180ms hold at 100% to lock-on telemetry before the explosive AS logo expansion
-        setTimeout(() => {
-          if (isMounted) {
-            setIsVisible(false);
-            document.body.style.overflow = '';
-          }
-        }, 180);
+        setIsVisible(false);
+        document.body.style.overflow = '';
       }
     };
 
@@ -84,7 +69,6 @@ const Preloader = ({ transitionKey }) => {
 
     return () => {
       isMounted = false;
-      clearInterval(interval);
       document.body.style.overflow = '';
     };
   }, [pathname, transitionKey]);
@@ -93,14 +77,14 @@ const Preloader = ({ transitionKey }) => {
     <AnimatePresence mode="wait">
       {isVisible && (
         <motion.div
-          key="preloader-curtain"
+          key="luxury-preloader-curtain"
           initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={{
             opacity: 0,
             transition: {
-              duration: 0.95,
-              delay: 0.35, // Let the AS logo expansion blast off first
+              duration: 0.65,
+              delay: 0.18,
               ease: [0.76, 0, 0.24, 1]
             }
           }}
@@ -117,218 +101,159 @@ const Preloader = ({ transitionKey }) => {
             justifyContent: 'center',
             alignItems: 'center',
             overflow: 'hidden',
-            pointerEvents: 'auto'
+            pointerEvents: 'auto',
+            willChange: 'opacity'
           }}
         >
           {/* Subtle Ambient Radial Lighting */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'radial-gradient(circle at 50% 50%, rgba(210, 255, 0, 0.08) 0%, rgba(5, 6, 4, 0.98) 75%)',
+            background: 'radial-gradient(circle at 50% 50%, rgba(210, 255, 0, 0.06) 0%, rgba(5, 6, 4, 0.98) 70%)',
             pointerEvents: 'none'
           }} />
 
-          {/* Precision Telemetry HUD (Fades out quickly upon reveal) */}
+          {/* Minimal High-Budget Editorial HUD (Fades out quickly on reveal) */}
           <motion.div
-            exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.22, ease: 'easeOut' } }}
+            exit={{ opacity: 0, transition: { duration: 0.15, ease: 'easeOut' } }}
             style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
           >
-            {/* Corner Crosshairs */}
-            <div style={{ position: 'absolute', top: '2rem', left: '2rem', color: 'var(--color-lime)', opacity: 0.5, fontFamily: 'monospace', fontSize: '1.1rem' }}>+</div>
-            <div style={{ position: 'absolute', top: '2rem', right: '2rem', color: 'var(--color-lime)', opacity: 0.5, fontFamily: 'monospace', fontSize: '1.1rem' }}>+</div>
-            <div style={{ position: 'absolute', bottom: '2rem', left: '2rem', color: 'var(--color-lime)', opacity: 0.5, fontFamily: 'monospace', fontSize: '1.1rem' }}>+</div>
-            <div style={{ position: 'absolute', bottom: '2rem', right: '2rem', color: 'var(--color-lime)', opacity: 0.5, fontFamily: 'monospace', fontSize: '1.1rem' }}>+</div>
+            {/* Minimalist Precision Corner Reticles */}
+            <div style={{ position: 'absolute', top: '2.5rem', left: '2.5rem', width: '12px', height: '12px', borderTop: '1px solid rgba(210, 255, 0, 0.35)', borderLeft: '1px solid rgba(210, 255, 0, 0.35)' }} />
+            <div style={{ position: 'absolute', top: '2.5rem', right: '2.5rem', width: '12px', height: '12px', borderTop: '1px solid rgba(210, 255, 0, 0.35)', borderRight: '1px solid rgba(210, 255, 0, 0.35)' }} />
+            <div style={{ position: 'absolute', bottom: '2.5rem', left: '2.5rem', width: '12px', height: '12px', borderBottom: '1px solid rgba(210, 255, 0, 0.35)', borderLeft: '1px solid rgba(210, 255, 0, 0.35)' }} />
+            <div style={{ position: 'absolute', bottom: '2.5rem', right: '2.5rem', width: '12px', height: '12px', borderBottom: '1px solid rgba(210, 255, 0, 0.35)', borderRight: '1px solid rgba(210, 255, 0, 0.35)' }} />
 
-            {/* Top-Left Telemetry */}
+            {/* Top Minimal Header */}
             <div style={{
               position: 'absolute',
               top: '2.5rem',
-              left: '3.5rem',
+              left: '4.5rem',
+              right: '4.5rem',
               display: 'flex',
+              justifyContent: 'space-between',
               alignItems: 'center',
-              gap: '8px',
               fontFamily: 'monospace',
-              fontSize: '0.72rem',
-              color: 'var(--color-lime)',
-              letterSpacing: '0.14em'
+              fontSize: '0.68rem',
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase'
             }}>
-              <span style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--color-lime)',
-                boxShadow: '0 0 8px var(--color-lime)'
-              }} />
-              <span>SYS // TELEMETRY SYNC [001]</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-lime)' }}>
+                <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'var(--color-lime)', boxShadow: '0 0 8px var(--color-lime)' }} />
+                <span>AHMAD MALIK</span>
+              </div>
+              <div style={{ color: 'rgba(255, 255, 255, 0.35)' }}>
+                DOSSIER // ARCHIVE
+              </div>
             </div>
 
-            {/* Top-Right Telemetry */}
-            <div style={{
-              position: 'absolute',
-              top: '2.5rem',
-              right: '3.5rem',
-              fontFamily: 'monospace',
-              fontSize: '0.72rem',
-              color: 'rgba(255, 255, 255, 0.45)',
-              letterSpacing: '0.14em'
-            }}>
-              <span>ARCHIVE // SECTOR.04 • 60 FPS</span>
-            </div>
-
-            {/* Bottom-Left Telemetry */}
+            {/* Bottom Minimal Footer */}
             <div style={{
               position: 'absolute',
               bottom: '2.5rem',
-              left: '3.5rem',
+              left: '4.5rem',
+              right: '4.5rem',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               fontFamily: 'monospace',
-              fontSize: '0.72rem',
-              color: 'rgba(255, 255, 255, 0.4)',
-              letterSpacing: '0.14em'
+              fontSize: '0.65rem',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'rgba(255, 255, 255, 0.35)'
             }}>
-              <span>AHMAD MALIK // BESPOKE VISUAL DNA</span>
-            </div>
-
-            {/* Bottom-Right Telemetry */}
-            <div style={{
-              position: 'absolute',
-              bottom: '2.5rem',
-              right: '3.5rem',
-              fontFamily: 'monospace',
-              fontSize: '0.72rem',
-              color: 'var(--color-lime)',
-              letterSpacing: '0.14em',
-              fontWeight: 600
-            }}>
-              <span>STATUS // {progress === 100 ? 'READY TO LAUNCH' : 'CALIBRATING'}</span>
+              <span>E-COMMERCE ART DIRECTION</span>
+              <span style={{ color: 'var(--color-lime)', opacity: 0.8 }}>SYSTEM READY</span>
             </div>
           </motion.div>
 
-          {/* Central Stage: Telemetry Shockwave Rings & Animated AS Logo */}
+          {/* Central Stage: Pristine AS Logo and High-Budget Subtle Physics */}
           <div style={{
             position: 'relative',
-            width: '260px',
-            height: '260px',
+            width: '240px',
+            height: '240px',
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            pointerEvents: 'none'
           }}>
-            {/* Rotating Subtle Dashed Telemetry Ring */}
+            {/* Fine Luxury Orbit Ring */}
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
-              exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+              transition={{ duration: 16, repeat: Infinity, ease: 'linear' }}
+              exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.15 } }}
               style={{
                 position: 'absolute',
-                width: '180px',
-                height: '180px',
+                width: '160px',
+                height: '160px',
                 borderRadius: '50%',
-                border: '1px dashed rgba(210, 255, 0, 0.22)',
-                pointerEvents: 'none'
+                border: '1px solid rgba(210, 255, 0, 0.15)',
+                borderTop: '1px solid rgba(210, 255, 0, 0.65)',
+                pointerEvents: 'none',
+                willChange: 'transform'
               }}
             />
 
-            {/* Pulsing Sonic Shockwave Ring */}
+            {/* Soft Ambient Lime Aura Behind Logo (100% GPU-accelerated) */}
             <motion.div
               animate={{
-                scale: [0.85, 1.6, 2.2],
-                opacity: [0.65, 0.25, 0]
+                scale: [1, 1.15, 1],
+                opacity: [0.45, 0.75, 0.45]
               }}
               transition={{
-                duration: 2.2,
+                duration: 2.4,
                 repeat: Infinity,
-                ease: [0.215, 0.61, 0.355, 1]
+                ease: 'easeInOut'
               }}
-              exit={{ opacity: 0, transition: { duration: 0.2 } }}
-              style={{
-                position: 'absolute',
-                width: '110px',
-                height: '110px',
-                borderRadius: '50%',
-                border: '1px solid rgba(210, 255, 0, 0.35)',
-                pointerEvents: 'none'
-              }}
-            />
-
-            {/* Orbiting Telemetry Dot */}
-            <motion.div
-              animate={{ rotate: -360 }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: 'linear' }}
-              exit={{ opacity: 0, transition: { duration: 0.2 } }}
-              style={{
-                position: 'absolute',
-                width: '145px',
-                height: '145px',
-                borderRadius: '50%',
-                pointerEvents: 'none'
-              }}
-            >
-              <span style={{
-                position: 'absolute',
-                top: '-3px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--color-lime)',
-                boxShadow: '0 0 10px var(--color-lime)'
-              }} />
-            </motion.div>
-
-            {/* Explosive Optical Flash Flare (Triggers on Exit Reveal) */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
               exit={{
-                opacity: [0, 0.8, 0],
-                scale: [0.5, 4, 15],
-                transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] }
+                scale: 6,
+                opacity: 0,
+                transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
               }}
               style={{
                 position: 'absolute',
-                width: '260px',
-                height: '260px',
+                width: '120px',
+                height: '120px',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(210, 255, 0, 0.85) 0%, rgba(210, 255, 0, 0.2) 40%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(210, 255, 0, 0.35) 0%, rgba(210, 255, 0, 0.08) 50%, transparent 70%)',
                 pointerEvents: 'none',
-                zIndex: 15
+                willChange: 'transform, opacity'
               }}
             />
 
-            {/* THE AS LOGO: Animated while loading, and EXPANDS to reveal the page */}
+            {/* THE AS LOGO: Animated Breathing While Loading -> Exponential Zoom Into Viewport */}
             <motion.div
               style={{
                 position: 'relative',
-                width: '95px',
-                height: '95px',
+                width: '90px',
+                height: '90px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 transformOrigin: 'center center',
-                zIndex: 20
+                zIndex: 20,
+                willChange: 'transform, opacity',
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden'
               }}
-              initial={{ scale: 0.88, opacity: 0 }}
+              initial={{ scale: 0.92, opacity: 0 }}
               animate={{
-                scale: [0.96, 1.05, 0.96],
+                scale: [0.97, 1.03, 0.97],
                 opacity: 1
               }}
               transition={{
                 scale: {
-                  duration: 1.6,
+                  duration: 2,
                   repeat: Infinity,
                   ease: 'easeInOut'
                 },
-                opacity: { duration: 0.35 }
+                opacity: { duration: 0.3 }
               }}
               exit={{
-                scale: 45,
-                opacity: [1, 1, 0.7, 0],
-                filter: [
-                  'drop-shadow(0 0 20px rgba(210, 255, 0, 0.6))',
-                  'drop-shadow(0 0 60px rgba(210, 255, 0, 0.9))',
-                  'drop-shadow(0 0 120px rgba(210, 255, 0, 1)) blur(4px)'
-                ],
+                scale: 28,
+                opacity: [1, 1, 0.3, 0],
                 transition: {
-                  duration: 1.05,
+                  duration: 0.8,
                   ease: [0.76, 0, 0.24, 1]
                 }
               }}
@@ -340,60 +265,11 @@ const Preloader = ({ transitionKey }) => {
                   width: '100%',
                   height: '100%',
                   objectFit: 'contain',
-                  filter: 'drop-shadow(0 0 20px rgba(210, 255, 0, 0.45))'
+                  filter: 'drop-shadow(0 0 16px rgba(210, 255, 0, 0.4))'
                 }}
               />
             </motion.div>
           </div>
-
-          {/* Telemetry Progress Bar & Digital Readout Beneath AS Logo */}
-          <motion.div
-            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-            style={{
-              marginTop: '2.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '0.8rem',
-              zIndex: 10
-            }}
-          >
-            {/* Precision Laser Line */}
-            <div style={{
-              width: '120px',
-              height: '2px',
-              background: 'rgba(255, 255, 255, 0.1)',
-              borderRadius: '2px',
-              overflow: 'hidden',
-              position: 'relative'
-            }}>
-              <motion.div
-                style={{
-                  height: '100%',
-                  background: 'var(--color-lime)',
-                  boxShadow: '0 0 12px var(--color-lime)',
-                  borderRadius: '2px'
-                }}
-                initial={{ width: '0%' }}
-                animate={{ width: `${progress}%` }}
-                transition={{ ease: 'linear', duration: 0.15 }}
-              />
-            </div>
-
-            {/* Digital Percentage Counter */}
-            <div style={{
-              fontFamily: 'monospace',
-              fontSize: '0.78rem',
-              fontWeight: 700,
-              letterSpacing: '0.18em',
-              color: 'var(--color-lime)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}>
-              <span>{progress.toString().padStart(3, '0')}%</span>
-            </div>
-          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
@@ -401,17 +277,10 @@ const Preloader = ({ transitionKey }) => {
 };
 
 const PageContentWrapper = ({ children }) => {
-  const { pathname } = useLocation();
   return (
-    <motion.div
-      key={pathname}
-      initial={{ scale: 1.03, opacity: 0.9 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.95, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-      style={{ width: '100%', minHeight: '100vh', transformOrigin: 'center center' }}
-    >
+    <div style={{ width: '100%', minHeight: '100vh' }}>
       {children}
-    </motion.div>
+    </div>
   );
 };
 
