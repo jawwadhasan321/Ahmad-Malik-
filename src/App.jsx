@@ -22,6 +22,9 @@ const ScrollToTop = () => {
 
 const MotionLink = motion(Link);
 
+// Exact mathematical vector paths for the AS logo (extracted with sub-pixel fidelity)
+const AS_LOGO_PATH = "M 441 269 L 687 652 L 570 653 L 439 444 L 198 790 L 83 791 Z M 584 269 L 860 269 L 795 360 L 632 361 L 906 665 L 910 690 L 904 707 L 843 790 L 612 791 L 544 686 L 800 684 L 617 486 L 525 341 L 523 336 L 560 283 Z";
+
 const Preloader = ({ transitionKey }) => {
   const [isVisible, setIsVisible] = useState(true);
   const { pathname } = useLocation();
@@ -34,11 +37,11 @@ const Preloader = ({ transitionKey }) => {
     document.body.style.overflow = 'hidden';
 
     // High-budget luxury pacing:
-    // Initial entrance: ~850ms
-    // Route-to-route transitions: ~450ms for razor-sharp, instantaneous motorsport feel
+    // Initial entrance: ~1200ms
+    // Route-to-route transitions: ~850ms for deliberate, high-budget cinematic feel
     const isInitialLoad = !window.hasLoadedBefore;
     window.hasLoadedBefore = true;
-    const minLoadTime = isInitialLoad ? 850 : 450;
+    const minLoadTime = isInitialLoad ? 1200 : 850;
     const startTime = Date.now();
 
     const checkLoad = async () => {
@@ -83,8 +86,8 @@ const Preloader = ({ transitionKey }) => {
           exit={{
             opacity: 0,
             transition: {
-              duration: 0.65,
-              delay: 0.18,
+              duration: 0.7,
+              delay: 0.12,
               ease: [0.76, 0, 0.24, 1]
             }
           }}
@@ -167,7 +170,7 @@ const Preloader = ({ transitionKey }) => {
             </div>
           </motion.div>
 
-          {/* Central Stage: Pristine AS Logo and High-Budget Subtle Physics */}
+          {/* Central Stage: Pristine AS Vector Logo and High-Budget Motion */}
           <div style={{
             position: 'relative',
             width: '240px',
@@ -194,21 +197,21 @@ const Preloader = ({ transitionKey }) => {
               }}
             />
 
-            {/* Soft Ambient Lime Aura Behind Logo (100% GPU-accelerated) */}
+            {/* Soft Ambient Lime Aura Behind Logo */}
             <motion.div
               animate={{
-                scale: [1, 1.15, 1],
-                opacity: [0.45, 0.75, 0.45]
+                scale: [0.85, 1.25, 0.85],
+                opacity: [0.2, 0.7, 0.2]
               }}
               transition={{
-                duration: 2.4,
+                duration: 2.2,
                 repeat: Infinity,
                 ease: 'easeInOut'
               }}
               exit={{
-                scale: 6,
+                scale: 4,
                 opacity: 0,
-                transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
+                transition: { duration: 0.3, ease: 'easeOut' }
               }}
               style={{
                 position: 'absolute',
@@ -221,12 +224,12 @@ const Preloader = ({ transitionKey }) => {
               }}
             />
 
-            {/* THE AS LOGO: Animated Breathing While Loading -> Exponential Zoom Into Viewport */}
+            {/* THE AS LOGO: Disappearing & Appearing Loading State -> Pure Vector Exponential Zoom Reveal */}
             <motion.div
               style={{
                 position: 'relative',
-                width: '90px',
-                height: '90px',
+                width: '105px',
+                height: '105px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -238,36 +241,46 @@ const Preloader = ({ transitionKey }) => {
               }}
               initial={{ scale: 0.92, opacity: 0 }}
               animate={{
-                scale: [0.97, 1.03, 0.97],
-                opacity: 1
+                opacity: [0, 1, 1, 0, 0],
+                scale: [0.92, 1, 1.02, 1.06, 0.92]
               }}
               transition={{
-                scale: {
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: 'easeInOut'
-                },
-                opacity: { duration: 0.3 }
+                duration: 2.2,
+                repeat: Infinity,
+                times: [0, 0.25, 0.55, 0.8, 1],
+                ease: [0.4, 0, 0.2, 1]
               }}
               exit={{
                 scale: 28,
-                opacity: [1, 1, 0.3, 0],
+                opacity: [1, 1, 0.25, 0],
                 transition: {
-                  duration: 0.8,
+                  duration: 0.85,
                   ease: [0.76, 0, 0.24, 1]
                 }
               }}
             >
-              <img 
-                src="/logo.png" 
-                alt="AS Logo" 
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  filter: 'drop-shadow(0 0 16px rgba(210, 255, 0, 0.4))'
-                }}
-              />
+              <svg
+                viewBox="0 0 1024 1024"
+                width="100%"
+                height="100%"
+                style={{ overflow: 'visible' }}
+              >
+                <defs>
+                  <linearGradient id="asPreloaderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="65%" stopColor="#ffffff" />
+                    <stop offset="100%" stopColor="#d2ff00" />
+                  </linearGradient>
+                  <filter id="asPreloaderGlow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#d2ff00" floodOpacity="0.45" />
+                  </filter>
+                </defs>
+                <path
+                  d={AS_LOGO_PATH}
+                  fill="url(#asPreloaderGradient)"
+                  filter="url(#asPreloaderGlow)"
+                />
+              </svg>
             </motion.div>
           </div>
         </motion.div>
@@ -662,7 +675,7 @@ const FullscreenMenu = ({ isOpen, setIsOpen, triggerTransition }) => {
             transition={{ delay: 0.2, duration: 0.8 }}
             style={{ position: 'absolute', top: '2.5rem', left: '50%', transform: 'translateX(-50%)', display: 'flex', justifyContent: 'center', zIndex: 90, pointerEvents: 'none' }}
           >
-            <img src="/logo.png" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain', filter: 'brightness(0)' }} />
+            <img src="/logo.svg" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain', filter: 'brightness(0)' }} />
           </motion.div>
           <div className="menu-inner container" style={{ position: 'relative', zIndex: 1 }}>
             <div className="menu-header" style={{ minHeight: '64px' }}>
@@ -3983,7 +3996,7 @@ export default function App() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <img src="/logo.png" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain' }} />
+            <img src="/logo.svg" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain' }} />
           </motion.div>
 
           {/* Navigation */}
