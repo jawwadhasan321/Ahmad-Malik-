@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowUpRight, ArrowUp, Mail, Phone, MapPin, Calendar, User, Pencil, Check, Copy, ExternalLink, Send, Loader2, CheckCircle2, MessageCircle } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, ArrowUp, Mail, Phone, MapPin, Calendar, User, Pencil, Check, Copy, ExternalLink, Send, Loader2, CheckCircle2, MessageCircle, ShieldCheck } from 'lucide-react';
 import { ReactLenis, useLenis } from 'lenis/react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import './index.css';
@@ -663,67 +663,152 @@ const BackToTopButton = () => {
   );
 };
 
-const Footer = () => (
-  <footer id="footer" className="footer">
-    <div className="container">
-      <motion.div 
-        className="footer-huge-text"
-        initial={{ opacity: 0, y: 150 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.2 }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-      >
-        LET'S TALK
-      </motion.div>
+const Footer = ({ variant = 'default' }) => {
+  if (variant === 'contact') {
+    return (
+      <footer id="footer" className="footer-executive">
+        <div className="footer-executive-laser" />
+        <div className="container footer-executive-container">
+          <div className="footer-executive-grid">
+            <div className="footer-executive-brand">
+              <div className="footer-executive-logo">AHMAD MALIK</div>
+              <p className="footer-executive-tagline">
+                High-Impact E-Commerce Visuals, Amazon Brand Storytelling & Premium Creative Direction.
+              </p>
+              <div className="footer-executive-badge">
+                <span className="contact-pulse-circle" style={{ width: '8px', height: '8px' }} />
+                <span>AVAILABLE FOR Q2/Q3 COMMISSIONS</span>
+              </div>
+            </div>
 
-      <motion.p 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.2 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        style={{ 
-          fontSize: '1.3rem', 
-          color: 'var(--color-black)', 
-          maxWidth: '700px', 
-          margin: '0 auto 5rem auto',
-          lineHeight: '1.6',
-          textAlign: 'center',
-          fontFamily: '"Bricolage Grotesque", sans-serif'
-        }}
-      >
-        Ready to elevate your brand's visual identity? Get in touch to discuss how we can collaborate to create high-converting A+ content, engaging Amazon storefronts, and premium product designs tailored perfectly for your audience.
-      </motion.p>
+            <div className="footer-executive-col">
+              <span className="footer-executive-col-title">NAVIGATION</span>
+              <div className="footer-executive-links">
+                <Link to="/">Home</Link>
+                <Link to="/showcase">Showcase</Link>
+                <Link to="/about">About</Link>
+                <Link to="/contact">Get in touch</Link>
+              </div>
+            </div>
 
-      <motion.div 
-        className="footer-content"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: false, amount: 0.2 }}
-        transition={{ duration: 1, delay: 0.5 }}
-        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '2rem', paddingBottom: '2rem' }}
-      >
-        <div className="footer-links" style={{ display: 'flex', gap: '2rem', fontWeight: 600, fontSize: '1.25rem' }}>
-          <a href="https://www.instagram.com/ahmadscales.co/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="https://www.linkedin.com/in/ahmadmalikcreative/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://wa.me/923278545547?text=Hi%20Ahmad%2C%20I%20saw%20your%20portfolio%20and%20I%27m%20interested%20in%20working%20with%20you!" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-        </div>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', fontWeight: 600, fontSize: '1.25rem' }}>
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=hello@ahmadscales.com" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'opacity 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.opacity = 0.7} onMouseLeave={(e) => e.currentTarget.style.opacity = 1}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-              hello@ahmadscales.com
-            </a>
-            <a href="https://calendly.com/ahmadmalik1/creative-visuals-discussion" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '54px', height: '54px', borderRadius: '50%', border: '2.5px solid currentColor', color: 'inherit', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--color-black)'; e.currentTarget.style.color = 'var(--color-lime)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'inherit'; }} title="Book a call on Calendly">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            </a>
+            <div className="footer-executive-col">
+              <span className="footer-executive-col-title">CONNECT</span>
+              <div className="footer-executive-links">
+                <a href="https://www.instagram.com/ahmadscales.co/" target="_blank" rel="noopener noreferrer">
+                  <span>Instagram</span>
+                  <ArrowUpRight size={14} />
+                </a>
+                <a href="https://www.linkedin.com/in/ahmadmalikcreative/" target="_blank" rel="noopener noreferrer">
+                  <span>LinkedIn</span>
+                  <ArrowUpRight size={14} />
+                </a>
+                <a href="https://wa.me/923278545547?text=Hi%20Ahmad%2C%20I%20saw%20your%20portfolio%20and%20I%27m%20interested%20in%20working%20with%20you!" target="_blank" rel="noopener noreferrer">
+                  <span>WhatsApp</span>
+                  <ArrowUpRight size={14} />
+                </a>
+                <a href="https://calendly.com/ahmadmalik1/creative-visuals-discussion" target="_blank" rel="noopener noreferrer">
+                  <span>Calendly</span>
+                  <ArrowUpRight size={14} />
+                </a>
+              </div>
+            </div>
+
+            <div className="footer-executive-col footer-executive-direct-col">
+              <span className="footer-executive-col-title">DIRECT INBOX</span>
+              <a href="mailto:ahmadmalikcreative@gmail.com" className="footer-executive-email-link">
+                <Mail size={16} />
+                <span>ahmadmalikcreative@gmail.com</span>
+              </a>
+              <div className="footer-executive-meta-row">
+                <MapPin size={15} />
+                <span>Lahore, Pakistan • PKT (GMT+5)</span>
+              </div>
+            </div>
           </div>
-          <div style={{ fontWeight: 500, fontSize: '1rem' }}>© {new Date().getFullYear()} All Rights Reserved</div>
+
+          <div className="footer-executive-divider" />
+
+          <div className="footer-executive-bottom">
+            <div className="footer-executive-copyright">
+              © {new Date().getFullYear()} Ahmad Malik. All rights reserved. Crafted for visual excellence.
+            </div>
+            <button 
+              type="button" 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
+              className="footer-executive-backtotop"
+              aria-label="Back to top"
+            >
+              <span>BACK TO TOP</span>
+              <ArrowUp size={14} />
+            </button>
+          </div>
         </div>
-      </motion.div>
-    </div>
-  </footer>
-);
+      </footer>
+    );
+  }
+
+  return (
+    <footer id="footer" className="footer">
+      <div className="container">
+        <motion.div 
+          className="footer-huge-text"
+          initial={{ opacity: 0, y: 150 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        >
+          LET'S TALK
+        </motion.div>
+
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          style={{ 
+            fontSize: '1.3rem', 
+            color: 'var(--color-black)', 
+            maxWidth: '700px', 
+            margin: '0 auto 5rem auto',
+            lineHeight: '1.6',
+            textAlign: 'center',
+            fontFamily: '"Bricolage Grotesque", sans-serif'
+          }}
+        >
+          Ready to elevate your brand's visual identity? Get in touch to discuss how we can collaborate to create high-converting A+ content, engaging Amazon storefronts, and premium product designs tailored perfectly for your audience.
+        </motion.p>
+
+        <motion.div 
+          className="footer-content"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '2rem', paddingBottom: '2rem' }}
+        >
+          <div className="footer-links" style={{ display: 'flex', gap: '2rem', fontWeight: 600, fontSize: '1.25rem' }}>
+            <a href="https://www.instagram.com/ahmadscales.co/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://www.linkedin.com/in/ahmadmalikcreative/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://wa.me/923278545547?text=Hi%20Ahmad%2C%20I%20saw%20your%20portfolio%20and%20I%27m%20interested%20in%20working%20with%20you!" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', fontWeight: 600, fontSize: '1.25rem' }}>
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=hello@ahmadscales.com" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'opacity 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.opacity = 0.7} onMouseLeave={(e) => e.currentTarget.style.opacity = 1}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                hello@ahmadscales.com
+              </a>
+              <a href="https://calendly.com/ahmadmalik1/creative-visuals-discussion" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '54px', height: '54px', borderRadius: '50%', border: '2.5px solid currentColor', color: 'inherit', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--color-black)'; e.currentTarget.style.color = 'var(--color-lime)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'inherit'; }} title="Book a call on Calendly">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              </a>
+            </div>
+            <div style={{ fontWeight: 500, fontSize: '1rem' }}>© {new Date().getFullYear()} All Rights Reserved</div>
+          </div>
+        </motion.div>
+      </div>
+    </footer>
+  );
+};
 
 function Home() {
   const lenis = useLenis();
@@ -3411,6 +3496,13 @@ function Contact() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
+          <div className="contact-status-pill">
+            <span className="contact-beacon-dot" />
+            <span className="contact-status-pill-text">AVAILABLE FOR SELECT COMMISSIONS</span>
+            <span className="contact-status-pill-divider">•</span>
+            <span className="contact-status-pill-meta">EST. REPLY &lt; 24H</span>
+          </div>
+
           <h1 className="contact-hero-title">
             <span className="contact-hero-line">LET'S CONNECT</span>
             <span className="contact-hero-line contact-hero-line-interactive">
@@ -3431,167 +3523,189 @@ function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            {status === 'success' ? (
-              <motion.div 
-                className="contact-success-banner"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div style={{
-                  width: '64px',
-                  height: '64px',
-                  borderRadius: '50%',
-                  backgroundColor: 'rgba(210, 255, 0, 0.15)',
-                  border: '1.5px solid var(--color-lime)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--color-lime)'
-                }}>
-                  <CheckCircle2 size={36} />
-                </div>
-                <h3 className="contact-success-heading">MESSAGE SENT!</h3>
-                <p className="contact-success-desc">
-                  Thank you, <strong style={{ color: 'var(--color-lime)' }}>{formData.name || 'there'}</strong>! Your message has been sent to <span style={{ color: '#fff' }}>ahmadmalikcreative@gmail.com</span>. Ahmad will review your inquiry and reply promptly within 24 hours.
-                </p>
-                <button 
-                  type="button"
-                  onClick={() => {
-                    setFormData({ name: '', email: '', message: '' });
-                    setStatus('idle');
-                  }}
-                  className="contact-btn-submit"
-                  style={{ marginTop: '0.5rem' }}
+            <div className="contact-card-frame">
+              <div className="contact-card-laser-edge" />
+
+              <div className="contact-form-card-header">
+                <span className="contact-form-card-title">PROJECT INQUIRY FORM</span>
+                <span className="contact-form-card-step">DIRECT INBOX</span>
+              </div>
+
+              {status === 'success' ? (
+                <motion.div 
+                  className="contact-success-banner"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
                 >
-                  <span>Send Another Message</span>
-                  <ArrowRight size={16} />
-                </button>
-              </motion.div>
-            ) : (
-              <form onSubmit={handleSubmit} className="contact-form-inner" noValidate>
-                {/* Honeypot field for spam prevention */}
-                <input type="text" name="_honey" style={{ display: 'none' }} tabIndex="-1" autoComplete="off" />
+                  <div style={{
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(210, 255, 0, 0.15)',
+                    border: '1.5px solid var(--color-lime)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--color-lime)'
+                  }}>
+                    <CheckCircle2 size={36} />
+                  </div>
+                  <h3 className="contact-success-heading">MESSAGE SENT!</h3>
+                  <p className="contact-success-desc">
+                    Thank you, <strong style={{ color: 'var(--color-lime)' }}>{formData.name || 'there'}</strong>! Your message has been delivered to <span style={{ color: '#fff' }}>ahmadmalikcreative@gmail.com</span>. Ahmad will review your brief and reply promptly within 24 hours.
+                  </p>
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setFormData({ name: '', email: '', message: '' });
+                      setStatus('idle');
+                    }}
+                    className="contact-btn-submit"
+                    style={{ marginTop: '0.5rem' }}
+                  >
+                    <span>Send Another Message</span>
+                    <ArrowRight size={16} />
+                  </button>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="contact-form-inner" noValidate>
+                  {/* Honeypot field for spam prevention */}
+                  <input type="text" name="_honey" style={{ display: 'none' }} tabIndex="-1" autoComplete="off" />
 
-                {/* Name Field */}
-                <div className="contact-field-group">
-                  <label htmlFor="contact-name" className="contact-field-label">
-                    Name <span className="contact-required-star">*</span>
-                  </label>
-                  <div className="contact-input-box">
-                    <input 
-                      id="contact-name"
-                      type="text" 
-                      name="name" 
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Enter your full name" 
-                      className="contact-text-input"
-                      required
-                    />
-                    <div className="contact-field-icon">
-                      <User size={19} strokeWidth={1.8} />
+                  {/* Name Field */}
+                  <div className="contact-field-group">
+                    <label htmlFor="contact-name" className="contact-field-label">
+                      <span className="contact-field-index">01</span>
+                      <span>Name</span>
+                      <span className="contact-required-star">*</span>
+                    </label>
+                    <div className="contact-input-box">
+                      <input 
+                        id="contact-name"
+                        type="text" 
+                        name="name" 
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder="Enter your full name" 
+                        className="contact-text-input"
+                        required
+                      />
+                      <div className="contact-field-icon">
+                        <User size={19} strokeWidth={1.8} />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Email Field */}
-                <div className="contact-field-group">
-                  <label htmlFor="contact-email" className="contact-field-label">
-                    Email <span className="contact-required-star">*</span>
-                  </label>
-                  <div className="contact-input-box">
-                    <input 
-                      id="contact-email"
-                      type="email" 
-                      name="email" 
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="info@foliohub.com" 
-                      className="contact-text-input"
-                      required
-                    />
-                    <div className="contact-field-icon">
-                      <Mail size={19} strokeWidth={1.8} />
+                  {/* Email Field */}
+                  <div className="contact-field-group">
+                    <label htmlFor="contact-email" className="contact-field-label">
+                      <span className="contact-field-index">02</span>
+                      <span>Email</span>
+                      <span className="contact-required-star">*</span>
+                    </label>
+                    <div className="contact-input-box">
+                      <input 
+                        id="contact-email"
+                        type="email" 
+                        name="email" 
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="info@foliohub.com" 
+                        className="contact-text-input"
+                        required
+                      />
+                      <div className="contact-field-icon">
+                        <Mail size={19} strokeWidth={1.8} />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Message Field */}
-                <div className="contact-field-group">
-                  <label htmlFor="contact-message" className="contact-field-label">
-                    Message <span className="contact-required-star">*</span>
-                  </label>
-                  <div className="contact-input-box">
-                    <textarea 
-                      id="contact-message"
-                      name="message" 
-                      rows={6}
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Write your message..." 
-                      className="contact-text-area"
-                      required
-                    />
-                    <div className="contact-field-icon-textarea">
-                      <Pencil size={19} strokeWidth={1.8} />
+                  {/* Message Field */}
+                  <div className="contact-field-group">
+                    <label htmlFor="contact-message" className="contact-field-label">
+                      <span className="contact-field-index">03</span>
+                      <span>Message / Project Details</span>
+                      <span className="contact-required-star">*</span>
+                    </label>
+                    <div className="contact-input-box">
+                      <textarea 
+                        id="contact-message"
+                        name="message" 
+                        rows={6}
+                        value={formData.message}
+                        onChange={handleChange}
+                        placeholder="Tell me about your brand, timeline, deliverables, and vision..." 
+                        className="contact-text-area"
+                        required
+                      />
+                      <div className="contact-field-icon-textarea">
+                        <Pencil size={19} strokeWidth={1.8} />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Error Banner if any */}
-                {status === 'error' && (
-                  <div className="contact-error-banner">
-                    <span>{errorMessage}</span>
-                    <a 
-                      href={`mailto:ahmadmalikcreative@gmail.com?subject=Project Inquiry from ${encodeURIComponent(formData.name || 'Visitor')}&body=${encodeURIComponent(formData.message || '')}`}
-                      style={{ color: 'var(--color-lime)', textDecoration: 'underline', fontWeight: 600, whiteSpace: 'nowrap' }}
-                    >
-                      Open Email App →
-                    </a>
-                  </div>
-                )}
-
-                {/* Submit Button */}
-                <button 
-                  type="submit" 
-                  disabled={status === 'submitting'}
-                  className="contact-btn-submit"
-                >
-                  {status === 'submitting' ? (
-                    <>
-                      <Loader2 size={18} className="animate-spin" />
-                      <span>SENDING...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>SEND MESSAGE</span>
-                      <ArrowRight size={17} />
-                    </>
+                  {/* Error Banner if any */}
+                  {status === 'error' && (
+                    <div className="contact-error-banner">
+                      <span>{errorMessage}</span>
+                      <a 
+                        href={`mailto:ahmadmalikcreative@gmail.com?subject=Project Inquiry from ${encodeURIComponent(formData.name || 'Visitor')}&body=${encodeURIComponent(formData.message || '')}`}
+                        style={{ color: 'var(--color-lime)', textDecoration: 'underline', fontWeight: 600, whiteSpace: 'nowrap' }}
+                      >
+                        Open Email App →
+                      </a>
+                    </div>
                   )}
-                </button>
-              </form>
-            )}
+
+                  {/* Submit Button & Trust Bar */}
+                  <div className="contact-submit-row">
+                    <button 
+                      type="submit" 
+                      disabled={status === 'submitting'}
+                      className="contact-btn-submit"
+                    >
+                      {status === 'submitting' ? (
+                        <>
+                          <Loader2 size={18} className="animate-spin" />
+                          <span>SENDING INQUIRY...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>SEND MESSAGE</span>
+                          <ArrowRight size={17} />
+                        </>
+                      )}
+                    </button>
+                    <div className="contact-trust-note">
+                      <ShieldCheck size={15} color="var(--color-lime)" />
+                      <span>100% Confidential • NDA Protected</span>
+                    </div>
+                  </div>
+                </form>
+              )}
+            </div>
           </motion.div>
 
-          {/* Right Column: Contact Details (Directly matching screenshot) */}
+          {/* Right Column: Contact Details */}
           <motion.div 
             className="contact-info-column"
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
           >
+            <div className="contact-info-header-tag">
+              DIRECT CHANNELS & AVAILABILITY
+            </div>
+
             {/* 1. Email */}
-            <div className="contact-info-row">
+            <div className="contact-info-card">
               <div className="contact-info-icon-wrapper">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                  <polyline points="22,6 12,13 2,6" />
-                </svg>
+                <Mail size={22} strokeWidth={1.8} />
               </div>
               <div className="contact-info-text-group">
-                <span className="contact-info-sublabel">Email</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <span className="contact-info-sublabel">Direct Email</span>
+                <div className="contact-email-val-wrapper">
                   <a 
                     href="mailto:ahmadmalikcreative@gmail.com" 
                     className="contact-info-mainval"
@@ -3613,14 +3727,12 @@ function Contact() {
             </div>
 
             {/* 2. Phone Number */}
-            <div className="contact-info-row">
+            <div className="contact-info-card">
               <div className="contact-info-icon-wrapper">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
+                <Phone size={22} strokeWidth={1.8} />
               </div>
               <div className="contact-info-text-group">
-                <span className="contact-info-sublabel">Phone Number</span>
+                <span className="contact-info-sublabel">Phone & WhatsApp Direct</span>
                 <a 
                   href="tel:+923278545547" 
                   className="contact-info-mainval"
@@ -3632,42 +3744,33 @@ function Contact() {
             </div>
 
             {/* 3. Location */}
-            <div className="contact-info-row">
+            <div className="contact-info-card">
               <div className="contact-info-icon-wrapper">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
+                <MapPin size={22} strokeWidth={1.8} />
               </div>
               <div className="contact-info-text-group">
-                <span className="contact-info-sublabel">Location</span>
-                <span className="contact-info-mainval">
-                  LAHORE, PAKISTAN
-                </span>
+                <span className="contact-info-sublabel">Primary Headquarters</span>
+                <div className="contact-location-val-group">
+                  <span className="contact-info-mainval">
+                    LAHORE, PAKISTAN
+                  </span>
+                  <span className="contact-timezone-pill">PKT (GMT+5)</span>
+                </div>
               </div>
             </div>
 
             {/* 4. Availability */}
-            <div className="contact-info-row">
+            <div className="contact-info-card">
               <div className="contact-info-icon-wrapper">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                  <line x1="16" y1="2" x2="16" y2="6" />
-                  <line x1="8" y1="2" x2="8" y2="6" />
-                  <line x1="3" y1="10" x2="21" y2="10" />
-                  <line x1="8" y1="14" x2="8" y2="14.01" />
-                  <line x1="12" y1="14" x2="12" y2="14.01" />
-                  <line x1="16" y1="14" x2="16" y2="14.01" />
-                  <line x1="8" y1="18" x2="8" y2="18.01" />
-                  <line x1="12" y1="18" x2="12" y2="18.01" />
-                </svg>
+                <Calendar size={22} strokeWidth={1.8} />
               </div>
               <div className="contact-info-text-group">
-                <span className="contact-info-sublabel">Availability</span>
+                <span className="contact-info-sublabel">Client Capacity</span>
                 <span className="contact-info-mainval" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.85rem' }}>
                   <span className="contact-pulse-circle" />
                   AVAILABLE NOW
                 </span>
+                <span className="contact-capacity-desc">Accepting select brand identity & A+ content projects</span>
               </div>
             </div>
 
@@ -3677,19 +3780,21 @@ function Contact() {
                 href="https://wa.me/923278545547?text=Hi%20Ahmad,%20I%20saw%20your%20portfolio%20and%20would%20love%20to%20discuss%20a%20project!" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="contact-quick-btn"
+                className="contact-quick-btn contact-quick-whatsapp"
               >
-                <MessageCircle size={15} color="#25D366" />
+                <MessageCircle size={16} color="#25D366" />
                 <span>Chat on WhatsApp</span>
+                <ArrowUpRight size={13} className="contact-quick-arrow" />
               </a>
               <a 
                 href="https://calendly.com/ahmadmalik1/creative-visuals-discussion" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="contact-quick-btn"
+                className="contact-quick-btn contact-quick-calendly"
               >
-                <Calendar size={15} color="var(--color-lime)" />
+                <Calendar size={16} color="var(--color-lime)" />
                 <span>Book A Discussion</span>
+                <ArrowUpRight size={13} className="contact-quick-arrow" />
               </a>
             </div>
 
@@ -3699,7 +3804,7 @@ function Contact() {
 
       </div>
 
-      <Footer />
+      <Footer variant="contact" />
       <BackToTopButton />
     </div>
   );
@@ -3720,12 +3825,12 @@ export default function App() {
           
           {/* Document Top Logo */}
           <motion.div
+            className="document-top-logo"
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            style={{ position: 'absolute', top: '2.5rem', left: '50%', transform: 'translateX(-50%)', mixBlendMode: 'lighten', display: 'flex', justifyContent: 'center', zIndex: 90, pointerEvents: 'none' }}
           >
-            <img src="/logo.png" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain', marginLeft: '-20px' }} />
+            <img src="/logo.png" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain' }} />
           </motion.div>
 
           {/* Navigation */}
