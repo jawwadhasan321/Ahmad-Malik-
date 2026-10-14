@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowUpRight, ArrowUp } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, ArrowUp, Mail, Phone, MapPin, Calendar, User, Pencil, Check, Copy, ExternalLink, Send, Loader2, CheckCircle2, MessageCircle } from 'lucide-react';
 import { ReactLenis, useLenis } from 'lenis/react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import './index.css';
@@ -3294,13 +3294,411 @@ function About() {
 
 
 
+const ContactPrismWireframe = () => (
+  <motion.div 
+    className="contact-prism-container"
+    animate={{
+      y: [0, -10, 0],
+      rotate: [0, 2.5, -1, 0],
+    }}
+    transition={{
+      duration: 6,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }}
+  >
+    <svg viewBox="0 0 160 140" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+      {/* Rear perspective rhombus */}
+      <path
+        d="M 88,14 L 148,60 L 96,112 L 36,66 Z"
+        stroke="#FF5522"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity="0.65"
+      />
+      {/* Receding depth lines */}
+      <line x1="62" y1="6" x2="88" y2="14" stroke="#FF5522" strokeWidth="2.2" strokeLinecap="round" />
+      <line x1="122" y1="52" x2="148" y2="60" stroke="#FF5522" strokeWidth="2.2" strokeLinecap="round" />
+      <line x1="70" y1="104" x2="96" y2="112" stroke="#FF5522" strokeWidth="2.2" strokeLinecap="round" />
+      <line x1="10" y1="58" x2="36" y2="66" stroke="#FF5522" strokeWidth="2.2" strokeLinecap="round" />
+      {/* Front perspective rhombus */}
+      <path
+        d="M 62,6 L 122,52 L 70,104 L 10,58 Z"
+        stroke="#FF5522"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  </motion.div>
+);
+
 function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [status, setStatus] = useState('idle'); // 'idle' | 'submitting' | 'success' | 'error'
+  const [errorMessage, setErrorMessage] = useState('');
+  const [copiedEmail, setCopiedEmail] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCopyEmail = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText('ahmadmalikcreative@gmail.com');
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2500);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setStatus('error');
+      setErrorMessage('Please fill in all required fields.');
+      return;
+    }
+
+    setStatus('submitting');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/ahmadmalikcreative@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: `New Portfolio Message from ${formData.name}`,
+          _captcha: "false",
+          _template: "table"
+        })
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok || data.success === "true" || data.success === true) {
+        setStatus('success');
+      } else {
+        throw new Error(data.message || 'Submission failed');
+      }
+    } catch (err) {
+      console.error('Submission error:', err);
+      setStatus('error');
+      setErrorMessage('Could not deliver via form server. You can email Ahmad directly at ahmadmalikcreative@gmail.com');
+    }
+  };
+
   return (
-    <div className="page" style={{ position: 'relative', zIndex: 1, paddingTop: '20vh', minHeight: '100vh' }}>
-      <div className="container">
-        <h1 style={{ color: 'var(--color-lime)', fontSize: 'clamp(3.5rem, 7vw, 7rem)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase' }}>Get in touch</h1>
-        <p style={{ color: 'var(--color-grey)', fontSize: '1.5rem', marginTop: '2rem' }}>Coming soon...</p>
+    <div className="contact-page">
+      <div className="contact-container">
+        
+        {/* Massive Headline Section with Orange 3D Wireframe Accent */}
+        <motion.div 
+          className="contact-hero-header"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <h1 className="contact-hero-title">
+            <span className="contact-hero-line">LET'S CONNECT</span>
+            <span className="contact-hero-line contact-hero-line-interactive">
+              AND COLLABORATE
+              <ContactPrismWireframe />
+            </span>
+            <span className="contact-hero-line">TODAY</span>
+          </h1>
+        </motion.div>
+
+        {/* 2-Column Main Section */}
+        <div className="contact-layout-grid">
+          
+          {/* Left Column: Form */}
+          <motion.div 
+            className="contact-form-column"
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {status === 'success' ? (
+              <motion.div 
+                className="contact-success-banner"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  backgroundColor: 'rgba(210, 255, 0, 0.15)',
+                  border: '1.5px solid var(--color-lime)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--color-lime)'
+                }}>
+                  <CheckCircle2 size={36} />
+                </div>
+                <h3 className="contact-success-heading">MESSAGE SENT!</h3>
+                <p className="contact-success-desc">
+                  Thank you, <strong style={{ color: 'var(--color-lime)' }}>{formData.name || 'there'}</strong>! Your message has been sent to <span style={{ color: '#fff' }}>ahmadmalikcreative@gmail.com</span>. Ahmad will review your inquiry and reply promptly within 24 hours.
+                </p>
+                <button 
+                  type="button"
+                  onClick={() => {
+                    setFormData({ name: '', email: '', message: '' });
+                    setStatus('idle');
+                  }}
+                  className="contact-btn-submit"
+                  style={{ marginTop: '0.5rem' }}
+                >
+                  <span>Send Another Message</span>
+                  <ArrowRight size={16} />
+                </button>
+              </motion.div>
+            ) : (
+              <form onSubmit={handleSubmit} className="contact-form-inner" noValidate>
+                {/* Honeypot field for spam prevention */}
+                <input type="text" name="_honey" style={{ display: 'none' }} tabIndex="-1" autoComplete="off" />
+
+                {/* Name Field */}
+                <div className="contact-field-group">
+                  <label htmlFor="contact-name" className="contact-field-label">
+                    Name <span className="contact-required-star">*</span>
+                  </label>
+                  <div className="contact-input-box">
+                    <input 
+                      id="contact-name"
+                      type="text" 
+                      name="name" 
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Enter your full name" 
+                      className="contact-text-input"
+                      required
+                    />
+                    <div className="contact-field-icon">
+                      <User size={19} strokeWidth={1.8} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Email Field */}
+                <div className="contact-field-group">
+                  <label htmlFor="contact-email" className="contact-field-label">
+                    Email <span className="contact-required-star">*</span>
+                  </label>
+                  <div className="contact-input-box">
+                    <input 
+                      id="contact-email"
+                      type="email" 
+                      name="email" 
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="info@foliohub.com" 
+                      className="contact-text-input"
+                      required
+                    />
+                    <div className="contact-field-icon">
+                      <Mail size={19} strokeWidth={1.8} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Message Field */}
+                <div className="contact-field-group">
+                  <label htmlFor="contact-message" className="contact-field-label">
+                    Message <span className="contact-required-star">*</span>
+                  </label>
+                  <div className="contact-input-box">
+                    <textarea 
+                      id="contact-message"
+                      name="message" 
+                      rows={6}
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Write your message..." 
+                      className="contact-text-area"
+                      required
+                    />
+                    <div className="contact-field-icon-textarea">
+                      <Pencil size={19} strokeWidth={1.8} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Error Banner if any */}
+                {status === 'error' && (
+                  <div className="contact-error-banner">
+                    <span>{errorMessage}</span>
+                    <a 
+                      href={`mailto:ahmadmalikcreative@gmail.com?subject=Project Inquiry from ${encodeURIComponent(formData.name || 'Visitor')}&body=${encodeURIComponent(formData.message || '')}`}
+                      style={{ color: 'var(--color-lime)', textDecoration: 'underline', fontWeight: 600, whiteSpace: 'nowrap' }}
+                    >
+                      Open Email App →
+                    </a>
+                  </div>
+                )}
+
+                {/* Submit Button */}
+                <button 
+                  type="submit" 
+                  disabled={status === 'submitting'}
+                  className="contact-btn-submit"
+                >
+                  {status === 'submitting' ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      <span>SENDING...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>SEND MESSAGE</span>
+                      <ArrowRight size={17} />
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+          </motion.div>
+
+          {/* Right Column: Contact Details (Directly matching screenshot) */}
+          <motion.div 
+            className="contact-info-column"
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {/* 1. Email */}
+            <div className="contact-info-row">
+              <div className="contact-info-icon-wrapper">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </div>
+              <div className="contact-info-text-group">
+                <span className="contact-info-sublabel">Email</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                  <a 
+                    href="mailto:ahmadmalikcreative@gmail.com" 
+                    className="contact-info-mainval"
+                    title="Send email to Ahmad Malik"
+                  >
+                    AHMADMALIKCREATIVE@GMAIL.COM
+                  </a>
+                  <button 
+                    type="button" 
+                    onClick={handleCopyEmail}
+                    className="contact-copy-pill"
+                    title="Copy email address"
+                  >
+                    {copiedEmail ? <Check size={12} color="var(--color-lime)" /> : <Copy size={12} />}
+                    <span>{copiedEmail ? 'COPIED!' : 'COPY'}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. Phone Number */}
+            <div className="contact-info-row">
+              <div className="contact-info-icon-wrapper">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+              </div>
+              <div className="contact-info-text-group">
+                <span className="contact-info-sublabel">Phone Number</span>
+                <a 
+                  href="tel:+923278545547" 
+                  className="contact-info-mainval"
+                  title="Call Ahmad Malik"
+                >
+                  +92 3278545547
+                </a>
+              </div>
+            </div>
+
+            {/* 3. Location */}
+            <div className="contact-info-row">
+              <div className="contact-info-icon-wrapper">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              </div>
+              <div className="contact-info-text-group">
+                <span className="contact-info-sublabel">Location</span>
+                <span className="contact-info-mainval">
+                  LAHORE, PAKISTAN
+                </span>
+              </div>
+            </div>
+
+            {/* 4. Availability */}
+            <div className="contact-info-row">
+              <div className="contact-info-icon-wrapper">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                  <line x1="8" y1="14" x2="8" y2="14.01" />
+                  <line x1="12" y1="14" x2="12" y2="14.01" />
+                  <line x1="16" y1="14" x2="16" y2="14.01" />
+                  <line x1="8" y1="18" x2="8" y2="18.01" />
+                  <line x1="12" y1="18" x2="12" y2="18.01" />
+                </svg>
+              </div>
+              <div className="contact-info-text-group">
+                <span className="contact-info-sublabel">Availability</span>
+                <span className="contact-info-mainval" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.85rem' }}>
+                  <span className="contact-pulse-circle" />
+                  AVAILABLE NOW
+                </span>
+              </div>
+            </div>
+
+            {/* Fast Communication Action Buttons */}
+            <div className="contact-quick-actions">
+              <a 
+                href="https://wa.me/923278545547?text=Hi%20Ahmad,%20I%20saw%20your%20portfolio%20and%20would%20love%20to%20discuss%20a%20project!" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="contact-quick-btn"
+              >
+                <MessageCircle size={15} color="#25D366" />
+                <span>Chat on WhatsApp</span>
+              </a>
+              <a 
+                href="https://calendly.com/ahmadmalik1/creative-visuals-discussion" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="contact-quick-btn"
+              >
+                <Calendar size={15} color="var(--color-lime)" />
+                <span>Book A Discussion</span>
+              </a>
+            </div>
+
+          </motion.div>
+
+        </div>
+
       </div>
+
       <Footer />
       <BackToTopButton />
     </div>

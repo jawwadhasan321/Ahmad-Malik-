@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Mona+Sans:ital,wght@0,200..900;1,200..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Outfit:wght@100..900&display=swap');
 
 :root {
   --color-lime: #d2ff00;
@@ -7,6 +7,7 @@
   --color-grey: #888888;
   --color-lime-off: #b8de00;
   
+  --font-impact: 'Bebas Neue', 'Bricolage Grotesque', sans-serif;
   --font-heading: 'Bricolage Grotesque', sans-serif;
   --font-body: 'Mona Sans', sans-serif;
   
@@ -1271,4 +1272,441 @@ a {
   animation: laser-sweep 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   pointer-events: none;
 }
+
+/* ==========================================================================
+   GET IN TOUCH / CONTACT PAGE STYLES (MATCHING SCREENSHOT)
+   ========================================================================== */
+
+.contact-page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding-top: clamp(6rem, 10.5vh, 8.5rem);
+  padding-bottom: clamp(7.5rem, 12vh, 11.5rem);
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+.contact-container {
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+}
+
+/* Title Section */
+.contact-hero-header {
+  position: relative;
+  margin-bottom: clamp(2rem, 3.8vw, 3.2rem);
+}
+
+.contact-hero-title {
+  font-family: var(--font-impact, 'Bebas Neue', sans-serif);
+  font-size: clamp(3.8rem, 8.4vw, 8.8rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+  user-select: none;
+}
+
+.contact-hero-line {
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.contact-hero-line-interactive {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+}
+
+/* Orange Wireframe Prism Accent from Screenshot */
+.contact-prism-container {
+  position: absolute;
+  right: -55px;
+  top: -42px;
+  width: clamp(95px, 13vw, 155px);
+  height: clamp(95px, 13vw, 155px);
+  pointer-events: auto;
+  z-index: -1;
+  filter: drop-shadow(0 0 16px rgba(255, 77, 45, 0.45));
+}
+
+@media (max-width: 900px) {
+  .contact-prism-container {
+    right: -25px;
+    top: -30px;
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* Main Grid Layout */
+.contact-layout-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: clamp(2.5rem, 5.5vw, 6rem);
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .contact-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+}
+
+/* Left Column Form */
+.contact-form-column {
+  width: 100%;
+}
+
+.contact-form-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.45rem;
+}
+
+.contact-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.contact-field-label {
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.contact-required-star {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.contact-input-box {
+  position: relative;
+  width: 100%;
+}
+
+.contact-text-input,
+.contact-text-area {
+  width: 100%;
+  background-color: #080808;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
+  padding: 1.05rem 3.2rem 1.05rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  color: #ffffff;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
+
+.contact-text-area {
+  min-height: 135px;
+  resize: vertical;
+  padding-top: 1.1rem;
+  line-height: 1.55;
+}
+
+.contact-text-input::placeholder,
+.contact-text-area::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+  font-weight: 400;
+}
+
+.contact-text-input:hover,
+.contact-text-area:hover {
+  border-color: rgba(255, 255, 255, 0.32);
+  background-color: #0d0d0d;
+}
+
+.contact-text-input:focus,
+.contact-text-area:focus {
+  border-color: var(--color-lime);
+  background-color: #111111;
+  box-shadow: 0 0 24px rgba(210, 255, 0, 0.18), inset 0 0 0 1px rgba(210, 255, 0, 0.25);
+}
+
+.contact-field-icon {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.contact-field-icon-textarea {
+  position: absolute;
+  right: 1.25rem;
+  top: 1.25rem;
+  color: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.25s ease;
+}
+
+.contact-text-input:focus ~ .contact-field-icon,
+.contact-text-area:focus ~ .contact-field-icon-textarea {
+  color: var(--color-lime);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.contact-text-area:focus ~ .contact-field-icon-textarea {
+  transform: scale(1.1);
+}
+
+/* Submit Button */
+.contact-btn-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  padding: 1.05rem 2.6rem;
+  border-radius: 999px;
+  background-color: var(--color-lime);
+  color: var(--color-black);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 30px rgba(210, 255, 0, 0.35);
+  align-self: flex-start;
+  margin-top: 0.5rem;
+}
+
+.contact-btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 45px rgba(210, 255, 0, 0.65);
+}
+
+.contact-btn-submit:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.contact-btn-submit:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+/* Success Card */
+.contact-success-banner {
+  background: rgba(210, 255, 0, 0.06);
+  border: 1px solid rgba(210, 255, 0, 0.35);
+  border-radius: 12px;
+  padding: 2.2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(210, 255, 0, 0.12);
+}
+
+.contact-success-heading {
+  font-family: var(--font-impact, 'Bebas Neue', sans-serif);
+  font-size: 2.4rem;
+  color: var(--color-lime);
+  letter-spacing: 0.04em;
+  margin: 0;
+  line-height: 1;
+}
+
+.contact-success-desc {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0;
+}
+
+/* Error Card */
+.contact-error-banner {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #ff8080;
+  font-size: 0.95rem;
+}
+
+/* Right Column Contact Info */
+.contact-info-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.4rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.contact-info-row:first-child {
+  padding-top: 0.5rem;
+}
+
+.contact-info-icon-wrapper {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #ECC94B;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+  margin-top: 2px;
+}
+
+.contact-info-row:hover .contact-info-icon-wrapper {
+  transform: scale(1.12);
+  color: #FCD34D;
+}
+
+.contact-info-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.contact-info-sublabel {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.contact-info-mainval {
+  font-family: var(--font-impact, 'Bebas Neue', sans-serif);
+  font-size: clamp(1.6rem, 2.4vw, 2.45rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  line-height: 1.05;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+a.contact-info-mainval:hover {
+  color: var(--color-lime);
+}
+
+.contact-copy-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.75);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  vertical-align: middle;
+}
+
+.contact-copy-pill:hover {
+  background: var(--color-lime);
+  color: var(--color-black);
+  border-color: var(--color-lime);
+}
+
+.contact-pulse-circle {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  box-shadow: 0 0 10px #22c55e, 0 0 20px #22c55e;
+  display: inline-block;
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.6;
+  }
+}
+
+/* Quick Action Badges strip */
+.contact-quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2.2rem;
+  flex-wrap: wrap;
+}
+
+.contact-quick-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.contact-quick-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-lime);
+  color: var(--color-lime);
+  transform: translateY(-2px);
+}
+
 
