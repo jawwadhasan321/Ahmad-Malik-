@@ -2126,5 +2126,27 @@ a.contact-info-mainval:hover {
   }
 }
 
+/* Standalone AS Logo Preloader Animation */
+@keyframes asLogoBreathe {
+  0% {
+    opacity: 0;
+    transform: translate(15.5px, -18px) scale(0.95);
+  }
+  22% {
+    opacity: 1;
+    transform: translate(15.5px, -18px) scale(1);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(15.5px, -18px) scale(1.035);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(15.5px, -18px) scale(1);
+  }
+}
 
-
+.as-preloader-idle {
+  animation: asLogoBreathe 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 512px 512px;
+}

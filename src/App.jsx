@@ -23,271 +23,207 @@ const ScrollToTop = () => {
 const MotionLink = motion(Link);
 
 // Exact mathematical vector paths for the AS logo (extracted with sub-pixel fidelity)
-const AS_LOGO_PATH = "M 441 269 L 687 652 L 570 653 L 439 444 L 198 790 L 83 791 Z M 584 269 L 860 269 L 795 360 L 632 361 L 906 665 L 910 690 L 904 707 L 843 790 L 612 791 L 544 686 L 800 684 L 617 486 L 525 341 L 523 336 L 560 283 Z";
+const AS_PATH_A = "M 441 269 L 687 652 L 570 653 L 439 444 L 198 790 L 83 791 Z";
+const AS_PATH_S = "M 584 269 L 860 269 L 795 360 L 632 361 L 906 665 L 910 690 L 904 707 L 843 790 L 612 791 L 544 686 L 800 684 L 617 486 L 525 341 L 523 336 L 560 283 Z";
 
 const Preloader = ({ transitionKey }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const [isZooming, setIsZooming] = useState(false);
   const { pathname } = useLocation();
+
+  const curtainRef = useRef(null);
+  const svgRef = useRef(null);
+  const logoGroupRef = useRef(null);
+  const rafIdRef = useRef(null);
+  const hasLoadedBeforeRef = useRef(false);
 
   useEffect(() => {
     let isMounted = true;
-    
-    // Show preloader on route change
+    let timer = null;
+
+    // Show preloader immediately on route change or menu navigation
     setIsVisible(true);
+    setIsZooming(false);
     document.body.style.overflow = 'hidden';
 
-    // High-budget luxury pacing:
-    // Initial entrance: ~1200ms
-    // Route-to-route transitions: ~850ms for deliberate, high-budget cinematic feel
-    const isInitialLoad = !window.hasLoadedBefore;
-    window.hasLoadedBefore = true;
-    const minLoadTime = isInitialLoad ? 1200 : 850;
-    const startTime = Date.now();
+    // Responsive initial coordinate span
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const startSpan = isMobile ? 2600 : 4800;
+    const endSpan = 75;
 
-    const checkLoad = async () => {
-      // Tiny pause for React route component to mount
-      await new Promise(resolve => setTimeout(resolve, 40));
-      
-      const images = Array.from(document.images);
-      await Promise.all(images.map(img => {
-        if (img.complete) return Promise.resolve();
-        return new Promise((resolve) => {
-          img.onload = resolve;
-          img.onerror = resolve;
-        });
-      }));
+    // Reset curtain and svg state if elements exist
+    if (curtainRef.current) {
+      curtainRef.current.style.opacity = '1';
+    }
+    if (svgRef.current) {
+      const initX = 512 - startSpan / 2;
+      const initY = 512 - startSpan / 2;
+      svgRef.current.setAttribute('viewBox', `${initX} ${initY} ${startSpan} ${startSpan}`);
+    }
 
-      const elapsed = Date.now() - startTime;
-      if (elapsed < minLoadTime) {
-        await new Promise(resolve => setTimeout(resolve, minLoadTime - elapsed));
-      }
+    const isInitialLoad = !hasLoadedBeforeRef.current;
+    hasLoadedBeforeRef.current = true;
 
-      if (isMounted) {
-        setIsVisible(false);
-        document.body.style.overflow = '';
-      }
-    };
+    // Deliberate luxury pacing without blocking lag:
+    // First entrance: 700ms so the user can experience the bespoke AS logo animation
+    // Menu navigation transitions: 350ms for instantaneous, motorsport-sharp response
+    const displayDuration = isInitialLoad ? 700 : 350;
 
-    checkLoad();
+    timer = setTimeout(() => {
+      if (!isMounted) return;
+      setIsZooming(true);
+
+      const startTime = performance.now();
+      const zoomDuration = 480; // ms
+
+      const step = (now) => {
+        if (!isMounted) return;
+        const elapsed = now - startTime;
+        const rawProgress = Math.min(1, elapsed / zoomDuration);
+
+        // Exponential camera zoom: smooth acceleration diving right through the AS logo
+        const easedProgress = rawProgress < 0.32
+          ? Math.pow(rawProgress / 0.32, 2) * 0.2
+          : 0.2 + Math.pow((rawProgress - 0.32) / 0.68, 2.5) * 0.8;
+
+        const currentSpan = startSpan * Math.pow(endSpan / startSpan, easedProgress);
+        const curX = 512 - currentSpan / 2;
+        const curY = 512 - currentSpan / 2;
+
+        if (svgRef.current) {
+          svgRef.current.setAttribute('viewBox', `${curX} ${curY} ${currentSpan} ${currentSpan}`);
+        }
+
+        // Dissolve the dark curtain background as the logo approaches and expands past the screen
+        if (curtainRef.current) {
+          if (rawProgress < 0.28) {
+            curtainRef.current.style.opacity = '1';
+          } else {
+            const fade = (rawProgress - 0.28) / 0.72;
+            curtainRef.current.style.opacity = Math.max(0, 1 - fade).toString();
+          }
+        }
+
+        if (rawProgress < 1) {
+          rafIdRef.current = requestAnimationFrame(step);
+        } else {
+          if (isMounted) {
+            setIsVisible(false);
+            document.body.style.overflow = '';
+          }
+        }
+      };
+
+      rafIdRef.current = requestAnimationFrame(step);
+    }, displayDuration);
 
     return () => {
       isMounted = false;
+      if (timer) clearTimeout(timer);
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
       document.body.style.overflow = '';
     };
   }, [pathname, transitionKey]);
 
+  if (!isVisible) return null;
+
   return (
-    <AnimatePresence mode="wait">
-      {isVisible && (
-        <motion.div
-          key="luxury-preloader-curtain"
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
-          exit={{
-            opacity: 0,
-            transition: {
-              duration: 0.7,
-              delay: 0.12,
-              ease: [0.76, 0, 0.24, 1]
-            }
-          }}
+    <div
+      ref={curtainRef}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: '#050604',
+        zIndex: 9999999,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        pointerEvents: isVisible ? 'auto' : 'none'
+      }}
+    >
+      <svg
+        ref={svgRef}
+        viewBox="-1888 -1888 4800 4800"
+        preserveAspectRatio="xMidYMid meet"
+        shapeRendering="geometricPrecision"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100vw',
+          height: '100vh',
+          pointerEvents: 'none',
+          overflow: 'visible'
+        }}
+      >
+        <defs>
+          {/* Ahmad Malik Platinum White to Electric Lime Vector Gradient */}
+          <linearGradient id="asPureLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="55%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="#d2ff00" />
+          </linearGradient>
+
+          {/* Dynamic Laser Specular Sheen Gliding Across the Logo Contours */}
+          <linearGradient id="asSpecularSheen" x1="-100%" y1="0%" x2="200%" y2="0%">
+            <stop offset="0%" stopColor="rgba(210, 255, 0, 0.15)" />
+            <stop offset="45%" stopColor="rgba(210, 255, 0, 0.45)" />
+            <stop offset="50%" stopColor="#ffffff" />
+            <stop offset="55%" stopColor="rgba(210, 255, 0, 0.45)" />
+            <stop offset="100%" stopColor="rgba(210, 255, 0, 0.15)" />
+            <animate
+              attributeName="x1"
+              from="-100%"
+              to="100%"
+              dur="1.8s"
+              repeatCount="indefinite"
+            />
+            <animate
+              attributeName="x2"
+              from="0%"
+              to="200%"
+              dur="1.8s"
+              repeatCount="indefinite"
+            />
+          </linearGradient>
+        </defs>
+
+        {/* AS LOGO ONLY: Pure Geometric Luxury with Zero Blurry Textures */}
+        <g
+          ref={logoGroupRef}
+          transform="translate(15.5, -18)"
+          className={isZooming ? "" : "as-preloader-idle"}
           style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            backgroundColor: '#050604',
-            zIndex: 9999999,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-            pointerEvents: 'auto',
-            willChange: 'opacity'
+            transformOrigin: '512px 512px',
+            filter: isZooming ? 'none' : 'drop-shadow(0 0 22px rgba(210, 255, 0, 0.35))'
           }}
         >
-          {/* Subtle Ambient Radial Lighting */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'radial-gradient(circle at 50% 50%, rgba(210, 255, 0, 0.06) 0%, rgba(5, 6, 4, 0.98) 70%)',
-            pointerEvents: 'none'
-          }} />
+          {/* Path A (Left angular wing) */}
+          <path
+            d={AS_PATH_A}
+            fill="url(#asPureLogoGrad)"
+            stroke="url(#asSpecularSheen)"
+            strokeWidth="3.5"
+            strokeLinejoin="miter"
+          />
 
-          {/* Minimal High-Budget Editorial HUD (Fades out quickly on reveal) */}
-          <motion.div
-            exit={{ opacity: 0, transition: { duration: 0.15, ease: 'easeOut' } }}
-            style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
-          >
-            {/* Minimalist Precision Corner Reticles */}
-            <div style={{ position: 'absolute', top: '2.5rem', left: '2.5rem', width: '12px', height: '12px', borderTop: '1px solid rgba(210, 255, 0, 0.35)', borderLeft: '1px solid rgba(210, 255, 0, 0.35)' }} />
-            <div style={{ position: 'absolute', top: '2.5rem', right: '2.5rem', width: '12px', height: '12px', borderTop: '1px solid rgba(210, 255, 0, 0.35)', borderRight: '1px solid rgba(210, 255, 0, 0.35)' }} />
-            <div style={{ position: 'absolute', bottom: '2.5rem', left: '2.5rem', width: '12px', height: '12px', borderBottom: '1px solid rgba(210, 255, 0, 0.35)', borderLeft: '1px solid rgba(210, 255, 0, 0.35)' }} />
-            <div style={{ position: 'absolute', bottom: '2.5rem', right: '2.5rem', width: '12px', height: '12px', borderBottom: '1px solid rgba(210, 255, 0, 0.35)', borderRight: '1px solid rgba(210, 255, 0, 0.35)' }} />
-
-            {/* Top Minimal Header */}
-            <div style={{
-              position: 'absolute',
-              top: '2.5rem',
-              left: '4.5rem',
-              right: '4.5rem',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              fontFamily: 'monospace',
-              fontSize: '0.68rem',
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-lime)' }}>
-                <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'var(--color-lime)', boxShadow: '0 0 8px var(--color-lime)' }} />
-                <span>AHMAD MALIK</span>
-              </div>
-              <div style={{ color: 'rgba(255, 255, 255, 0.35)' }}>
-                DOSSIER // ARCHIVE
-              </div>
-            </div>
-
-            {/* Bottom Minimal Footer */}
-            <div style={{
-              position: 'absolute',
-              bottom: '2.5rem',
-              left: '4.5rem',
-              right: '4.5rem',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              fontFamily: 'monospace',
-              fontSize: '0.65rem',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'rgba(255, 255, 255, 0.35)'
-            }}>
-              <span>E-COMMERCE ART DIRECTION</span>
-              <span style={{ color: 'var(--color-lime)', opacity: 0.8 }}>SYSTEM READY</span>
-            </div>
-          </motion.div>
-
-          {/* Central Stage: Pristine AS Vector Logo and High-Budget Motion */}
-          <div style={{
-            position: 'relative',
-            width: '240px',
-            height: '240px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            pointerEvents: 'none'
-          }}>
-            {/* Fine Luxury Orbit Ring */}
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 16, repeat: Infinity, ease: 'linear' }}
-              exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.15 } }}
-              style={{
-                position: 'absolute',
-                width: '160px',
-                height: '160px',
-                borderRadius: '50%',
-                border: '1px solid rgba(210, 255, 0, 0.15)',
-                borderTop: '1px solid rgba(210, 255, 0, 0.65)',
-                pointerEvents: 'none',
-                willChange: 'transform'
-              }}
-            />
-
-            {/* Soft Ambient Lime Aura Behind Logo */}
-            <motion.div
-              animate={{
-                scale: [0.85, 1.25, 0.85],
-                opacity: [0.2, 0.7, 0.2]
-              }}
-              transition={{
-                duration: 2.2,
-                repeat: Infinity,
-                ease: 'easeInOut'
-              }}
-              exit={{
-                scale: 4,
-                opacity: 0,
-                transition: { duration: 0.3, ease: 'easeOut' }
-              }}
-              style={{
-                position: 'absolute',
-                width: '120px',
-                height: '120px',
-                borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(210, 255, 0, 0.35) 0%, rgba(210, 255, 0, 0.08) 50%, transparent 70%)',
-                pointerEvents: 'none',
-                willChange: 'transform, opacity'
-              }}
-            />
-
-            {/* THE AS LOGO: Disappearing & Appearing Loading State -> Pure Vector Exponential Zoom Reveal */}
-            <motion.div
-              style={{
-                position: 'relative',
-                width: '105px',
-                height: '105px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                transformOrigin: 'center center',
-                zIndex: 20,
-                willChange: 'transform, opacity',
-                transform: 'translateZ(0)',
-                backfaceVisibility: 'hidden'
-              }}
-              initial={{ scale: 0.92, opacity: 0 }}
-              animate={{
-                opacity: [0, 1, 1, 0, 0],
-                scale: [0.92, 1, 1.02, 1.06, 0.92]
-              }}
-              transition={{
-                duration: 2.2,
-                repeat: Infinity,
-                times: [0, 0.25, 0.55, 0.8, 1],
-                ease: [0.4, 0, 0.2, 1]
-              }}
-              exit={{
-                scale: 28,
-                opacity: [1, 1, 0.25, 0],
-                transition: {
-                  duration: 0.85,
-                  ease: [0.76, 0, 0.24, 1]
-                }
-              }}
-            >
-              <svg
-                viewBox="0 0 1024 1024"
-                width="100%"
-                height="100%"
-                style={{ overflow: 'visible' }}
-              >
-                <defs>
-                  <linearGradient id="asPreloaderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#ffffff" />
-                    <stop offset="65%" stopColor="#ffffff" />
-                    <stop offset="100%" stopColor="#d2ff00" />
-                  </linearGradient>
-                  <filter id="asPreloaderGlow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#d2ff00" floodOpacity="0.45" />
-                  </filter>
-                </defs>
-                <path
-                  d={AS_LOGO_PATH}
-                  fill="url(#asPreloaderGradient)"
-                  filter="url(#asPreloaderGlow)"
-                />
-              </svg>
-            </motion.div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          {/* Path S (Right faceted lightning ribbon) */}
+          <path
+            d={AS_PATH_S}
+            fill="url(#asPureLogoGrad)"
+            stroke="url(#asSpecularSheen)"
+            strokeWidth="3.5"
+            strokeLinejoin="miter"
+          />
+        </g>
+      </svg>
+    </div>
   );
 };
+
 
 const PageContentWrapper = ({ children }) => {
   return (
