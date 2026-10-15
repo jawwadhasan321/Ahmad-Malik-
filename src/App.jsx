@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowUpRight, ArrowUp, Mail, Phone, MapPin, Calendar, User, Pencil, Check, Copy, ExternalLink, Send, Loader2, CheckCircle2, MessageCircle, ShieldCheck } from 'lucide-react';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { ArrowRight, ArrowUpRight, ArrowUp, Mail, Phone, MapPin, Calendar, User, Pencil, Check, Copy, Loader2, CheckCircle2, MessageCircle, ShieldCheck } from 'lucide-react';
 import { ReactLenis, useLenis } from 'lenis/react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import './index.css';
@@ -398,10 +398,16 @@ const countries = [
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 const CustomCursor = ({ isMenuOpen }) => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+      setIsTouchDevice(true);
+      return;
+    }
+
     const updateMousePosition = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
@@ -414,14 +420,16 @@ const CustomCursor = ({ isMenuOpen }) => {
       }
     };
 
-    window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('mouseover', updateHoverState);
+    window.addEventListener('mousemove', updateMousePosition, { passive: true });
+    window.addEventListener('mouseover', updateHoverState, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', updateMousePosition);
       window.removeEventListener('mouseover', updateHoverState);
     };
   }, []);
+
+  if (isTouchDevice) return null;
 
   return (
     <>
@@ -433,7 +441,7 @@ const CustomCursor = ({ isMenuOpen }) => {
           width: isHovering ? 18 : 42,
           height: isHovering ? 18 : 42,
         }}
-        transition={{ type: 'spring', stiffness: 180, damping: 18, mass: 0.5 }}
+        transition={{ type: 'spring', stiffness: 220, damping: 22, mass: 0.4 }}
         style={{
           position: 'fixed',
           top: 0,
@@ -1039,7 +1047,7 @@ function Home() {
                   <motion.div
                     initial={{ y: "110%", rotate: 2 }}
                     animate={{ y: "0%", rotate: 0 }}
-                    transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1], delay: 2.2 }}
+                    transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1], delay: 0.15 }}
                     style={{ transformOrigin: 'left bottom' }}
                   >
                     <span className="hero-name-mask">AHMAD</span>
@@ -1049,7 +1057,7 @@ function Home() {
                   <motion.div
                     initial={{ y: "110%", rotate: 2 }}
                     animate={{ y: "0%", rotate: 0 }}
-                    transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1], delay: 2.28 }}
+                    transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1], delay: 0.22 }}
                     style={{ transformOrigin: 'left bottom' }}
                   >
                     MALIK
@@ -1058,27 +1066,27 @@ function Home() {
               </h1>
               
               <div className="hero-subtitle" style={{ justifyContent: 'flex-start', margin: '0', textAlign: 'left' }}>
-                <RevealText text="E-Commerce Creative Designer" delay={2.5} triggerOnce={true} />
+                <RevealText text="E-Commerce Creative Designer" delay={0.28} triggerOnce={true} />
               </div>
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ delay: 3.1, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '3.5rem', mixBlendMode: 'lighten' }}
+                transition={{ delay: 0.38, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '2.5rem', mixBlendMode: 'lighten' }}
               >
-                <img src="/logo1.png" alt="Amazon Logo" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
+                <img src="/logo1.png" alt="Amazon Logo" loading="lazy" decoding="async" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
                 <div style={{ width: '1px', height: '30px', backgroundColor: 'rgba(255, 255, 255, 0.2)' }}></div>
-                <img src="/logo2.png" alt="Shopify Logo" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
+                <img src="/logo2.png" alt="Shopify Logo" loading="lazy" decoding="async" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
                 <div style={{ width: '1px', height: '30px', backgroundColor: 'rgba(255, 255, 255, 0.2)' }}></div>
-                <img src="/logo3.png" alt="TikTok Logo" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
+                <img src="/logo3.png" alt="TikTok Logo" loading="lazy" decoding="async" style={{ width: '45px', height: '45px', objectFit: 'contain', opacity: 0.9 }} />
               </motion.div>
               
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 3.3, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                style={{ marginTop: '3.5rem' }}
+                transition={{ delay: 0.46, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                style={{ marginTop: '2.5rem' }}
               >
                 <a 
                   href="#portfolio" 
@@ -1086,7 +1094,7 @@ function Home() {
                   onClick={(e) => {
                     e.preventDefault();
                     if (lenis) {
-                      lenis.scrollTo('#portfolio', { offset: 0, duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+                      lenis.scrollTo('#portfolio', { offset: 0, duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
                     } else {
                       document.querySelector('#portfolio').scrollIntoView({ behavior: 'smooth' });
                     }
@@ -1098,12 +1106,12 @@ function Home() {
             </div>
 
             {/* Right Column: Portrait and Description */}
-            <div style={{ flex: '1 1 500px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', padding: '2rem 0', transform: 'translateY(-2rem)' }}>
+            <div style={{ flex: '1 1 500px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', padding: '1rem 0', transform: 'translateY(-1rem)' }}>
               
               <motion.div 
                 initial={{ opacity: 0, clipPath: 'inset(100% -50% -50% -50%)', y: 50 }}
                 animate={{ opacity: 1, clipPath: 'inset(-50% -50% -50% -50%)', y: 0 }}
-                transition={{ duration: 1.6, ease: [0.76, 0, 0.24, 1], delay: 2.4 }}
+                transition={{ duration: 1.3, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
                 style={{ position: 'relative', width: '100%', maxWidth: '600px', display: 'flex', justifyContent: 'center' }}
               >
                 {/* Cinematic Glow Behind Photo */}
@@ -1119,9 +1127,11 @@ function Home() {
                     <motion.img 
                       src="/ahmad-malik.jpg" 
                       alt="Ahmad Malik" 
-                      initial={{ scale: 1.2 }}
+                      loading="eager"
+                      decoding="async"
+                      initial={{ scale: 1.15 }}
                       animate={{ scale: 1 }}
-                      transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 2.5 }}
+                      transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
                       style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover', filter: 'contrast(1.1) brightness(0.95) saturate(1.05)', borderRadius: '32px' }} 
                     />
                     <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)', pointerEvents: 'none', zIndex: 2, borderRadius: '0 0 32px 32px' }} />
@@ -1134,9 +1144,9 @@ function Home() {
               <motion.div 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.2, delay: 3.6, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 1, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
                 style={{ 
-                  marginTop: '3rem', 
+                  marginTop: '2.5rem', 
                   maxWidth: '500px', 
                   borderLeft: '2px solid var(--color-lime)', 
                   paddingLeft: '1.5rem',
@@ -1612,10 +1622,10 @@ const StorefrontImageCard = ({ src, alt }) => {
       style={{ y: cardY }}
     >
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 60, filter: 'blur(15px)' }}
-        whileInView={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+        initial={{ opacity: 0, scale: 0.96, y: 40 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0 }}
         viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         style={{ 
           borderRadius: '16px', 
           overflow: 'hidden', 
@@ -1628,13 +1638,15 @@ const StorefrontImageCard = ({ src, alt }) => {
       >
         <motion.div 
           variants={{
-            hover: { scale: 1.05, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+            hover: { scale: 1.04, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
           }}
           style={{ width: '100%', height: '100%', transformOrigin: 'center center' }}
         >
           <img 
             src={src} 
             alt={alt} 
+            loading="lazy"
+            decoding="async"
             style={{ width: '100%', display: 'block', objectFit: 'contain' }} 
           />
         </motion.div>
@@ -1659,10 +1671,10 @@ const StorefrontImageCard = ({ src, alt }) => {
 
 const StorefrontText = ({ title, desc }) => (
   <motion.div 
-    initial={{ opacity: 0, y: 50, filter: 'blur(8px)' }}
-    whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+    initial={{ opacity: 0, y: 35 }}
+    whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-10%" }}
-    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+    transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
     style={{ textAlign: 'center', marginTop: '1.5rem' }}
   >
     {title && (
@@ -1675,6 +1687,111 @@ const StorefrontText = ({ title, desc }) => (
     </p>
   </motion.div>
 );
+
+// Standalone StackingCard component adhering strictly to React Rules of Hooks
+const StackingCard = ({ card, i, total, scrollYProgress }) => {
+  const start = i === 0 ? 0 : i / (total - 1);
+  const end = (i + 1) / (total - 1);
+  const holdPoint = start + ((end - start) * 0.75);
+
+  const scale = useTransform(scrollYProgress, [start, holdPoint, end], [1, 1, 0.94]);
+  const opacity = useTransform(scrollYProgress, [start, holdPoint, end], [1, 1, 0.35]);
+  const y = useTransform(scrollYProgress, [start, holdPoint, end], ["0vh", "0vh", "-6vh"]);
+  const rotateX = useTransform(scrollYProgress, [start, holdPoint, end], ["0deg", "0deg", "6deg"]);
+
+  return (
+    <div 
+      className="main-image-card-wrapper"
+      style={{ 
+        position: 'sticky', 
+        top: '15vh', 
+        height: '75vh', 
+        marginBottom: i === total - 1 ? '0vh' : '100vh', 
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: i,
+        perspective: '1500px'
+      }}
+    >
+      <motion.div
+        className="main-image-card"
+        style={{
+          scale: i === total - 1 ? 1 : scale,
+          opacity: i === total - 1 ? 1 : opacity,
+          y: i === total - 1 ? "0vh" : y,
+          rotateX: i === total - 1 ? "0deg" : rotateX,
+          width: '100%',
+          maxWidth: '1200px',
+          height: '100%',
+          background: 'linear-gradient(145deg, rgba(210, 255, 0, 0.04) 0%, rgba(210, 255, 0, 0.01) 100%)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderRadius: '28px',
+          border: '1px solid rgba(210, 255, 0, 0.18)',
+          boxShadow: '0 -20px 60px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(210,255,0,0.05)',
+          overflow: 'hidden',
+          display: 'flex',
+          flexWrap: 'wrap',
+          transformOrigin: 'top center'
+        }}
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div style={{ flex: '1 1 320px', padding: 'clamp(2rem, 5vw, 4.5rem)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <motion.h3 
+            initial={{ opacity: 0, x: -25 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.5rem)', color: 'var(--color-lime)', textTransform: 'uppercase', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}
+          >
+            {card.title}
+          </motion.h3>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.25 }}
+            style={{ fontSize: 'clamp(1.1rem, 2vw, 1.4rem)', color: 'rgba(255,255,255,0.88)', marginTop: '1.5rem', lineHeight: 1.6, fontWeight: 300 }}
+          >
+            {card.subtitle}
+          </motion.p>
+        </div>
+        <div style={{ flex: '1 1 350px', padding: 'clamp(1.5rem, 3vw, 3rem)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', minHeight: '260px' }}>
+          <motion.img 
+            src={card.src} 
+            alt={card.title} 
+            loading="lazy"
+            decoding="async"
+            initial={{ scale: 0.88, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', filter: 'drop-shadow(0 25px 40px rgba(0,0,0,0.6))', position: 'relative', zIndex: 2 }} 
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.6, delay: 0.3, ease: "easeOut" }}
+            style={{
+              position: 'absolute',
+              top: '50%', left: '50%',
+              width: '60%', height: '60%',
+              transform: 'translate(-50%, -50%)',
+              background: 'radial-gradient(circle, rgba(210, 255, 0, 0.14) 0%, transparent 70%)',
+              borderRadius: '50%',
+              zIndex: 1
+            }}
+          />
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 const MainImagesSection = () => {
   const cardsContainerRef = useRef(null);
@@ -1704,8 +1821,8 @@ const MainImagesSection = () => {
           {/* Breathing Lime Glow Background */}
           <motion.div style={{ 
             position: 'absolute', top: '50%', left: '50%', width: '100vw', height: '100vw', 
-            background: 'radial-gradient(circle, rgba(210, 255, 0, 0.06) 0%, transparent 60%)', 
-            filter: 'blur(100px)', borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(210, 255, 0, 0.05) 0%, transparent 60%)', 
+            borderRadius: '50%',
             x: '-50%', y: '-50%',
             scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.1, 0.8])
           }} />
@@ -1735,7 +1852,7 @@ const MainImagesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          style={{ fontSize: 'clamp(4rem, 8vw, 6rem)', color: 'var(--color-white)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', letterSpacing: '-0.02em' }}
+          style={{ fontSize: 'clamp(3.5rem, 8vw, 6rem)', color: 'var(--color-white)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', letterSpacing: '-0.02em' }}
         >
           Main Images
         </motion.h2>
@@ -1744,123 +1861,27 @@ const MainImagesSection = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.2 }}
-          style={{ fontSize: '1.6rem', color: 'var(--color-grey)', maxWidth: '700px', margin: '1.5rem auto 0', lineHeight: 1.6 }}
+          style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', color: 'var(--color-grey)', maxWidth: '700px', margin: '1.5rem auto 0', lineHeight: 1.6, padding: '0 1rem' }}
         >
           High-conversion hero images that establish immediate trust and clarity on the Amazon search page.
         </motion.p>
       </div>
 
       <div ref={cardsContainerRef} style={{ position: 'relative', padding: '0 5vw', paddingBottom: '10vh', zIndex: 1 }}>
-        {cards.map((card, i) => {
-          // Perfectly precise mapping denominator to eliminate inconsistency
-          const start = i === 0 ? 0 : i / (cards.length - 1);
-          const end = (i + 1) / (cards.length - 1);
-          
-          // Smoother, high budget exit transition (75% hold allows a slow, buttery fade)
-          const holdPoint = start + ((end - start) * 0.75);
-          
-          const scale = useTransform(scrollYProgress, [start, holdPoint, end], [1, 1, 0.92]);
-          const opacity = useTransform(scrollYProgress, [start, holdPoint, end], [1, 1, 0.3]);
-          const y = useTransform(scrollYProgress, [start, holdPoint, end], ["0vh", "0vh", "-8vh"]);
-          
-          // Even more high budget: 3D backward tilt and blur as it exits
-          const rotateX = useTransform(scrollYProgress, [start, holdPoint, end], ["0deg", "0deg", "8deg"]);
-          const filter = useTransform(scrollYProgress, [start, holdPoint, end], ["blur(0px)", "blur(0px)", "blur(15px)"]);
-
-          return (
-            <div 
-              key={i}
-              style={{ 
-                position: 'sticky', 
-                top: '15vh', 
-                height: '75vh', 
-                marginBottom: i === cards.length - 1 ? '0vh' : '120vh', 
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: i,
-                perspective: '1500px'
-              }}
-            >
-              <motion.div
-                style={{
-                  scale: i === cards.length - 1 ? 1 : scale,
-                  opacity: i === cards.length - 1 ? 1 : opacity,
-                  y: i === cards.length - 1 ? "0vh" : y,
-                  rotateX: i === cards.length - 1 ? "0deg" : rotateX,
-                  filter: i === cards.length - 1 ? "blur(0px)" : filter,
-                  width: '100%',
-                  maxWidth: '1200px',
-                  height: '100%',
-                  background: 'linear-gradient(145deg, rgba(210, 255, 0, 0.04) 0%, rgba(210, 255, 0, 0.01) 100%)',
-                  backdropFilter: 'blur(20px)',
-                  borderRadius: '32px',
-                  border: '1px solid rgba(210, 255, 0, 0.15)',
-                  boxShadow: '0 -20px 60px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(210,255,0,0.05)',
-                  overflow: 'hidden',
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  transformOrigin: 'top center'
-                }}
-                initial={{ opacity: 0, y: 80 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-10%" }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <div style={{ flex: '1 1 350px', padding: '5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                  <motion.h3 
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ fontSize: '3.5rem', color: 'var(--color-lime)', textTransform: 'uppercase', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}
-                  >
-                    {card.title}
-                  </motion.h3>
-                  <motion.p 
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, delay: 0.4 }}
-                    style={{ fontSize: '1.4rem', color: 'rgba(255,255,255,0.85)', marginTop: '2rem', lineHeight: 1.6, fontWeight: 300 }}
-                  >
-                    {card.subtitle}
-                  </motion.p>
-                </div>
-                <div style={{ flex: '1 1 400px', padding: '3rem', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', minHeight: '300px' }}>
-                  <motion.img 
-                    src={card.src} 
-                    alt={card.title} 
-                    initial={{ scale: 0.8, opacity: 0, rotate: -5 }}
-                    whileInView={{ scale: 1, opacity: 1, rotate: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', filter: 'drop-shadow(0 30px 50px rgba(0,0,0,0.6))', position: 'relative', zIndex: 2 }} 
-                  />
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
-                    style={{
-                      position: 'absolute',
-                      top: '50%', left: '50%',
-                      width: '60%', height: '60%',
-                      transform: 'translate(-50%, -50%)',
-                      background: 'radial-gradient(circle, rgba(210, 255, 0, 0.15) 0%, transparent 70%)',
-                      filter: 'blur(40px)',
-                      zIndex: 1
-                    }}
-                  />
-                </div>
-              </motion.div>
-            </div>
-          );
-        })}
+        {cards.map((card, i) => (
+          <StackingCard 
+            key={i} 
+            card={card} 
+            i={i} 
+            total={cards.length} 
+            scrollYProgress={scrollYProgress} 
+          />
+        ))}
       </div>
     </div>
   );
 };
+
 
 const Highlight = ({ children }) => (
   <span style={{ color: 'var(--color-lime)', fontFamily: 'var(--font-heading)', fontWeight: 600, letterSpacing: '0.01em' }}>
@@ -1871,24 +1892,24 @@ const Highlight = ({ children }) => (
 const AnimatedListingItem = ({ src, alt }) => (
   <motion.div 
     className="listing-item"
-    initial={{ opacity: 0, y: 100, scale: 0.9, filter: 'blur(15px)' }}
-    whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+    initial={{ opacity: 0, y: 60, scale: 0.96 }}
+    whileInView={{ opacity: 1, y: 0, scale: 1 }}
     viewport={{ once: true, margin: "-10%" }}
-    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+    transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
   >
-    <img src={src} alt={alt} />
+    <img src={src} alt={alt} loading="lazy" decoding="async" />
   </motion.div>
 );
 
 const AnimatedPhraseBlock = ({ children }) => (
   <motion.div 
     className="listing-phrase-block"
-    initial={{ opacity: 0, scale: 0.8, filter: 'blur(20px)' }}
-    whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+    initial={{ opacity: 0, scale: 0.92 }}
+    whileInView={{ opacity: 1, scale: 1 }}
     viewport={{ once: true, margin: "-10%" }}
-    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+    transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
   >
-    <h3 style={{ fontSize: '3rem', color: 'var(--color-white)', textAlign: 'center', fontStyle: 'italic', fontWeight: 300, lineHeight: 1.2 }}>
+    <h3 style={{ fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: 'var(--color-white)', textAlign: 'center', fontStyle: 'italic', fontWeight: 300, lineHeight: 1.25 }}>
       {children}
     </h3>
   </motion.div>
@@ -1911,9 +1932,17 @@ function Showcase() {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: targetRef });
   
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Configuration for the carousel spacing
-  const itemWidthVW = 75; // Width of each item
-  const gapVW = 0.5;        // Gap between items
+  const itemWidthVW = isMobile ? 88 : 75; // Width of each item
+  const gapVW = isMobile ? 4 : 0.5; // Gap between items
   const paddingSideVW = (100 - itemWidthVW) / 2; // Padding to center the first and last item
   
   // Total width of the scrolling track
@@ -2022,6 +2051,7 @@ function Showcase() {
             {aplusItems.map((item) => (
               <div 
                 key={item.id} 
+                className="aplus-carousel-item"
                 style={{ 
                   width: `${itemWidthVW}vw`, 
                   height: '100%', 
@@ -2032,27 +2062,24 @@ function Showcase() {
                   padding: '2rem 0'
                 }}
               >
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', width: '100%', maxWidth: '1400px', height: '100%', alignItems: 'center' }}>
+                <div className="aplus-carousel-card">
                   
-                  <div style={{ paddingRight: '2rem' }}>
-                    <h2 style={{ fontSize: '3.5rem', color: 'var(--color-white)', marginBottom: '1.5rem', lineHeight: 1.1, fontFamily: 'var(--font-heading)', textTransform: 'uppercase' }}>
+                  <div className="aplus-carousel-text">
+                    <h2 className="aplus-carousel-title">
                       {item.title}
                     </h2>
-                    <p style={{ fontSize: '1.6rem', color: 'var(--color-white)', lineHeight: 1.5, fontWeight: 300, opacity: 0.95 }}>
+                    <p className="aplus-carousel-desc">
                       {item.desc}
                     </p>
                   </div>
 
-                  <div style={{ height: '95vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <div className="aplus-carousel-media">
                     <img 
                       src={item.src} 
                       alt={item.title} 
-                      style={{ 
-                        maxHeight: '100%', 
-                        maxWidth: '100%', 
-                        objectFit: 'contain', 
-                        filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.6))' 
-                      }} 
+                      loading="lazy"
+                      decoding="async"
+                      className="aplus-carousel-img"
                     />
                   </div>
 
@@ -2085,11 +2112,11 @@ function Showcase() {
             {/* Storefront 1: Hometown Knives */}
             <div style={{ marginBottom: '12rem' }}>
               <motion.h2 
-                initial={{ opacity: 0, scale: 0.9, y: 50, filter: 'blur(10px)' }}
-                whileInView={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+                initial={{ opacity: 0, scale: 0.95, y: 35 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true, margin: "-10%" }}
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                style={{ fontSize: '4rem', color: 'var(--color-white)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', marginBottom: '5rem', textAlign: 'center', letterSpacing: '-0.02em' }}
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: 'var(--color-white)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', marginBottom: '5rem', textAlign: 'center', letterSpacing: '-0.02em' }}
               >
                 Hometown Knives
               </motion.h2>
@@ -2148,11 +2175,11 @@ function Showcase() {
             {/* Storefront 2: TANRI */}
             <div style={{ marginBottom: '10rem' }}>
               <motion.h2 
-                initial={{ opacity: 0, scale: 0.9, y: 50, filter: 'blur(10px)' }}
-                whileInView={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+                initial={{ opacity: 0, scale: 0.95, y: 35 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true, margin: "-10%" }}
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                style={{ fontSize: '4rem', color: 'var(--color-white)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', marginBottom: '5rem', textAlign: 'center', letterSpacing: '-0.02em' }}
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: 'var(--color-white)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', marginBottom: '5rem', textAlign: 'center', letterSpacing: '-0.02em' }}
               >
                 TANRI
               </motion.h2>
@@ -2256,7 +2283,7 @@ const BrandStorySection = () => {
       title: 'NE14 pets',
       desc: 'Designed for comfort and convenience. A playful yet structured narrative highlighting family-run values and specialized pet solutions.',
       src: '/brand-story-ne14pets.jpg',
-      anim: { initial: { opacity: 0, scale: 0.8, filter: "blur(15px)" }, whileInView: { opacity: 1, scale: 1, filter: "blur(0px)" }, transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] } }
+      anim: { initial: { opacity: 0, scale: 0.85 }, whileInView: { opacity: 1, scale: 1 }, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
     },
     {
       id: 3,
@@ -2288,10 +2315,18 @@ const BrandStorySection = () => {
     }
   ];
 
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Configuration for the carousel spacing
-  const itemWidthVW = 60; // Width of each item
-  const gapVW = 10;       // Gap between items
-  const paddingStartVW = 85; // Start nearly off-screen to the right so the title is clear
+  const itemWidthVW = isMobile ? 86 : 60; // Width of each item
+  const gapVW = isMobile ? 5 : 10;       // Gap between items
+  const paddingStartVW = isMobile ? 95 : 85; // Start nearly off-screen to the right so the title is clear
   const paddingEndVW = (100 - itemWidthVW) / 2; // Center the last item
   
   const totalWidthVW = (brandStoryItems.length * itemWidthVW) + ((brandStoryItems.length - 1) * gapVW) + paddingStartVW + paddingEndVW;
@@ -2334,12 +2369,22 @@ const BrandStorySection = () => {
 
         {/* Massive Title pinned to the left, acting as a splash screen before scrolling in the images */}
         <motion.div 
-          style={{ position: 'absolute', top: '50%', left: '8%', y: '-50%', opacity: useTransform(scrollYProgress, [0, 0.1, 0.2, 1], [1, 1, 0, 0]), scale: useTransform(scrollYProgress, [0, 0.1, 0.2, 1], [1, 1, 0.95, 0.95]), filter: useTransform(scrollYProgress, [0, 0.1, 0.2, 1], ["blur(0px)", "blur(0px)", "blur(30px)", "blur(30px)"]), zIndex: 5, maxWidth: '800px' }}
+          style={{ 
+            position: 'absolute', 
+            top: '50%', 
+            left: '8%', 
+            y: '-50%', 
+            opacity: useTransform(scrollYProgress, [0, 0.1, 0.2, 1], [1, 1, 0, 0]), 
+            scale: useTransform(scrollYProgress, [0, 0.1, 0.2, 1], [1, 1, 0.95, 0.95]), 
+            zIndex: 5, 
+            maxWidth: '800px',
+            width: '84vw'
+          }}
         >
-          <h2 style={{ fontSize: 'clamp(4.5rem, 9vw, 10.5rem)', color: 'var(--color-white)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', lineHeight: 0.85, textAlign: 'left', marginBottom: '2.5rem' }}>
+          <h2 style={{ fontSize: 'clamp(3.5rem, 8vw, 10.5rem)', color: 'var(--color-white)', fontFamily: 'var(--font-heading)', textTransform: 'uppercase', lineHeight: 0.88, textAlign: 'left', marginBottom: '2.5rem' }}>
             Amazon <br/><span style={{ color: 'var(--color-lime)' }}>Brand Story</span>
           </h2>
-          <p style={{ fontSize: '1.6rem', color: 'var(--color-white)', lineHeight: 1.6, fontWeight: 300, textAlign: 'left', maxWidth: '600px', borderLeft: '3px solid var(--color-lime)', paddingLeft: '1.5rem' }}>
+          <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.6rem)', color: 'var(--color-white)', lineHeight: 1.6, fontWeight: 300, textAlign: 'left', maxWidth: '600px', borderLeft: '3px solid var(--color-lime)', paddingLeft: '1.5rem' }}>
             A powerful visual narrative that transforms your Amazon storefront. We design premium, cohesive modules that highlight your brand's unique identity, build unshakeable customer trust, and drive higher conversion rates.
           </p>
         </motion.div>
@@ -2367,13 +2412,13 @@ const BrandStorySection = () => {
               style={{ ...item.anim.style, width: `${itemWidthVW}vw`, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '2rem' }}
             >
               <div style={{ borderRadius: '16px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
-                <img src={item.src} alt={item.title} style={{ width: '100%', display: 'block', objectFit: 'cover' }} />
+                <img src={item.src} alt={item.title} loading="lazy" decoding="async" style={{ width: '100%', display: 'block', objectFit: 'cover' }} />
               </div>
               <div style={{ padding: '0 1rem' }}>
-                <h3 style={{ fontSize: '2.5rem', color: 'var(--color-lime)', marginBottom: '1rem', fontFamily: 'var(--font-heading)', textTransform: 'uppercase' }}>
+                <h3 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.5rem)', color: 'var(--color-lime)', marginBottom: '1rem', fontFamily: 'var(--font-heading)', textTransform: 'uppercase' }}>
                   {item.title}
                 </h3>
-                <p style={{ fontSize: '1.6rem', color: 'var(--color-white)', lineHeight: 1.6, fontWeight: 300 }}>
+                <p style={{ fontSize: 'clamp(1rem, 2vw, 1.5rem)', color: 'var(--color-white)', lineHeight: 1.6, fontWeight: 300 }}>
                   {item.desc}
                 </p>
               </div>
@@ -3913,7 +3958,7 @@ export default function App() {
 
   return (
     <Router>
-      <ReactLenis root options={{ lerp: 0.05, duration: 1.5, smoothTouch: true }}>
+      <ReactLenis root options={{ lerp: 0.08, duration: 1.2, smoothWheel: true, syncTouch: true, touchMultiplier: 1.5 }}>
         <ScrollToTop />
         <Preloader transitionKey={transitionKey} />
         <div className="app">
