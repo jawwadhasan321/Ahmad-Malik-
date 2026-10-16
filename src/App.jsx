@@ -619,7 +619,7 @@ const FullscreenMenu = ({ isOpen, setIsOpen, triggerTransition }) => {
             transition={{ delay: 0.2, duration: 0.8 }}
             style={{ position: 'absolute', top: '2.5rem', left: '50%', transform: 'translateX(-50%)', display: 'flex', justifyContent: 'center', zIndex: 90, pointerEvents: 'none' }}
           >
-            <img src="/logo.svg" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain', filter: 'brightness(0)' }} />
+            <img src="/logo.svg?v=2" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain', filter: 'brightness(0)' }} />
           </motion.div>
           <div className="menu-inner container" style={{ position: 'relative', zIndex: 1 }}>
             <div className="menu-header" style={{ minHeight: '64px' }}>
@@ -3977,7 +3977,20 @@ export default function App() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <img src="/logo.svg" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain' }} />
+            <Link 
+              to="/"
+              onClick={() => {
+                if (window.location.hash === '#/' || window.location.hash === '') {
+                  triggerTransition();
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setIsMenuOpen(false);
+              }}
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', pointerEvents: 'auto' }}
+              aria-label="Ahmad Malik Home"
+            >
+              <img src="/logo.svg?v=2" alt="Ahmad Scales Logo" style={{ width: '70px', height: 'auto', objectFit: 'contain' }} />
+            </Link>
           </motion.div>
 
           {/* Navigation */}

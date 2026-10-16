@@ -2200,9 +2200,31 @@ a.contact-info-mainval:hover {
   pointer-events: none;
 }
 
-@media (max-width: 680px) {
+.document-top-logo a {
+  pointer-events: auto;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.document-top-logo a:hover {
+  transform: scale(1.06);
+  opacity: 0.85;
+}
+
+@media (max-width: 768px) {
   .document-top-logo {
-    display: none;
+    top: 1.15rem;
+  }
+  .document-top-logo img {
+    width: 44px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .document-top-logo {
+    top: 1.15rem;
+  }
+  .document-top-logo img {
+    width: 38px !important;
   }
 }
 
